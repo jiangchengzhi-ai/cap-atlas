@@ -2456,6 +2456,16 @@ body::after{opacity:.018}
   .stage-legend{left:0;right:0;justify-content:flex-start;text-align:left}
 }
 
+/* 能力地图：图名与图注合并到图下方同一行 */
+.stage-label{top:auto;bottom:0;left:0;right:auto;font-size:11px;letter-spacing:.14em;color:var(--tx-2)}
+.stage-legend{bottom:0;left:auto;right:0;justify-content:flex-end;text-align:right}
+.atlas{inset:10px 0 34px}
+@media (max-width:900px){
+  .stage-label{bottom:22px}
+  .stage-legend{left:0;right:0;justify-content:flex-start;text-align:left}
+  .atlas{inset:8px 0 52px}
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
