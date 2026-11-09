@@ -2356,6 +2356,28 @@ body::after{opacity:.018}
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),inset 0 30px 60px -40px rgba(255,255,255,.9);
 }
 
+/* 试验：能力地图不要底板，直接浮在首屏底图上 */
+.hero-stage{
+  background:none;
+  border:0;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+.hero-stage::after{display:none}
+.stage-label{color:var(--tx-3)}
+.stage-legend{color:var(--tx-3)}
+
+/* 折中方案：不要方形底板，只在圆环背后留一层柔和的圆形光晕 */
+.hero-stage{
+  background:radial-gradient(closest-side at 50% 47%,rgba(255,255,255,.96) 0%,rgba(255,255,255,.88) 50%,rgba(255,255,255,.55) 68%,rgba(255,255,255,0) 84%);
+  border:0;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+.hero-stage::after{display:none}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
