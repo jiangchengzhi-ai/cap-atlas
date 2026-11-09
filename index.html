@@ -2400,6 +2400,26 @@ body::after{opacity:.018}
 .stage-label{color:var(--tx-3)}
 .stage-legend{color:var(--tx-3)}
 
+/* 能力地图：标题与图例改为“图注”样式，地图放大 */
+.hero-stage{height:min(460px,50vh);min-height:340px}
+.atlas{inset:34px 0 34px}
+.stage-label{
+  left:0;right:0;top:4px;justify-content:flex-start;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.08em;color:var(--tx-2);
+}
+.stage-label::before{content:"";width:14px;height:1px;background:var(--blue);opacity:.65;flex:none}
+.stage-label .stage-count{display:inline-flex;align-items:center;gap:4px;color:var(--tx-3)}
+.stage-label .stage-count::before{content:"·";margin:0 3px;color:var(--tx-3)}
+.stage-label b{font-family:var(--font-tech);font-size:11px;color:var(--blue);font-weight:400}
+.stage-legend{
+  left:0;right:0;bottom:2px;justify-content:center;text-align:center;
+  font-size:10.5px;letter-spacing:.03em;color:var(--tx-3);
+}
+@media (max-height:840px){
+  .hero-stage{height:min(330px,40vh);min-height:280px}
+  .atlas{inset:28px 0 28px}
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
@@ -6964,7 +6984,7 @@ window.ATLAS_CONTENT = {
     atlasState.w = w; atlasState.h = h;
 
     var cx = w * 0.5, cy = h * 0.5;
-    var maxR = Math.min(w * 0.46, h * 0.47, 380);
+    var maxR = Math.min(w * 0.5, h * 0.5, 430);
     var layers = A.categories.slice().reverse(); // 底座在核心
     var ns = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(ns, "svg");
