@@ -2381,6 +2381,25 @@ body::after{opacity:.018}
 /* 卡片语言统一：去掉需求导航顶部 3px 蓝条，靠步骤条与标题区分层级 */
 .finder{border-top:1px solid var(--line)}
 
+/* 能力地图：不要白色渐变底，改用干净蓝色光晕 + 加强环线 */
+.hero-stage{
+  background:none;
+  border:0;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+.hero-stage::before{
+  inset:6% 2% 4%;
+  background:radial-gradient(circle at 50% 48%,rgba(83,120,230,.12) 0%,rgba(83,120,230,.06) 42%,rgba(83,120,230,0) 68%);
+  filter:blur(2px);
+}
+.hero-stage::after{display:none}
+.atl-ring{stroke:rgba(37,67,140,.17)}
+.atl-ring.dash{stroke-opacity:.5}
+.stage-label{color:var(--tx-3)}
+.stage-legend{color:var(--tx-3)}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
