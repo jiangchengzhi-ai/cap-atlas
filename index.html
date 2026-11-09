@@ -7886,7 +7886,7 @@ window.ATLAS_CONTENT = {
         var el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       });
-      setActiveNav(current === "faq" ? "" : current);
+      setActiveNav(current);
     }
     window.addEventListener("scroll", function () {
       if (!ticking) { ticking = true; requestAnimationFrame(updateSpy); }
