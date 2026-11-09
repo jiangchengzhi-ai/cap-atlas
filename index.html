@@ -2332,6 +2332,16 @@ body::after{opacity:.018}
 .section{padding-left:var(--gutter);padding-right:var(--gutter)}
 .section > *{width:var(--col);margin-left:auto;margin-right:auto}
 
+/* 能力地图卡片：轻微透明 + 背景模糊，让底层网格透出来一点 */
+.hero-stage{
+  background:linear-gradient(180deg,rgba(255,255,255,.82) 0%,rgba(255,255,255,.68) 100%);
+  -webkit-backdrop-filter:blur(10px) saturate(1.05);
+  backdrop-filter:blur(10px) saturate(1.05);
+  border-color:rgba(37,67,140,.10);
+  box-shadow:0 16px 44px rgba(31,58,120,.08),0 1px 0 rgba(255,255,255,.6) inset;
+}
+.stage-label,.stage-legend{background:transparent}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
