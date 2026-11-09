@@ -2478,6 +2478,36 @@ body::after{opacity:.018}
 /* 索引说明不是链接，去掉蓝色，避免误以为可点 */
 .strip-hint em{color:var(--tx-3);font-family:var(--font-sans);font-size:11px;letter-spacing:.03em}
 
+/* 能力地图：按“图表图注”重做——编号标签 + 展示字体图名 + 细分隔线 + 右侧注释 */
+.hero-stage::after{
+  display:block;content:"";position:absolute;left:0;right:0;bottom:44px;height:1px;background:var(--line);
+}
+.atlas{inset:8px 0 50px}
+.stage-label{
+  bottom:8px;left:0;right:auto;display:flex;align-items:baseline;gap:9px;
+  font-family:var(--font-display);font-size:16px;font-weight:400;letter-spacing:.04em;color:var(--tx);
+}
+.stage-label::before{
+  content:"图 01";font-family:var(--font-tech);font-size:9px;letter-spacing:.14em;color:var(--blue);
+  border:1px solid rgba(58,108,234,.28);background:rgba(58,108,234,.06);
+  border-radius:3px;padding:2px 5px;position:relative;top:-2px;
+}
+.stage-legend{bottom:9px;font-size:10.5px;color:var(--tx-3);letter-spacing:.02em}
+@media (max-width:900px){
+  .hero-stage::after{bottom:52px}
+  .atlas{inset:6px 0 58px}
+  .stage-label{bottom:30px}
+  .stage-legend{bottom:6px;left:0;right:0;justify-content:flex-start;text-align:left}
+}
+
+/* 修正：图号标签需显示，并用展示字体 */
+.stage-label{font-family:var(--font-display);font-size:16px;font-weight:400;letter-spacing:.04em;color:var(--tx)}
+.stage-label::before{
+  display:inline-block;content:"图 01";font-family:var(--font-tech);font-size:9px;letter-spacing:.14em;
+  color:var(--blue);border:1px solid rgba(58,108,234,.28);background:rgba(58,108,234,.06);
+  border-radius:3px;padding:2px 5px;position:relative;top:-2px;width:auto;height:auto;
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
