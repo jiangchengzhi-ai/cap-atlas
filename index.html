@@ -2439,6 +2439,23 @@ body::after{opacity:.018}
 /* 图注只保留“能力地图”，左端贴齐本栏左边界 */
 .stage-label{justify-content:flex-start}
 
+/* 能力地图：左上角图名 + 右下角图注，各自贴齐本栏边角 */
+.stage-label{
+  left:0;right:auto;top:0;justify-content:flex-start;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.16em;color:var(--tx-2);font-weight:500;
+}
+.stage-label::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--blue);opacity:.85;flex:none}
+
+.stage-legend{
+  left:auto;right:0;bottom:0;justify-content:flex-end;text-align:right;gap:6px;
+  font-size:10.5px;letter-spacing:.04em;color:var(--tx-3);
+  padding-left:0;
+}
+.stage-legend::before{content:"";width:5px;height:5px;border-radius:50%;background:rgba(37,67,140,.22);flex:none;order:-1}
+@media (max-width:900px){
+  .stage-legend{left:0;right:0;justify-content:flex-start;text-align:left}
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
