@@ -7775,9 +7775,10 @@ window.ATLAS_CONTENT = {
     if (titleEl) titleEl.innerHTML = isV1
       ? "38 项 AI 能力，<br>构成一张可检索的图谱。"
       : "基于 38 项 AI 能力，<br>形成客户方案底稿。";
-    if (ledeEl) ledeEl.textContent = isV1
-      ? "可浏览能力地图、能力清单与典型场景，并查看能力组合与计费建议。"
-      : "输入客户场景，生成能力组合与计费建议。";
+    if (ledeEl) {
+      ledeEl.textContent = isV1 ? "" : "输入客户场景，生成能力组合与计费建议。";
+      ledeEl.hidden = !!isV1;
+    }
     document.querySelectorAll(".v-switch a").forEach(function (a) {
       var on = (a.getAttribute("data-v") === "1") === isV1;
       a.classList.toggle("on", on);
