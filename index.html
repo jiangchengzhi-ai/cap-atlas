@@ -2298,6 +2298,14 @@ body::after{opacity:.018}
   .hero-stage{height:min(300px,36vh);min-height:260px}
 }
 
+/* 能力地图画得更大：减少内边距，环半径上限放宽 */
+.hero-stage{height:min(430px,48vh);min-height:330px}
+.atlas{inset:26px 4px 30px}
+@media (max-height:840px){
+  .hero-stage{height:min(310px,38vh);min-height:270px}
+  .atlas{inset:22px 2px 26px}
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
@@ -6862,7 +6870,7 @@ window.ATLAS_CONTENT = {
     atlasState.w = w; atlasState.h = h;
 
     var cx = w * 0.5, cy = h * 0.5;
-    var maxR = Math.min(w * 0.5, h * 0.4, 320);
+    var maxR = Math.min(w * 0.46, h * 0.47, 380);
     var layers = A.categories.slice().reverse(); // 底座在核心
     var ns = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(ns, "svg");
