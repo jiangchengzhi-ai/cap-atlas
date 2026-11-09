@@ -2312,6 +2312,26 @@ body::after{opacity:.018}
   .hero-title{font-size:clamp(30px,2.6vw,38px)}
 }
 
+/* ============ 统一内容列：首屏与下方区块左边缘对齐 ============ */
+.hero{padding-left:clamp(20px,3vw,64px);padding-right:clamp(20px,3vw,64px)}
+.hero-inner{width:min(1240px,100%);margin:0 auto;padding:0 0 10px}
+.section{padding-left:clamp(20px,3vw,64px);padding-right:clamp(20px,3vw,64px)}
+.hero-foot{padding-left:clamp(20px,3vw,64px);padding-right:clamp(20px,3vw,64px)}
+.strip-hint,.layer-strip{width:min(1240px,100%);margin-left:auto;margin-right:auto}
+@media (min-width:1700px){
+  .hero-inner,.strip-hint,.layer-strip{width:min(1320px,100%)}
+}
+
+/* 统一容器：首屏、索引条、各区块共用同一列 */
+:root{--gutter:clamp(20px,3vw,64px);--col:min(1240px,100%)}
+@media (min-width:1700px){:root{--col:min(1320px,100%)}}
+.hero{padding-left:var(--gutter);padding-right:var(--gutter)}
+.hero-inner{width:var(--col);margin:0 auto;padding:0 0 10px}
+.hero-foot{width:var(--col);margin:0 auto;padding:8px 0 8px}
+.strip-hint,.layer-strip{width:100%;margin-left:0;margin-right:0}
+.section{padding-left:var(--gutter);padding-right:var(--gutter)}
+.section > *{width:var(--col);margin-left:auto;margin-right:auto}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
