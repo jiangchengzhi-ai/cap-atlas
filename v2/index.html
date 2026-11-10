@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <style>
 :root{
-  --ink:#0B1B33; --ink-2:#233856; --tx:#12233F; --tx-2:#41536D; --tx-3:#7B8BA3;
+  --ink:#0B1B33; --ink-2:#233856; --tx:#12233F; --tx-2:#41536D; --tx-3:#56677F;
   --paper:#F6F8FC; --card:#FFFFFF; --line:#E3EAF4; --blue:#2F6BFF; --blue-deep:#1B47C9;
   --radius:14px; --sans:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
   --tech:"Consolas","SFMono-Regular",monospace;
@@ -321,6 +321,63 @@ h1{margin-bottom:20px}
 .ex:hover .ex-ic{border-color:#C9DBFB;color:var(--blue)}
 .ex em{font-style:normal;color:var(--tx-3)}
 .ex:hover em{color:var(--blue)}
+/* landing structure: cta, stats, tagline, final cta, reveals */
+.hero-cta{display:flex;align-items:center;gap:12px;margin-top:28px}
+.btn-primary{
+  border:0;border-radius:8px;background:var(--blue);color:#fff;
+  padding:12px 20px;font-family:var(--sans);font-size:16px;font-weight:600;cursor:pointer;
+  transition:background .2s,transform .15s;text-decoration:none;
+}
+.btn-primary:hover{background:var(--blue-deep)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-ghost{
+  border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--tx-2);
+  padding:12px 20px;font-size:16px;font-weight:600;text-decoration:none;
+}
+.btn-ghost:hover{border-color:#C9D8F0;color:var(--blue)}
+.stats{display:flex;gap:48px;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column;gap:4px}
+.stats b{font-size:30px;line-height:1;color:var(--tx);font-weight:700}
+.stats span{font-size:12px;color:var(--tx-3)}
+.tagline{padding:64px 0;border-top:1px solid var(--line)}
+.tagline p{
+  margin:0;max-width:1040px;font-size:clamp(24px,3.4vw,42px);line-height:1.34;font-weight:700;color:var(--tx);text-wrap:balance;
+}
+.tw{color:#C8D2E1;transition:color .5s cubic-bezier(.22,1,.36,1)}
+.tw.on{color:var(--tx)}
+.cta-final{padding:64px 0 72px;border-top:1px solid var(--line);text-align:center}
+.cta-final h2{margin:0 0 10px;font-size:clamp(22px,3vw,32px);line-height:1.3}
+.cta-final p{margin:0 0 24px;font-size:14px;color:var(--tx-2)}
+.sec,.dir,.tagline,.cta-final{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.sec.in,.dir.in,.tagline.in,.cta-final.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.sec,.dir,.tagline,.cta-final{opacity:1;transform:none;transition:none}.tw{transition:none}}
+/* a11y + legend + mobile toolbar + contrast */
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:#fff;padding:10px 16px;border:1px solid var(--line);border-radius:8px}
+.skip:focus{left:12px;top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;padding:10px 0 2px;font-size:11.5px;color:var(--tx-2)}
+.legend span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--blue);margin-right:6px;vertical-align:1px}
+.legend span:last-child::before{background:#C9D3E2}
+.dock-chev{display:none;width:8px;height:8px;border-right:1.5px solid var(--tx-3);border-bottom:1.5px solid var(--tx-3);transform:rotate(45deg);margin-left:auto}
+.dock.open .dock-chev{transform:rotate(-135deg)}
+@media (max-width:760px){
+  .dock-chev{display:block}
+  .examples{display:none}
+  .f-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .f-chips::-webkit-scrollbar{display:none}
+  .filter-row{flex-wrap:nowrap;align-items:center}
+  .dir-tools{padding-bottom:14px}
+  .hd-in{height:56px}
+  .nav{display:flex;overflow-x:auto;gap:16px;margin-left:0;font-size:12.5px}
+  main{padding-bottom:128px}
+}
+/* search result feedback */
+mark{background:#FFF3C4;color:inherit;padding:0 1px;border-radius:2px}
+.empty{padding:26px 4px;color:var(--tx-2);font-size:13px}
+.empty p{margin:0 0 8px}
+.empty-sug{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.empty-sug button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;color:var(--tx-2);cursor:pointer}
+.empty-sug button:hover{border-color:#C9DBFB;color:var(--blue)}
+.empty-clear button{border:0;background:none;padding:0;color:var(--blue);font:inherit;font-size:12px;cursor:pointer}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -419,14 +476,29 @@ details p{font-size:13px;color:var(--tx-2)}
 .d-simple .d-label{font-size:12px}
 .row-detail .tag{font-size:11.5px;color:var(--tx-2)}
 .dock-head b{font-size:16px}
+
+/* final mobile refinements */
+@media (max-width:760px){
+  .nav{display:flex !important;overflow-x:auto;gap:18px;margin-left:0;font-size:12.5px;padding:0 0 2px;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{border-bottom:0;white-space:nowrap}
+  h1{font-size:clamp(26px,7vw,34px);text-wrap:balance}
+  .hero p{font-size:13.5px}
+  .hd-in{height:56px;gap:14px}
+}
+
+/* AA contrast for muted text and selected chips */
+.chip.on{color:#1B47C9}
+.cat-head .cnt,.legend{color:var(--tx-2)}
 </style>
 </head>
 <body>
+<a class="skip" href="#dir">跳到能力目录</a>
 <header class="hd"><div class="shell hd-in">
   <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
   <nav class="nav">
-    <a href="#dir">能力目录</a>
     <a href="#scenes-sec">业务问题</a>
+    <a href="#dir">能力目录</a>
     <a href="#how">怎么合作</a>
     <a href="#faq">常见问题</a>
   </nav>
@@ -436,10 +508,18 @@ details p{font-size:13px;color:var(--tx-2)}
 <div class="shell layout">
 <main>
   <section class="hero">
-    <p class="kicker">AI 中心 · 能力黄页</p>
-    <h1>找到需要的能力，更快构建业务应用</h1>
-    <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
-    <p class="ways"><a href="#dir">直接说问题，或从示例问句开始 ↓</a></p>
+    <h1>找到能解决项目问题的 AI 能力</h1>
+    <p>38 项能力，按业务问题、类型和成熟度整理。说清你遇到的问题，直接看能用什么、适合谁、怎么交付和计费。</p>
+    <p class="ways"><a href="#dir">直接搜，或先看下面的业务问题 ↓</a></p>
+
+  </section>
+
+  <section class="sec" id="scenes-sec">
+    <div class="sec-head">
+      <h2>先按业务问题找</h2>
+      <span class="note">选一个问题，直接看能用哪些能力</span>
+    </div>
+    <div class="scene-grid" id="scenes"></div>
   </section>
 
 
@@ -453,18 +533,22 @@ details p{font-size:13px;color:var(--tx-2)}
       <div class="searchbox">
         <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input id="q" type="search" placeholder="说说你要解决的问题，如“投标文件评审效率低”" autocomplete="off">
-        <span class="cnt" id="count">38 / 38</span>
+        <span class="cnt" id="count" aria-live="polite">38 / 38</span>
       </div>
       <div class="examples">
         <span class="ex-label">不会描述？点一个例子直接搜：</span>
-        <button class="ex" type="button" data-q="投标"><i class="ex-ic">搜</i>投标文件评审效率低，能辅助吗？<em>→</em></button>
-        <button class="ex" type="button" data-q="知识库"><i class="ex-ic">搜</i>项目资料太散，能建知识库吗？<em>→</em></button>
-        <button class="ex" type="button" data-q="智能体"><i class="ex-ic">搜</i>想自己搭一个业务智能体<em>→</em></button>
-        <button class="ex" type="button" data-q="私有化"><i class="ex-ic">搜</i>数据不能出内网，能私有化吗？<em>→</em></button>
+        <button class="ex" type="button" data-q="投标文件评审效率低，能辅助吗？"><i class="ex-ic">搜</i>投标文件评审效率低，能辅助吗？<em>→</em></button>
+        <button class="ex" type="button" data-q="项目资料太散，能建知识库吗？"><i class="ex-ic">搜</i>项目资料太散，能建知识库吗？<em>→</em></button>
+        <button class="ex" type="button" data-q="想自己搭一个业务智能体"><i class="ex-ic">搜</i>想自己搭一个业务智能体<em>→</em></button>
+        <button class="ex" type="button" data-q="数据不能出内网，能私有化吗？"><i class="ex-ic">搜</i>数据不能出内网，能私有化吗？<em>→</em></button>
       </div>
       <div class="filter-row">
         <span class="f-label">类型</span>
         <div class="f-chips" id="catChips"></div>
+      </div>
+      <div class="legend">
+        <span>成熟度：概念预研 → 原型验证 → 试点测试 → 复制推广 → 正式商用</span>
+        <span>类型是能力来源分类，不确定就留在“全部类型”。</span>
       </div>
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
@@ -475,13 +559,11 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
-  <section class="sec" id="scenes-sec">
-    <div class="sec-head">
-      <h2>先按业务问题找</h2>
-      <span class="note">选一个问题，直接看能用哪些能力</span>
-    </div>
-    <div class="scene-grid" id="scenes"></div>
+  <section class="tagline" id="tagline">
+    <p id="taglineText">不用先懂 AI。<br>说清问题，剩下的交给能力目录。</p>
   </section>
+
+
 
   <section class="sec" id="how">
     <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
@@ -512,6 +594,12 @@ details p{font-size:13px;color:var(--tx-2)}
     </div>
   </section>
 
+  <section class="cta-final">
+    <h2>说说你的项目问题，我们给一套能落地的方案</h2>
+    <p>能力组合、部署方式、周期和计费，一次说清。</p>
+    <button class="btn-primary" type="button" id="ctaAsk2">让数字人帮我找能力</button>
+  </section>
+
   <footer class="foot"><div class="shell foot-in">
     <span>AI 中心 · 能力黄页（设计 v2 · 演示版）</span>
     <span><a href="../index.html">看地图版（v1）</a> · 能力、价格与交付范围以正式发布口径为准</span>
@@ -521,6 +609,7 @@ details p{font-size:13px;color:var(--tx-2)}
 <aside class="dock" id="dock" aria-label="李亚楠数字人">
   <div class="dock-head" id="dockHead">
     <b>对话<span class="v2badge">V2</span></b>
+    <span class="dock-chev" aria-hidden="true"></span>
     <div class="dock-acts">
       <button type="button" id="histBtn">历史</button>
       <button type="button" class="new" id="newBtn">新对话</button>
@@ -3927,12 +4016,48 @@ window.ATLAS_CONTENT = {
       return '<button class="chip" type="button" data-cat="' + esc(c.name) + '"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + c.accent + ';margin-right:6px;vertical-align:1px"></span>' + esc(c.name) + '</button>';
     }).join("");
 
+  function queryTerms(q){
+    var t = String(q || "").toLowerCase().replace(/[\s\u3000，。？！、,.?!"'“”‘’（）()]+/g, " ").trim();
+    if (!t) return [];
+    var out = [];
+    t.split(" ").forEach(function(part){
+      if (!part) return;
+      if (part.length <= 4){ out.push(part); return; }
+      for (var i = 0; i <= part.length - 2; i++) out.push(part.substr(i, 2));
+    });
+    return out.filter(function(v, i){ return out.indexOf(v) === i; });
+  }
+
+  function scoreProduct(p, terms){
+    if (!terms.length) return 0;
+    var fields = [
+      [p.short || "", 4], [p.name || "", 4], [p.tagline || "", 3],
+      [(p.tags||[]).join(" "), 2], [(p.problems||[]).join(" "), 2], [p.cat || "", 2],
+      [(p.desc||[]).join(" "), 1]
+    ];
+    var score = 0;
+    terms.forEach(function(t){
+      fields.forEach(function(f){ if (String(f[0]).toLowerCase().indexOf(t) > -1) score += f[1]; });
+    });
+    return score;
+  }
+
   function matches(p){
     if (state.ids && state.ids.indexOf(p.id) === -1) return false;
     if (state.cat !== "all" && p.cat !== state.cat) return false;
     if (!state.q) return true;
-    var hay = [p.name, p.short, p.tagline, p.cat, (p.tags||[]).join(" "), (p.problems||[]).join(" ")].join(" ");
-    return hay.toLowerCase().indexOf(state.q.toLowerCase()) > -1;
+    return scoreProduct(p, queryTerms(state.q)) > 0;
+  }
+
+  function highlight(text){
+    var out = esc(text);
+    var terms = queryTerms(state.q).filter(function(t){ return t.length >= 2; }).slice(0, 6);
+    terms.forEach(function(t){
+      try {
+        out = out.replace(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), function(m){ return "<mark>" + m + "</mark>"; });
+      } catch (e) {}
+    });
+    return out;
   }
 
   function row(p){
@@ -3944,7 +4069,7 @@ window.ATLAS_CONTENT = {
       '<button class="row-btn" type="button" aria-expanded="false">' +
 
         '<span class="r-main">' +
-          '<span class="r-name">' + esc(p.short) + '</span>' +
+          '<span class="r-name">' + highlight(p.short) + '</span>' +
           '<span class="r-desc">' + esc(p.tagline) + '</span>' +
         '</span>' +
         '<span class="r-mat"><span class="m-dots" aria-hidden="true">' + dots + '</span>' + (MAT[p.maturity]||"") + '</span>' +
@@ -3978,8 +4103,25 @@ window.ATLAS_CONTENT = {
 
   function render(){
     var items = A.products.filter(matches);
+    if (state.q){
+      var terms = queryTerms(state.q);
+      items = items.slice().sort(function(a, b){
+        return (scoreProduct(b, terms) - scoreProduct(a, terms)) || (b.maturity - a.maturity);
+      });
+    }
     countEl.textContent = items.length + " / " + A.products.length;
-    listEl.innerHTML = items.length ? group(items) : '<p class="empty">当前条件没有同时满足的能力。点上方“清除”去掉部分筛选，或换个关键词。</p>';
+    if (!items.length){
+      listEl.innerHTML = '<div class="empty">没找到同时满足这些条件的能力。<p>换个说法试试：</p><div class="empty-sug">' +
+        ["投标", "知识库", "私有化", "数字人", "巡检"].map(function(w){ return '<button type="button" data-sug="' + w + '">' + w + '</button>'; }).join("") +
+        '</div><p class="empty-clear"><button type="button" data-clear>清除全部筛选</button></p></div>';
+      listEl.querySelectorAll("[data-sug]").forEach(function(b){
+        b.addEventListener("click", function(){ state.q = b.dataset.sug; input.value = state.q; render(); });
+      });
+      listEl.querySelector("[data-clear]").addEventListener("click", clearAll);
+      paintBar();
+      return;
+    }
+    listEl.innerHTML = group(items);
     listEl.querySelectorAll(".row-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var rowEl = btn.parentNode;
@@ -4066,6 +4208,50 @@ window.ATLAS_CONTENT = {
       document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
     });
   });
+
+  // CTA: focus digital human
+  function focusAsk(){
+    var dock = document.getElementById("dock");
+    if (dock && window.innerWidth <= 1180) dock.classList.add("open");
+    var ai = document.getElementById("askInput");
+    if (ai){ ai.focus(); ai.scrollIntoView({behavior:"smooth", block:"center"}); }
+  }
+  var cta1 = document.getElementById("ctaAsk"); if (cta1) cta1.addEventListener("click", focusAsk);
+  var cta2 = document.getElementById("ctaAsk2"); if (cta2) cta2.addEventListener("click", focusAsk);
+
+  // tagline word reveal
+  (function(){
+    var el = document.getElementById("taglineText");
+    if (!el) return;
+    var lines = el.innerHTML.split("<br>");
+    el.innerHTML = lines.map(function(line){
+      return line.split("").map(function(ch){
+        return ch === " " ? " " : '<span class="tw">' + ch + '</span>';
+      }).join("");
+    }).join("<br>");
+    var words = el.querySelectorAll(".tw");
+    if (!("IntersectionObserver" in window)){ words.forEach(function(w){ w.classList.add("on"); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        words.forEach(function(w, i){
+          setTimeout(function(){ w.classList.add("on"); }, Math.min(i * 28, 900));
+        });
+        io.disconnect();
+      });
+    }, { threshold: 0.35 });
+    io.observe(el);
+  })();
+
+  // section reveal
+  (function(){
+    var secs = document.querySelectorAll(".sec, .dir, .tagline, .cta-final");
+    if (!("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    secs.forEach(function(x){ io.observe(x); });
+  })();
 
   // 数字人对话（演示版：按关键词筛选目录并回复）
   var chatEl = document.getElementById("chat");
