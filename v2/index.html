@@ -395,6 +395,19 @@ mark{background:#FFF3C4;color:inherit;padding:0 1px;border-radius:2px}
 .sug-item em{font-style:normal;font-size:11px;color:var(--tx-3);border:1px solid var(--line);border-radius:999px;padding:2px 8px;white-space:nowrap}
 .sug-item:hover,.sug-item.active{background:#F1F6FF}
 .sug-item:hover .sug-text,.sug-item.active .sug-text{color:var(--blue)}
+/* need navigation */
+.need-nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 0 4px;border-top:1px dashed #EFF3FA;margin-top:16px}
+.need-title{font-size:12px;font-weight:600;color:var(--tx-2);margin-right:2px}
+.need-nav select{
+  height:34px;padding:0 32px 0 12px;border:1px solid var(--line);border-radius:8px;background:#fff;
+  font:inherit;font-size:12.5px;color:var(--tx);cursor:pointer;appearance:none;outline:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%2356677F' stroke-width='1.5'/></svg>");
+  background-repeat:no-repeat;background-position:right 11px center;
+}
+.need-nav select:disabled{color:var(--tx-3);background-color:#FBFCFE;cursor:not-allowed}
+.need-nav select:focus{border-color:#C9DBFB;box-shadow:0 0 0 3px rgba(47,107,255,.12)}
+.need-reset{border:0;background:none;padding:0 2px;font:inherit;font-size:11.5px;color:var(--tx-3);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.need-reset:hover{color:var(--blue)}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -541,19 +554,16 @@ details p{font-size:13px;color:var(--tx-2)}
       <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
     </div>
     <div class="dir-tools">
-      <div class="search-wrap">
-        <div class="searchbox">
-          <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="q" type="search" placeholder="说说你要解决的问题，如“投标文件评审效率低”" autocomplete="off" aria-label="搜索能力或描述你的问题">
-          <span class="cnt" id="count" aria-live="polite">38 / 38</span>
-        </div>
-        <div class="sug-panel" id="sugPanel" hidden>
-          <p class="sug-title">不知道怎么问？点一句直接搜</p>
-          <button class="sug-item" type="button" data-sug-q="投标文件评审效率低，能辅助吗？"><span class="sug-text">投标文件评审效率低，能辅助吗？</span><em>投标辅助</em></button>
-          <button class="sug-item" type="button" data-sug-q="项目资料太散，能建知识库吗？"><span class="sug-text">项目资料太散，能建知识库吗？</span><em>知识库</em></button>
-          <button class="sug-item" type="button" data-sug-q="想自己搭一个业务智能体"><span class="sug-text">想自己搭一个业务智能体</span><em>智能体</em></button>
-          <button class="sug-item" type="button" data-sug-q="数据不能出内网，能私有化吗？"><span class="sug-text">数据不能出内网，能私有化吗？</span><em>私有化</em></button>
-        </div>
+      <div class="searchbox">
+        <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="也可以直接搜关键词，如“投标”“知识库”" autocomplete="off" aria-label="按关键词搜索能力">
+        <span class="cnt" id="count" aria-live="polite">38 / 38</span>
+      </div>
+      <div class="need-nav">
+        <span class="need-title">我想做什么</span>
+        <select id="needGroup" aria-label="我想做什么"><option value="">请选择方向</option></select>
+        <select id="needOpts" aria-label="具体想做哪一类" disabled><option value="">先选方向</option></select>
+        <button type="button" class="need-reset" id="needReset" hidden>重置</button>
       </div>
       <div class="filter-row">
         <span class="f-label">类型</span>
@@ -4043,8 +4053,9 @@ window.ATLAS_CONTENT = {
     var out = [];
     t.split(" ").forEach(function(part){
       if (!part) return;
-      if (part.length <= 4){ out.push(part); return; }
-      for (var i = 0; i <= part.length - 2; i++) out.push(part.substr(i, 2));
+      out.push(part);
+      if (part.length >= 3){ out.push(part.substr(0, 2)); out.push(part.substr(part.length - 2)); }
+      if (part.length > 4){ for (var i = 0; i <= part.length - 2; i++) out.push(part.substr(i, 2)); }
     });
     return out.filter(function(v, i){ return out.indexOf(v) === i; });
   }
@@ -4052,9 +4063,8 @@ window.ATLAS_CONTENT = {
   function scoreProduct(p, terms){
     if (!terms.length) return 0;
     var fields = [
-      [p.short || "", 4], [p.name || "", 4], [p.tagline || "", 3],
-      [(p.tags||[]).join(" "), 2], [(p.problems||[]).join(" "), 2], [p.cat || "", 2],
-      [(p.desc||[]).join(" "), 1]
+      [p.short || "", 6], [p.name || "", 5], [p.tagline || "", 4],
+      [(p.tags||[]).join(" "), 3], [(p.problems||[]).join(" "), 3], [p.cat || "", 2], [(p.desc||[]).join(" "), 2]
     ];
     var score = 0;
     terms.forEach(function(t){
@@ -4067,7 +4077,7 @@ window.ATLAS_CONTENT = {
     if (state.ids && state.ids.indexOf(p.id) === -1) return false;
     if (state.cat !== "all" && p.cat !== state.cat) return false;
     if (!state.q) return true;
-    return scoreProduct(p, queryTerms(state.q)) > 0;
+    return scoreProduct(p, queryTerms(state.q)) >= 3;
   }
 
   function highlight(text){
@@ -4142,7 +4152,7 @@ window.ATLAS_CONTENT = {
       paintBar();
       return;
     }
-    listEl.innerHTML = group(items);
+    listEl.innerHTML = state.q ? items.map(row).join("") : group(items);
     listEl.querySelectorAll(".row-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var rowEl = btn.parentNode;
@@ -4192,61 +4202,10 @@ window.ATLAS_CONTENT = {
     });
   });
 
-  var sugPanel = document.getElementById("sugPanel");
-  var sugItems = sugPanel ? Array.prototype.slice.call(sugPanel.querySelectorAll(".sug-item")) : [];
-  var sugIndex = -1;
-
-  function applySuggestion(text){
-    state.q = text; input.value = text;
-    state.cat = "all"; state.ids = null; state.door = "";
-    resetCatChips();
-    render();
-    if (sugPanel) sugPanel.hidden = true;
-    input.blur();
-  }
-
-  function paintActive(){
-    sugItems.forEach(function(b, i){ b.classList.toggle("active", i === sugIndex); });
-  }
-
-  if (sugPanel){
-    input.addEventListener("focus", function(){
-      sugIndex = -1; paintActive();
-      sugPanel.hidden = false;
-    });
-    input.addEventListener("blur", function(){
-      setTimeout(function(){ sugPanel.hidden = true; }, 120);
-    });
-    sugPanel.addEventListener("mousedown", function(e){ e.preventDefault(); });
-    sugItems.forEach(function(b){
-      b.addEventListener("click", function(){ applySuggestion(b.dataset.sugQ); });
-    });
-    input.addEventListener("keydown", function(e){
-      if (sugPanel.hidden) return;
-      if (e.key === "ArrowDown"){ e.preventDefault(); sugIndex = Math.min(sugIndex + 1, sugItems.length - 1); paintActive(); }
-      else if (e.key === "ArrowUp"){ e.preventDefault(); sugIndex = Math.max(sugIndex - 1, -1); paintActive(); }
-      else if (e.key === "Enter" && sugIndex > -1){ e.preventDefault(); applySuggestion(sugItems[sugIndex].dataset.sugQ); }
-      else if (e.key === "Escape"){ sugPanel.hidden = true; }
-    });
-  }
-
   var t;
   input.addEventListener("input", function(){
     clearTimeout(t);
-    t = setTimeout(function(){
-      state.q = input.value.trim();
-      render();
-      if (sugPanel && !sugPanel.hidden){
-        var k = state.q.toLowerCase();
-        var shown = 0;
-        sugItems.forEach(function(b){
-          var hit = !k || b.dataset.sugQ.toLowerCase().indexOf(k) > -1;
-          b.style.display = hit ? "" : "none";
-          if (hit) shown++;
-        });
-        if (!shown) sugPanel.hidden = true;
-      }
-    }, 120);
+    t = setTimeout(function(){ state.q = input.value.trim(); render(); }, 120);
   });
 
   render();
@@ -4280,6 +4239,61 @@ window.ATLAS_CONTENT = {
       document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
     });
   });
+
+  // 需求导航：先选方向，再选具体需求，按能力集合过滤
+  var GROUPS = [
+    { label:"自己建", opts:[
+      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
+      { label:"模型", ids:["p02","p03","p05","p35"] },
+      { label:"数据集", ids:["p01","p36","p06"] },
+      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
+    { label:"直接用", opts:[
+      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
+      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
+      { label:"模型调用", ids:["p03","p35"] } ] },
+    { label:"找支持", opts:[
+      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
+      { label:"测评验收", ids:["p05","p37","p09"] },
+      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
+  ];
+  var needGroup = document.getElementById("needGroup");
+  var needOpts = document.getElementById("needOpts");
+  var needReset = document.getElementById("needReset");
+  if (needGroup){
+    GROUPS.forEach(function(g){
+      var o = document.createElement("option");
+      o.value = g.label; o.textContent = g.label;
+      needGroup.appendChild(o);
+    });
+    needGroup.addEventListener("change", function(){
+      needOpts.innerHTML = '<option value="">请选择具体需求</option>';
+      var g = GROUPS.filter(function(x){ return x.label === needGroup.value; })[0];
+      if (!g){ needOpts.disabled = true; needReset.hidden = true; return; }
+      g.opts.forEach(function(op){
+        var o = document.createElement("option");
+        o.value = op.ids.join(",");
+        o.dataset.label = op.label;
+        o.textContent = op.label + "（" + op.ids.length + " 项）";
+        needOpts.appendChild(o);
+      });
+      needOpts.disabled = false;
+      needReset.hidden = false;
+      state.ids = null; state.door = "";
+      render();
+    });
+    needOpts.addEventListener("change", function(){
+      if (!needOpts.value){ state.ids = null; state.door = ""; render(); return; }
+      state.ids = needOpts.value.split(",");
+      state.door = needGroup.value + " · " + needOpts.options[needOpts.selectedIndex].dataset.label;
+      render();
+    });
+    if (needReset){
+      needReset.addEventListener("click", function(){
+        needGroup.value = ""; needOpts.innerHTML = '<option value="">先选方向</option>'; needOpts.disabled = true;
+        needReset.hidden = true; state.ids = null; state.door = ""; render();
+      });
+    }
+  }
 
   // CTA: focus digital human
   function focusAsk(){
