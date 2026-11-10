@@ -2522,6 +2522,11 @@ body::after{opacity:.018}
 }
 .atl-center circle:last-of-type{filter:drop-shadow(0 8px 18px rgba(31,58,120,.14))}
 
+/* 中心枢纽：淡蓝填充，不再是白块 */
+.atl-center .atl-hub-text{fill:#274AC0}
+.atl-center .atl-hub-sub{fill:rgba(39,74,192,.55)}
+.atl-center circle:last-of-type{filter:drop-shadow(0 6px 14px rgba(31,58,120,.10))}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
@@ -7207,10 +7212,17 @@ window.ATLAS_CONTENT = {
     halo.setAttribute("cx", cx); halo.setAttribute("cy", cy); halo.setAttribute("r", "46");
     halo.setAttribute("fill", "rgba(74,99,232,.07)");
     center.appendChild(halo);
+    var hubRing = document.createElementNS(ns, "circle");
+    hubRing.setAttribute("cx", cx); hubRing.setAttribute("cy", cy); hubRing.setAttribute("r", "40");
+    hubRing.setAttribute("fill", "none");
+    hubRing.setAttribute("stroke", "rgba(74,99,232,.20)");
+    hubRing.setAttribute("stroke-width", ".8");
+    hubRing.setAttribute("stroke-dasharray", "1 4");
+    center.appendChild(hubRing);
     var c1 = document.createElementNS(ns, "circle");
-    c1.setAttribute("cx", cx); c1.setAttribute("cy", cy); c1.setAttribute("r", "32");
-    c1.setAttribute("fill", "#fff");
-    c1.setAttribute("stroke", "rgba(74,99,232,.30)");
+    c1.setAttribute("cx", cx); c1.setAttribute("cy", cy); c1.setAttribute("r", "30");
+    c1.setAttribute("fill", "#F1F6FF");
+    c1.setAttribute("stroke", "rgba(74,99,232,.32)");
     c1.setAttribute("stroke-width", "1");
     center.appendChild(c1);
     var hubText = document.createElementNS(ns, "text");
