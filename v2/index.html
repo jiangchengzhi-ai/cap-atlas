@@ -255,6 +255,10 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .quick-links button{border:0;background:none;padding:0;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--tx-2)}
 .quick-links button:hover{color:var(--blue);text-decoration:underline}
 .quick-links i{font-style:normal;color:#C9D3E2}
+/* need row between search and type */
+.need-row{display:flex;align-items:center;gap:12px;padding:10px 0 2px;flex-wrap:wrap}
+.need-row .need-select{margin-left:0}
+.need-hint{font-size:11.5px;color:var(--tx-3)}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -395,10 +399,13 @@ details p{font-size:13px;color:var(--tx-2)}
         <button type="button" data-q="模型">模型调用</button><i>·</i>
         <button type="button" data-q="巡检">安全巡检</button>
       </div>
+      <div class="need-row">
+        <span class="f-label">需求</span>
+        <select class="need-select" id="needSelect" aria-label="按需求筛选"><option value="">全部需求</option></select>
+      </div>
       <div class="filter-row">
         <span class="f-label">类型</span>
         <div class="f-chips" id="catChips"></div>
-        <select class="need-select" id="needSelect" aria-label="按需求筛选"><option value="">全部需求</option></select>
       </div>
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
