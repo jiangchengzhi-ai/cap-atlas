@@ -168,6 +168,17 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .row-btn{padding-left:26px}
 .row-detail{padding-left:26px}
 @media (max-width:760px){.row-btn{padding-left:8px}.row-detail{padding-left:8px}}
+/* detail as a distinct card */
+.row-detail{
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  margin:6px 4px 20px 26px;padding:18px 22px 16px;
+  box-shadow:0 6px 18px rgba(31,58,120,.05);
+}
+.row.open{background:#FBFCFE}
+.row.open .row-btn{border-bottom-color:transparent}
+.d-simple{max-width:none}
+.d-simple .d-label{color:var(--tx-3)}
+@media (max-width:760px){.row-detail{margin-left:8px;padding:16px}}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
