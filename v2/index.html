@@ -697,6 +697,12 @@ details p{margin:8px 0 0;line-height:1.8}
 .pc-delivery{grid-column:1/-1;margin:0;font-size:12px;color:var(--tx-2)}
 .pc-delivery b{color:var(--tx);margin-right:8px}
 @media (max-width:760px){.plan-card.open .pc-detail{grid-template-columns:1fr}}
+
+/* expanded project card takes the full row; neighbours keep their own height */
+.plan-grid{align-items:start}
+.plan-card.open{grid-column:1/-1}
+.plan-card.open .pc-detail{margin-top:16px}
+.plan-card:not(.open){align-self:start}
 </style>
 </head>
 <body>
