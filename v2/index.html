@@ -239,6 +239,22 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .f-chips{display:flex;flex-wrap:wrap;gap:7px;flex:1;min-width:0}
 .f-sub .f-label{width:30px}
 .dock-head-r{display:none}
+/* compact filter row: chips + need select */
+.filter-row{display:flex;align-items:center;gap:12px;padding:6px 0;flex-wrap:wrap}
+.f-label{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--tx-3);flex:none}
+.f-chips{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}
+.need-select{
+  flex:none;margin-left:auto;height:32px;padding:0 30px 0 12px;border:1px solid var(--line);border-radius:999px;
+  background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%237B8BA3' stroke-width='1.5'/></svg>") no-repeat right 12px center;
+  font:inherit;font-size:12px;font-weight:500;color:var(--tx-2);cursor:pointer;appearance:none;outline:none;
+}
+.need-select:hover,.need-select:focus{border-color:#C9D8F0;color:var(--tx)}
+/* quick links as plain text */
+.quick-links{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--tx-3)}
+.quick-links span{color:var(--tx-3)}
+.quick-links button{border:0;background:none;padding:0;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--tx-2)}
+.quick-links button:hover{color:var(--blue);text-decoration:underline}
+.quick-links i{font-style:normal;color:#C9D3E2}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -370,18 +386,20 @@ details p{font-size:13px;color:var(--tx-2)}
         <input id="q" type="search" placeholder="搜索能力、业务问题或场景，如“投标”“知识库”“私有化”" autocomplete="off">
         <span class="cnt" id="count">38 / 38</span>
       </div>
-      <div class="chips">
-        <span class="lbl">常用搜索</span>
-        <button class="chip" type="button" data-q="投标">投标辅助</button>
-        <button class="chip" type="button" data-q="知识库">知识库</button>
-        <button class="chip" type="button" data-q="数字人">数字人</button>
-        <button class="chip" type="button" data-q="私有化">私有化</button>
-        <button class="chip" type="button" data-q="模型">模型调用</button>
-        <button class="chip" type="button" data-q="巡检">安全巡检</button>
+      <div class="quick-links">
+        <span>常用</span>
+        <button type="button" data-q="投标">投标辅助</button><i>·</i>
+        <button type="button" data-q="知识库">知识库</button><i>·</i>
+        <button type="button" data-q="数字人">数字人</button><i>·</i>
+        <button type="button" data-q="私有化">私有化</button><i>·</i>
+        <button type="button" data-q="模型">模型调用</button><i>·</i>
+        <button type="button" data-q="巡检">安全巡检</button>
       </div>
-      <div class="f-row"><span class="f-label">类型</span><div class="f-chips" id="catChips"></div></div>
-      <div class="f-row"><span class="f-label">需求</span><div class="f-chips" id="gGroups"></div></div>
-      <div class="f-row f-sub" id="gRow2" hidden><span class="f-label"></span><div class="f-chips" id="gOpts"></div></div>
+      <div class="filter-row">
+        <span class="f-label">类型</span>
+        <div class="f-chips" id="catChips"></div>
+        <select class="need-select" id="needSelect" aria-label="按需求筛选"><option value="">全部需求</option></select>
+      </div>
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
     <div class="list" id="list"></div>
@@ -3896,6 +3914,7 @@ window.ATLAS_CONTENT = {
   function clearAll(){
     state.q = ""; state.cat = "all"; state.ids = null; state.door = "";
     var qi = document.getElementById("q"); if (qi) qi.value = "";
+    var ns = document.getElementById("needSelect"); if (ns) ns.value = "";
     resetCatChips();
     render();
   }
@@ -3938,56 +3957,45 @@ window.ATLAS_CONTENT = {
 
   render();
 
-  // 三步引导：选方向 -> 选需求 -> 过滤目录
+  // 按需求筛选：一个下拉，不再堆胶囊
   var GROUPS = [
-    { id:"build", label:"自己建", q:"想自己建哪一类？", opts:[
+    { label:"自己建", opts:[
       { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
       { label:"模型", ids:["p02","p03","p05","p35"] },
       { label:"数据集", ids:["p01","p36","p06"] },
       { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
-    { id:"use", label:"直接用", q:"想直接用哪一类？", opts:[
+    { label:"直接用", opts:[
       { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
       { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
       { label:"模型调用", ids:["p03","p35"] } ] },
-    { id:"support", label:"找支持", q:"需要哪一类支持？", opts:[
+    { label:"找支持", opts:[
       { label:"规划咨询", ids:["p39","p40","p41","p42"] },
       { label:"测评验收", ids:["p05","p37","p09"] },
       { label:"智能硬件", ids:["p19","p20","p21"] } ] }
   ];
-  var gGroups = document.getElementById("gGroups");
-  var gRow2 = document.getElementById("gRow2");
-  var gQ = document.getElementById("gQ");
-  var gOpts = document.getElementById("gOpts");
-  var filterBar = document.getElementById("filterBar");
-
-  function countIds(ids){ return A.products.filter(function(p){ return ids.indexOf(p.id) > -1; }).length; }
-
-  gGroups.innerHTML = GROUPS.map(function(g){
-    return '<button class="g-chip" type="button" data-g="' + g.id + '">' + g.label + '</button>';
-  }).join("");
-
-  function showGroup(g){
-    gGroups.querySelectorAll(".g-chip").forEach(function(b){ b.classList.toggle("on", b.dataset.g === g.id); });
-    gOpts.innerHTML = g.opts.map(function(o){
-      return '<button class="g-chip" type="button" data-ids="' + o.ids.join(",") + '" data-label="' + o.label + '">' + o.label + '<span>' + countIds(o.ids) + '</span></button>';
-    }).join("");
-    gRow2.hidden = false;
+  var needSelect = document.getElementById("needSelect");
+  if (needSelect){
+    GROUPS.forEach(function(g){
+      var og = document.createElement("optgroup");
+      og.label = g.label;
+      g.opts.forEach(function(o){
+        var op = document.createElement("option");
+        op.value = o.ids.join(",");
+        op.dataset.label = o.label;
+        op.textContent = o.label + "（" + A.products.filter(function(p){ return o.ids.indexOf(p.id) > -1; }).length + "）";
+        og.appendChild(op);
+      });
+      needSelect.appendChild(og);
+    });
+    needSelect.addEventListener("change", function(){
+      if (!needSelect.value){ state.ids = null; state.door = ""; }
+      else {
+        state.ids = needSelect.value.split(",");
+        state.door = needSelect.options[needSelect.selectedIndex].dataset.label;
+      }
+      render();
+    });
   }
-
-  gGroups.addEventListener("click", function(e){
-    var b = e.target.closest(".g-chip"); if (!b) return;
-    var g = GROUPS.filter(function(x){ return x.id === b.dataset.g; })[0];
-    if (g) showGroup(g);
-  });
-
-  gOpts.addEventListener("click", function(e){
-    var b = e.target.closest(".g-chip"); if (!b) return;
-    state.ids = b.dataset.ids.split(",");
-    state.door = b.dataset.label;
-    render();
-    document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
-  });
-
 
   // 落地场景
   var scenes = (C.blueprints || []).slice(0,5);
@@ -4025,7 +4033,7 @@ window.ATLAS_CONTENT = {
     askEl.value = "";
     state.q = text;
     state.ids = null; state.door = "";
-    if (document.getElementById("doorTag")) document.getElementById("doorTag").hidden = true;
+    var ns2 = document.getElementById("needSelect"); if (ns2) ns2.value = "";
     resetCatChips();
     var input2 = document.getElementById("q");
     if (input2) input2.value = text;
