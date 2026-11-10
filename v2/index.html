@@ -664,6 +664,17 @@ details p{margin:8px 0 0;line-height:1.8}
 .dir-tools{padding:16px 0 0}
 .filter-bar{margin:0 0 12px}
 .cat-head{padding:20px 0 8px}
+
+/* v1-style section headers */
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 20px}
+.sec-kicker{margin:0 0 6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--blue)}
+.sec-title{margin:0;font-size:24px;line-height:1.35;font-weight:700;color:var(--tx)}
+.sec-lede{margin:8px 0 0;font-size:13px;line-height:1.75;color:var(--tx-2);max-width:640px}
+.dir-head .n,.sec-head .n{font-size:12px;color:var(--tx-3);white-space:nowrap;padding-bottom:4px}
+@media (max-width:760px){
+  .sec-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .sec-title{font-size:20px}
+}
 </style>
 </head>
 <body>
@@ -692,9 +703,13 @@ details p{margin:8px 0 0;line-height:1.8}
 
 
   <section class="dir" id="dir">
-    <div class="dir-head">
-      <h2>能力目录</h2>
-      <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
+    <div class="sec-head">
+      <div>
+        <p class="sec-kicker">能力黄页</p>
+        <h2 class="sec-title">能力目录</h2>
+        <p class="sec-lede">点开任意一项，能看说明、适用对象、交付方式和计费。</p>
+      </div>
+      <span class="n" id="dirNote">共 38 项</span>
     </div>
     <div class="dir-tools">
       <div class="searchbox">
@@ -719,12 +734,24 @@ details p{margin:8px 0 0;line-height:1.8}
 
 
   <section class="sec plans" id="projects">
-    <div class="sec-head"><h2>看看已经落地的项目怎么用</h2><span class="note">能力组合 · 实施阶段 · 预期成效</span></div>
+    <div class="sec-head">
+      <div>
+        <p class="sec-kicker">场景应用</p>
+        <h2 class="sec-title">看看已经落地的项目怎么用</h2>
+        <p class="sec-lede">每个场景写清用到的能力、实施阶段与预期成效；更多项目持续补充。</p>
+      </div>
+    </div>
     <div class="plan-grid" id="projGrid"></div>
   </section>
 
   <section class="sec" id="how">
-    <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
+    <div class="sec-head">
+      <div>
+        <p class="sec-kicker">合作方式</p>
+        <h2 class="sec-title">从问题到上线，四步</h2>
+        <p class="sec-lede">说清问题、定方案与报价、试点上线、推广复制；计费方式按项目确定。</p>
+      </div>
+    </div>
     <div class="how-grid">
       <div class="how-step"><span class="how-no">01</span><h3>说清问题</h3><p>带着项目问题来，或直接问右侧数字人；我们帮你判断适不适合用 AI。</p></div>
       <div class="how-step"><span class="how-no">02</span><h3>定方案与报价</h3><p>给出能力组合、部署方式、周期和计费，明确验收口径。</p></div>
@@ -735,7 +762,13 @@ details p{margin:8px 0 0;line-height:1.8}
   </section>
 
   <section class="sec" id="faq">
-    <div class="sec-head"><h2>开始之前，先把疑问说清楚</h2><span class="note">数据、周期、计费、权限与验收</span></div>
+    <div class="sec-head">
+      <div>
+        <p class="sec-kicker">常见问题</p>
+        <h2 class="sec-title">开始之前，先把疑问说清楚</h2>
+        <p class="sec-lede">数据、周期、计费、权限与验收，逐条回答。</p>
+      </div>
+    </div>
     <div class="faq-grid">
       <div>
         <details><summary>AI 中心目前能解决哪些业务问题？</summary><p>已落地 5 类场景：施工安全、规划治理、科研管理、公路养护、市场经营；背后是 38 项能力，按 7 类组织。可在上方目录按关键词或类型查找。</p></details>
