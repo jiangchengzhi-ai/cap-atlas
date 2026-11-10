@@ -152,6 +152,14 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .d-label{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--tx-2);margin:0 0 8px}
 .d-item .d-label{margin-bottom:7px}
 .d-lead{font-size:14px;line-height:1.95}
+/* simple detail */
+.row-detail{padding:6px 4px 22px 56px}
+.d-simple{max-width:860px}
+.d-simple p{margin:0 0 10px;font-size:13px;line-height:1.95;color:var(--tx-2)}
+.d-simple .d-label{margin:16px 0 8px;font-size:11.5px;font-weight:600;color:var(--tx-2)}
+.d-simple .d-label:first-child{margin-top:0}
+.d-simple .d-tags{gap:7px;margin-bottom:2px}
+@media (max-width:760px){.row-detail{padding-left:4px}}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -3743,19 +3751,12 @@ window.ATLAS_CONTENT = {
         '<span class="r-arrow">›</span>' +
       '</button>' +
       '<div class="row-detail">' +
-        '<div class="d-grid">' +
-          '<div class="d-col">' +
-            '<p class="d-label">能力说明</p>' +
-            (p.desc && p.desc.length ? '<p class="d-lead" style="border-color:' + color + '">' + esc(p.desc[0]) + '</p>' : '') +
-            (p.desc||[]).slice(1).map(function(d){ return "<p>" + esc(d) + "</p>"; }).join("") +
-            (p.problems && p.problems.length ? '<p class="d-label" style="margin-top:14px">解决的问题</p><div class="d-tags">' + p.problems.map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' : "") +
-          '</div>' +
-          '<div class="d-col d-col-r">' +
-            '<div class="d-item"><p class="d-label">适用对象</p><div class="d-tags">' + (p.users||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div></div>' +
-            '<div class="d-item"><p class="d-label">业主类型</p><div class="d-tags">' + (p.buyers||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div></div>' +
-            '<div class="d-item"><p class="d-label">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div></div>' +
-            '<div class="d-item"><p class="d-label">所属类型</p><div class="d-tags"><span class="tag">' + esc(p.cat) + '</span></div></div>' +
-          '</div>' +
+        '<div class="d-simple">' +
+          '<p class="d-label">能力说明</p>' +
+          (p.desc||[]).map(function(d){ return "<p>" + esc(d) + "</p>"; }).join("") +
+          (p.problems && p.problems.length ? '<p class="d-label">解决的问题</p><div class="d-tags">' + p.problems.map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' : "") +
+          '<p class="d-label">适用对象</p><div class="d-tags">' + (p.users||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+          '<p class="d-label">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -3778,7 +3779,7 @@ window.ATLAS_CONTENT = {
   function render(){
     var items = A.products.filter(matches);
     countEl.textContent = items.length + " / " + A.products.length;
-    listEl.innerHTML = items.length ? group(items) : '<p class="empty">没有匹配的能力，换个关键词试试，或点“全部类型”。</p>';
+    listEl.innerHTML = items.length ? group(items) : '<p class="empty">没有匹配的能力：换个关键词，或点“全部类型”清除筛选。</p>';
     listEl.querySelectorAll(".row-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var rowEl = btn.parentNode;
@@ -3788,9 +3789,15 @@ window.ATLAS_CONTENT = {
     });
   }
 
+  function resetCatChips(){
+    state.cat = "all";
+    catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x.dataset.cat === "all"); });
+  }
   catWrap.addEventListener("click", function(e){
     var b = e.target.closest(".chip"); if (!b) return;
     state.cat = b.dataset.cat;
+    state.ids = null; state.door = "";
+    if (doorTag) doorTag.hidden = true;
     catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x === b); });
     render();
   });
@@ -3857,6 +3864,7 @@ window.ATLAS_CONTENT = {
     var b = e.target.closest(".g-chip"); if (!b) return;
     state.ids = b.dataset.ids.split(",");
     state.door = b.dataset.label;
+    resetCatChips();
     render();
     if (doorTag){ doorTag.hidden = false; doorTag.textContent = "已按「" + state.door + "」筛选 ✕"; }
     document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
@@ -3903,6 +3911,9 @@ window.ATLAS_CONTENT = {
     addMsg(text, "me");
     askEl.value = "";
     state.q = text;
+    state.ids = null; state.door = "";
+    if (document.getElementById("doorTag")) document.getElementById("doorTag").hidden = true;
+    resetCatChips();
     var input2 = document.getElementById("q");
     if (input2) input2.value = text;
     render();
