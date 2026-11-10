@@ -307,6 +307,20 @@ h1{margin-bottom:20px}
 .how-meta em{font-style:normal;color:var(--tx-3)}
 @media (max-width:1180px){.how-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.how-grid{grid-template-columns:1fr}}
+/* explicit example questions */
+.examples{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:18px 0 0}
+.ex-label{font-size:12px;font-weight:600;color:var(--tx-3);margin-right:2px}
+.ex{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:6px 12px 6px 9px;font-family:var(--sans);font-size:12px;color:var(--tx-2);cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.ex:hover{border-color:#C9DBFB;background:#F7FAFF;color:var(--blue)}
+.ex-ic{font-style:normal;font-size:10px;line-height:1;color:var(--tx-3);border:1px solid var(--line);border-radius:4px;padding:2px 3px}
+.ex:hover .ex-ic{border-color:#C9DBFB;color:var(--blue)}
+.ex em{font-style:normal;color:var(--tx-3)}
+.ex:hover em{color:var(--blue)}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -411,8 +425,8 @@ details p{font-size:13px;color:var(--tx-2)}
 <header class="hd"><div class="shell hd-in">
   <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
   <nav class="nav">
-    <a href="#scenes-sec">业务问题</a>
     <a href="#dir">能力目录</a>
+    <a href="#scenes-sec">业务问题</a>
     <a href="#how">怎么合作</a>
     <a href="#faq">常见问题</a>
   </nav>
@@ -428,13 +442,7 @@ details p{font-size:13px;color:var(--tx-2)}
     <p class="ways"><a href="#dir">直接说问题，或从示例问句开始 ↓</a></p>
   </section>
 
-  <section class="sec" id="scenes-sec">
-    <div class="sec-head">
-      <h2>先按业务问题找</h2>
-      <span class="note">选一个问题，直接看能用哪些能力</span>
-    </div>
-    <div class="scene-grid" id="scenes"></div>
-  </section>
+
 
   <section class="dir" id="dir">
     <div class="dir-head">
@@ -447,14 +455,12 @@ details p{font-size:13px;color:var(--tx-2)}
         <input id="q" type="search" placeholder="说说你要解决的问题，如“投标文件评审效率低”" autocomplete="off">
         <span class="cnt" id="count">38 / 38</span>
       </div>
-      <div class="quick-links">
-        <span>不知道怎么问？试试</span>
-        <button type="button" data-q="智能体">自己建一个智能体</button><i>·</i>
-        <button type="button" data-q="应用">直接用现成应用</button><i>·</i>
-        <button type="button" data-q="咨询">找规划或测评支持</button><i>·</i>
-        <button type="button" data-q="投标">投标辅助</button><i>·</i>
-        <button type="button" data-q="知识库">知识库</button><i>·</i>
-        <button type="button" data-q="私有化">私有化</button>
+      <div class="examples">
+        <span class="ex-label">不会描述？点一个例子直接搜：</span>
+        <button class="ex" type="button" data-q="投标"><i class="ex-ic">搜</i>投标文件评审效率低，能辅助吗？<em>→</em></button>
+        <button class="ex" type="button" data-q="知识库"><i class="ex-ic">搜</i>项目资料太散，能建知识库吗？<em>→</em></button>
+        <button class="ex" type="button" data-q="智能体"><i class="ex-ic">搜</i>想自己搭一个业务智能体<em>→</em></button>
+        <button class="ex" type="button" data-q="私有化"><i class="ex-ic">搜</i>数据不能出内网，能私有化吗？<em>→</em></button>
       </div>
       <div class="filter-row">
         <span class="f-label">类型</span>
@@ -468,6 +474,14 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
+
+  <section class="sec" id="scenes-sec">
+    <div class="sec-head">
+      <h2>先按业务问题找</h2>
+      <span class="note">选一个问题，直接看能用哪些能力</span>
+    </div>
+    <div class="scene-grid" id="scenes"></div>
+  </section>
 
   <section class="sec" id="how">
     <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
