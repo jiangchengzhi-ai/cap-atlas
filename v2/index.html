@@ -408,6 +408,8 @@ mark{background:#FFF3C4;color:inherit;padding:0 1px;border-radius:2px}
 .need-nav select:focus{border-color:#C9DBFB;box-shadow:0 0 0 3px rgba(47,107,255,.12)}
 .need-reset{border:0;background:none;padding:0 2px;font:inherit;font-size:11.5px;color:var(--tx-3);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .need-reset:hover{color:var(--blue)}
+/* finder toolbar scrolls with page */
+.dir-tools{position:static}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -520,36 +522,31 @@ details p{font-size:13px;color:var(--tx-2)}
 /* AA contrast for muted text and selected chips */
 .chip.on{color:#1B47C9}
 .cat-head .cnt,.legend{color:var(--tx-2)}
-/* intent-first finder */
-.intent-block{padding:2px 0 4px}
-.intent-q{margin:0 0 10px;font-size:14px;font-weight:700;color:var(--tx)}
-.intent-row{display:flex;gap:10px;flex-wrap:wrap}
-.intent{
-  flex:1 1 200px;min-width:180px;text-align:left;cursor:pointer;
-  border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;
-  transition:border-color .2s,background .2s,box-shadow .2s;
+/* three-step finder */
+.finder{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px}
+.finder-title{margin:0 0 14px;font-size:14px;font-weight:700;color:var(--tx)}
+.step{display:flex;gap:12px;padding:10px 0;border-top:1px dashed #EFF3FA}
+.step:first-of-type{border-top:0;padding-top:0}
+.step-no{flex:none;width:22px;height:22px;border-radius:50%;background:#EDF3FF;color:var(--blue);font-size:11px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.step-body{flex:1;min-width:0}
+.step-q{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--tx-2)}
+.step-opts{display:flex;flex-wrap:wrap;gap:8px}
+.step-opt{
+  display:flex;flex-direction:column;gap:2px;text-align:left;cursor:pointer;
+  border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px 12px;
+  transition:border-color .2s,background .2s;
 }
-.intent b{display:block;font-size:13.5px;font-weight:700;color:var(--tx)}
-.intent span{display:block;margin-top:3px;font-size:11.5px;color:var(--tx-3)}
-.intent:hover{border-color:#C9D8F0;box-shadow:0 6px 16px rgba(31,58,120,.06)}
-.intent.on{border-color:#B9D2FF;background:#F4F8FF}
-.intent.on b{color:var(--blue)}
-.intent.on span{color:var(--tx-2)}
-.more-filters{margin-top:12px;border-top:1px dashed #EFF3FA;padding-top:10px}
-.more-filters summary{cursor:pointer;list-style:none;font-size:12px;color:var(--tx-3);font-weight:500}
-.more-filters summary::-webkit-details-marker{display:none}
-.more-filters summary::after{content:" +";color:var(--tx-3)}
-.more-filters[open] summary::after{content:" −"}
-.more-filters .filter-row{padding-top:12px}
+.step-opt b{font-size:12.5px;font-weight:600;color:var(--tx)}
+.step-opt span{font-size:10.5px;color:var(--tx-3)}
+.step-opt:hover{border-color:#C9D8F0}
+.step-opt.on{border-color:#B9D2FF;background:#F4F8FF}
+.step-opt.on b{color:var(--blue)}
+.step-result-text{margin:0;font-size:12.5px;color:var(--tx-2)}
+.step-result-text b{color:var(--blue)}
 @media (max-width:760px){
-  .body{padding-right:0}
-  .intent-row{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
-  .intent{flex:0 0 78%;min-width:0}
-  .f-chips{flex-wrap:nowrap;overflow-x:auto}
-  .f-chips .chip{flex:none;white-space:nowrap}
-  .dir-tools{padding-bottom:12px}
+  .finder{padding:14px 14px 12px}
+  .step-opt{flex:1 1 44%}
 }
-
 /* remove stray strip under toolbar */
 .dir-tools{box-shadow:none;padding-bottom:10px;background:var(--paper)}
 .dir-tools .legend{padding-bottom:10px;margin-bottom:0}
@@ -590,18 +587,28 @@ details p{font-size:13px;color:var(--tx-2)}
       <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
     </div>
     <div class="dir-tools">
-      <div class="intent-block">
-        <p class="intent-q">你想做什么？</p>
-        <div class="intent-row" id="intentRow">
-          <button class="intent" type="button" data-intent="use" data-ids="p11,p16,p22,p24,p25,p27,p28,p29,p30,p31,p32,p33,p34,p03,p35" data-label="直接用现成能力">
-            <b>直接用现成能力</b><span>有现成应用，开通就能用</span>
-          </button>
-          <button class="intent" type="button" data-intent="build" data-ids="p04,p12,p10,p11,p17,p15,p18,p02,p03,p05,p35,p01,p36,p06,p13,p25,p27,p14" data-label="自己搭一个">
-            <b>自己搭一个</b><span>用智能体、模型、知识库搭</span>
-          </button>
-          <button class="intent" type="button" data-intent="help" data-ids="p39,p40,p41,p42,p05,p37,p09,p19,p20,p21" data-label="找人帮我做">
-            <b>找人帮我做</b><span>规划、测评、硬件支持</span>
-          </button>
+      <div class="finder" id="finder">
+        <p class="finder-title">三步找到你的应用</p>
+        <div class="step" id="step1">
+          <span class="step-no">1</span>
+          <div class="step-body">
+            <p class="step-q">你想做什么？</p>
+            <div class="step-opts" id="step1Opts"></div>
+          </div>
+        </div>
+        <div class="step" id="step2" hidden>
+          <span class="step-no">2</span>
+          <div class="step-body">
+            <p class="step-q" id="step2q">具体想做哪一类？</p>
+            <div class="step-opts" id="step2Opts"></div>
+          </div>
+        </div>
+        <div class="step step-result" id="step3" hidden>
+          <span class="step-no">3</span>
+          <div class="step-body">
+            <p class="step-q">结果</p>
+            <p class="step-result-text" id="step3Text"></p>
+          </div>
         </div>
       </div>
       <div class="searchbox">
@@ -629,9 +636,7 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
-  <section class="tagline" id="tagline">
-    <p id="taglineText">不用先懂 AI。<br>说清问题，剩下的交给能力目录。</p>
-  </section>
+
 
 
 
@@ -4214,7 +4219,7 @@ window.ATLAS_CONTENT = {
     state.q = ""; state.cat = "all"; state.ids = null; state.door = "";
     var qi = document.getElementById("q"); if (qi) qi.value = "";
     resetCatChips();
-    if (typeof paintIntent === "function") paintIntent();
+    if (typeof resetSteps === "function") resetSteps();
     render();
   }
 
@@ -4255,7 +4260,7 @@ window.ATLAS_CONTENT = {
     clearTimeout(t);
     t = setTimeout(function(){
       state.q = input.value.trim();
-      if (state.q){ state.ids = null; state.door = ""; paintIntent(); }
+      if (state.q){ state.ids = null; state.door = ""; if (typeof resetSteps === "function") resetSteps(); }
       render();
     }, 120);
   });
@@ -4292,25 +4297,73 @@ window.ATLAS_CONTENT = {
     });
   });
 
-  // 意图入口：直接用 / 自己搭 / 找人帮，与搜索互斥
-  var intentRow = document.getElementById("intentRow");
-  var intentBtns = intentRow ? Array.prototype.slice.call(intentRow.querySelectorAll(".intent")) : [];
+  // 三步找应用：先选方向，再选具体需求，第三步直接给结果
+  var STEPS = [
+    { label:"自己搭", hint:"用智能体、模型、知识库搭", opts:[
+      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
+      { label:"模型", ids:["p02","p03","p05","p35"] },
+      { label:"数据集", ids:["p01","p36","p06"] },
+      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
+    { label:"直接用", hint:"开通现成应用，马上能用", opts:[
+      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
+      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
+      { label:"模型调用", ids:["p03","p35"] } ] },
+    { label:"找人帮", hint:"规划、测评、硬件支持", opts:[
+      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
+      { label:"测评验收", ids:["p05","p37","p09"] },
+      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
+  ];
+  var step1El = document.getElementById("step1");
+  var step2El = document.getElementById("step2");
+  var step3El = document.getElementById("step3");
+  var step1Opts = document.getElementById("step1Opts");
+  var step2Opts = document.getElementById("step2Opts");
+  var step2q = document.getElementById("step2q");
+  var step3Text = document.getElementById("step3Text");
 
-  function paintIntent(){
-    intentBtns.forEach(function(b){ b.classList.toggle("on", state.door === b.dataset.label); });
+  function resetSteps(){
+    STEPS.forEach(function(){}); // no-op keeps structure
+    if (step2El) step2El.hidden = true;
+    if (step3El) step3El.hidden = true;
+    state.ids = null; state.door = "";
   }
 
-  if (intentRow){
-    intentRow.addEventListener("click", function(e){
-      var b = e.target.closest(".intent"); if (!b) return;
-      var same = state.door === b.dataset.label;
+  function paintStep1(){
+    if (!step1Opts) return;
+    step1Opts.innerHTML = STEPS.map(function(g, i){
+      return '<button type="button" class="step-opt' + (state.door && state.door.indexOf(g.label) === 0 ? " on" : "") + '" data-g="' + i + '"><b>' + g.label + '</b><span>' + g.hint + '</span></button>';
+    }).join("");
+  }
+
+  function openStep2(g){
+    state.ids = null; state.door = "";
+    step1Opts.querySelectorAll(".step-opt").forEach(function(b, i){ b.classList.toggle("on", STEPS[i] === g); });
+    step2q.textContent = "具体想做哪一类？";
+    step2Opts.innerHTML = g.opts.map(function(o){
+      return '<button type="button" class="step-opt small" data-ids="' + o.ids.join(",") + '" data-label="' + o.label + '"><b>' + o.label + '</b><span>' + o.ids.length + ' 项能力</span></button>';
+    }).join("");
+    step2El.hidden = false;
+    step3El.hidden = true;
+    render();
+  }
+
+  if (step1Opts){
+    paintStep1();
+    step1Opts.addEventListener("click", function(e){
+      var b = e.target.closest(".step-opt"); if (!b) return;
+      openStep2(STEPS[Number(b.dataset.g)]);
+    });
+    step2Opts.addEventListener("click", function(e){
+      var b = e.target.closest(".step-opt"); if (!b) return;
+      step2Opts.querySelectorAll(".step-opt").forEach(function(x){ x.classList.toggle("on", x === b); });
+      state.ids = b.dataset.ids.split(",");
+      state.door = b.dataset.label;
       state.q = ""; input.value = "";
       state.cat = "all"; resetCatChips();
-      if (same){ state.ids = null; state.door = ""; }
-      else { state.ids = b.dataset.ids.split(","); state.door = b.dataset.label; }
-      paintIntent();
       render();
-      document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
+      step3Text.textContent = "已找到 " + state.ids.length + " 项“" + b.dataset.label + "”相关能力，见下方列表。";
+      step3El.hidden = false;
+      var listEl2 = document.getElementById("list"); var top2 = listEl2.getBoundingClientRect().top + window.scrollY - 24; window.scrollTo({top: top2, behavior:"smooth"});
     });
   }
 
@@ -4323,30 +4376,6 @@ window.ATLAS_CONTENT = {
   }
   var cta1 = document.getElementById("ctaAsk"); if (cta1) cta1.addEventListener("click", focusAsk);
   var cta2 = document.getElementById("ctaAsk2"); if (cta2) cta2.addEventListener("click", focusAsk);
-
-  // tagline word reveal
-  (function(){
-    var el = document.getElementById("taglineText");
-    if (!el) return;
-    var lines = el.innerHTML.split("<br>");
-    el.innerHTML = lines.map(function(line){
-      return line.split("").map(function(ch){
-        return ch === " " ? " " : '<span class="tw">' + ch + '</span>';
-      }).join("");
-    }).join("<br>");
-    var words = el.querySelectorAll(".tw");
-    if (!("IntersectionObserver" in window)){ words.forEach(function(w){ w.classList.add("on"); }); return; }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (!en.isIntersecting) return;
-        words.forEach(function(w, i){
-          setTimeout(function(){ w.classList.add("on"); }, Math.min(i * 28, 900));
-        });
-        io.disconnect();
-      });
-    }, { threshold: 0.35 });
-    io.observe(el);
-  })();
 
   // section reveal
   (function(){
