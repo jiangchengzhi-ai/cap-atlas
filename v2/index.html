@@ -259,6 +259,9 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .need-row{display:flex;align-items:center;gap:12px;padding:10px 0 2px;flex-wrap:wrap}
 .need-row .need-select{margin-left:0}
 .need-hint{font-size:11.5px;color:var(--tx-3)}
+/* suggestions line between search and type */
+.quick-links{margin-top:12px;margin-bottom:2px}
+.quick-links span{font-weight:600;color:var(--tx-2)}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -376,7 +379,7 @@ details p{font-size:13px;color:var(--tx-2)}
     <p class="kicker">AI 中心 · 能力黄页</p>
     <h1>找到需要的能力，更快构建业务应用</h1>
     <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
-    <p class="ways"><a href="#dir">在目录里搜索，或按类型 / 需求筛选 ↓</a></p>
+    <p class="ways"><a href="#dir">直接说问题，或从示例问句开始 ↓</a></p>
   </section>
 
   <section class="dir" id="dir">
@@ -387,21 +390,17 @@ details p{font-size:13px;color:var(--tx-2)}
     <div class="dir-tools">
       <div class="searchbox">
         <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="q" type="search" placeholder="搜索能力、业务问题或场景，如“投标”“知识库”“私有化”" autocomplete="off">
+        <input id="q" type="search" placeholder="说说你要解决的问题，如“投标文件评审效率低”" autocomplete="off">
         <span class="cnt" id="count">38 / 38</span>
       </div>
       <div class="quick-links">
-        <span>常用</span>
+        <span>不知道怎么问？试试</span>
+        <button type="button" data-q="智能体">自己建一个智能体</button><i>·</i>
+        <button type="button" data-q="应用">直接用现成应用</button><i>·</i>
+        <button type="button" data-q="咨询">找规划或测评支持</button><i>·</i>
         <button type="button" data-q="投标">投标辅助</button><i>·</i>
         <button type="button" data-q="知识库">知识库</button><i>·</i>
-        <button type="button" data-q="数字人">数字人</button><i>·</i>
-        <button type="button" data-q="私有化">私有化</button><i>·</i>
-        <button type="button" data-q="模型">模型调用</button><i>·</i>
-        <button type="button" data-q="巡检">安全巡检</button>
-      </div>
-      <div class="need-row">
-        <span class="f-label">需求</span>
-        <select class="need-select" id="needSelect" aria-label="按需求筛选"><option value="">全部需求</option></select>
+        <button type="button" data-q="私有化">私有化</button>
       </div>
       <div class="filter-row">
         <span class="f-label">类型</span>
@@ -3921,7 +3920,6 @@ window.ATLAS_CONTENT = {
   function clearAll(){
     state.q = ""; state.cat = "all"; state.ids = null; state.door = "";
     var qi = document.getElementById("q"); if (qi) qi.value = "";
-    var ns = document.getElementById("needSelect"); if (ns) ns.value = "";
     resetCatChips();
     render();
   }
@@ -3951,8 +3949,10 @@ window.ATLAS_CONTENT = {
 
   document.querySelectorAll("[data-q]").forEach(function(b){
     b.addEventListener("click", function(){
-      state.q = b.dataset.q; input.value = state.q; render();
-      document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
+      state.q = b.dataset.q; input.value = state.q;
+      state.cat = "all"; state.ids = null; state.door = "";
+      resetCatChips();
+      render();
     });
   });
 
@@ -3963,46 +3963,6 @@ window.ATLAS_CONTENT = {
   });
 
   render();
-
-  // 按需求筛选：一个下拉，不再堆胶囊
-  var GROUPS = [
-    { label:"自己建", opts:[
-      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
-      { label:"模型", ids:["p02","p03","p05","p35"] },
-      { label:"数据集", ids:["p01","p36","p06"] },
-      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
-    { label:"直接用", opts:[
-      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
-      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
-      { label:"模型调用", ids:["p03","p35"] } ] },
-    { label:"找支持", opts:[
-      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
-      { label:"测评验收", ids:["p05","p37","p09"] },
-      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
-  ];
-  var needSelect = document.getElementById("needSelect");
-  if (needSelect){
-    GROUPS.forEach(function(g){
-      var og = document.createElement("optgroup");
-      og.label = g.label;
-      g.opts.forEach(function(o){
-        var op = document.createElement("option");
-        op.value = o.ids.join(",");
-        op.dataset.label = o.label;
-        op.textContent = o.label + "（" + A.products.filter(function(p){ return o.ids.indexOf(p.id) > -1; }).length + "）";
-        og.appendChild(op);
-      });
-      needSelect.appendChild(og);
-    });
-    needSelect.addEventListener("change", function(){
-      if (!needSelect.value){ state.ids = null; state.door = ""; }
-      else {
-        state.ids = needSelect.value.split(",");
-        state.door = needSelect.options[needSelect.selectedIndex].dataset.label;
-      }
-      render();
-    });
-  }
 
   // 落地场景
   var scenes = (C.blueprints || []).slice(0,5);
@@ -4040,7 +4000,6 @@ window.ATLAS_CONTENT = {
     askEl.value = "";
     state.q = text;
     state.ids = null; state.door = "";
-    var ns2 = document.getElementById("needSelect"); if (ns2) ns2.value = "";
     resetCatChips();
     var input2 = document.getElementById("q");
     if (input2) input2.value = text;
