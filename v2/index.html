@@ -705,7 +705,6 @@ details p{margin:8px 0 0;line-height:1.8}
       </div>
 
       <div class="cats" id="catChips" role="tablist" aria-label="能力类型"></div>
-      <div class="filter-bar" id="filterBar" hidden></div>
     </div>
     <div class="list" id="list"></div>
   </section>
@@ -4278,7 +4277,6 @@ window.ATLAS_CONTENT = {
         b.addEventListener("click", function(){ state.q = b.dataset.sug; input.value = state.q; render(); });
       });
       listEl.querySelector("[data-clear]").addEventListener("click", clearAll);
-      paintBar();
       return;
     }
     listEl.innerHTML = state.q ? items.map(row).join("") : group(items);
@@ -4289,7 +4287,6 @@ window.ATLAS_CONTENT = {
         btn.setAttribute("aria-expanded", open ? "true" : "false");
       });
     });
-    paintBar();
   }
 
   function clearAll(){
@@ -4298,18 +4295,6 @@ window.ATLAS_CONTENT = {
     resetCatChips();
     if (typeof resetSteps === "function") resetSteps();
     render();
-  }
-
-  function paintBar(){
-    if (!filterBar) return;
-    var parts = [];
-    if (state.q) parts.push("“" + state.q + "”");
-    if (state.cat !== "all") parts.push(state.cat);
-    if (state.door) parts.push(state.door);
-    if (!parts.length){ filterBar.hidden = true; filterBar.innerHTML = ""; return; }
-    filterBar.hidden = false;
-    filterBar.innerHTML = "<span>已筛选：" + parts.map(esc2).join(" · ") + "</span><button type=\"button\" id=\"clearAll\">清除</button>";
-    document.getElementById("clearAll").addEventListener("click", clearAll);
   }
 
   function resetCatChips(){
