@@ -14,11 +14,11 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.7}
+body{margin:0;padding-right:320px;background:var(--paper);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.7}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit}
 .shell{max-width:1300px;margin:0 auto;padding:0 clamp(20px,3.6vw,44px)}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(24px,3vw,44px);align-items:start}
+.layout{display:block}
 .icon{width:16px;height:16px;display:inline-block;vertical-align:-3px}
 
 /* header */
@@ -114,14 +114,18 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .foot-in a:hover{color:var(--blue);border-color:var(--blue)}
 
 /* dock */
-.dock{position:sticky;top:84px;z-index:40;background:linear-gradient(180deg,#0E2447,#0B1B33);border-radius:16px;color:#E9F0FB;padding:16px;box-shadow:0 18px 44px rgba(6,18,38,.22)}
+.dock{position:fixed;top:0;right:0;bottom:0;width:320px;z-index:40;background:linear-gradient(180deg,#0E2447 0%,#0A1A33 100%);color:#E9F0FB;padding:22px 20px 20px;display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(6,18,38,.18)}
 .dock-id{display:flex;align-items:center;gap:9px;font-size:12px;color:#9FB4D2}
 .dock-id b{color:#fff;font-size:13px;font-weight:600}
-.dock-av{height:104px;margin:12px 0;border-radius:12px;background:
-  radial-gradient(circle at 50% 38%,rgba(120,170,255,.35),transparent 62%),
-  linear-gradient(160deg,#122E58,#0A1A33);display:grid;place-items:center;font-family:var(--tech);font-size:9px;letter-spacing:.2em;color:#8FB0FF}
+.dock-av{flex:1;min-height:180px;margin:14px 0;border-radius:14px;background:
+  radial-gradient(circle at 50% 34%,rgba(120,170,255,.30),transparent 60%),
+  linear-gradient(160deg,#122E58,#0A1A33);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid rgba(140,175,225,.14)}
+.dock-mono{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;font-size:34px;color:#E6EFFC;background:rgba(255,255,255,.06);border:1px solid rgba(160,190,230,.28)}
+.dock-sub{font-family:var(--tech);font-size:9px;letter-spacing:.24em;color:#8FB0FF}
+.dock-live{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#9FB4D2}
+.dock-live i{width:6px;height:6px;border-radius:50%;background:#3DDC97;display:inline-block}
 .dock p{margin:0 0 10px;font-size:12px;line-height:1.8;color:#AFC3DE}
-.dock .ask{display:flex;gap:8px}
+.dock .ask{display:flex;gap:8px;margin-top:auto}
 .dock input{flex:1;height:34px;border-radius:8px;border:1px solid rgba(160,190,230,.25);background:rgba(255,255,255,.06);color:#fff;padding:0 10px;font:inherit;font-size:12px;outline:none}
 .dock input::placeholder{color:#7E93B2}
 .dock .send{width:34px;height:34px;border-radius:8px;border:0;background:#2F6BFF;color:#fff;cursor:pointer}
@@ -132,7 +136,8 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 @media (max-width:1180px){
   .layout{grid-template-columns:1fr}
   main{padding-bottom:56px}
-  .dock{position:fixed;left:0;right:0;top:auto;bottom:0;width:auto;border-radius:14px 14px 0 0;padding:10px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(6,18,38,.2)}
+  body{padding-right:0}
+  .dock{position:fixed;left:0;right:0;top:auto;bottom:0;width:auto;height:auto;border-radius:14px 14px 0 0;padding:10px 16px;display:flex;flex-direction:row;align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(6,18,38,.2)}
   .dock-av{display:none}
   .dock p{display:none}
   .dock .ask{flex:1;margin:0}
@@ -228,7 +233,8 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 
 <aside class="dock" aria-label="李亚楠数字人">
   <div class="dock-id"><b>李亚楠</b> · AI 中心数字人</div>
-  <div class="dock-av">DIGITAL HUMAN</div>
+  <div class="dock-av"><span class="dock-mono">李</span><span class="dock-sub">DIGITAL HUMAN · V2</span></div>
+  <div class="dock-live"><i></i>在线 · 可随时提问</div>
   <p id="dockTip">直接说你的业务问题，我帮你定位到能用的一项能力。</p>
   <div class="ask">
     <input id="askInput" type="text" placeholder="例如：投标文件怎么辅助评审？" aria-label="输入问题">
