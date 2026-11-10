@@ -553,6 +553,14 @@ details p{font-size:13px;color:var(--tx-2)}
 .f-chips{overflow:visible}
 .list{margin-top:0}
 .cat-head{padding-top:18px}
+
+/* yellow-pages category row */
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.cats .chip{padding:7px 14px}
+@media (max-width:760px){
+  .cats{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+  .cats .chip{flex:none;white-space:nowrap}
+}
 </style>
 </head>
 <body>
@@ -561,7 +569,6 @@ details p{font-size:13px;color:var(--tx-2)}
   <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
   <nav class="nav">
     <a href="#dir">能力目录</a>
-    <a href="#scenes-sec">业务问题</a>
     <a href="#how">怎么合作</a>
     <a href="#faq">常见问题</a>
   </nav>
@@ -571,9 +578,9 @@ details p{font-size:13px;color:var(--tx-2)}
 <div class="shell layout">
 <main>
   <section class="hero">
-    <h1>找到能解决项目问题的 AI 能力</h1>
-    <p>38 项能力，按业务问题、类型和成熟度整理。说清你遇到的问题，直接看能用什么、适合谁、怎么交付和计费。</p>
-    <p class="ways"><a href="#dir">直接搜，或往下看能力目录 ↓</a></p>
+    <h1>38 项 AI 能力，按类型和问题查</h1>
+    <p>像翻黄页一样：选一个类型，或直接搜业务问题，点开就能看到能力说明、适用对象、交付方式和计费。</p>
+    <p class="ways"><a href="#dir">搜索，或按类型浏览 ↓</a></p>
 
   </section>
 
@@ -587,36 +594,13 @@ details p{font-size:13px;color:var(--tx-2)}
       <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
     </div>
     <div class="dir-tools">
-      <div class="finder" id="finder">
-        <p class="finder-title">三步找到你的应用</p>
-        <div class="step" id="step1">
-          <span class="step-no">1</span>
-          <div class="step-body">
-            <p class="step-q">你想做什么？</p>
-            <div class="step-opts" id="step1Opts"></div>
-          </div>
-        </div>
-        <div class="step" id="step2" hidden>
-          <span class="step-no">2</span>
-          <div class="step-body">
-            <p class="step-q" id="step2q">具体想做哪一类？</p>
-            <div class="step-opts" id="step2Opts"></div>
-          </div>
-        </div>
-        <div class="step step-result" id="step3" hidden>
-          <span class="step-no">3</span>
-          <div class="step-body">
-            <p class="step-q">结果</p>
-            <p class="step-result-text" id="step3Text"></p>
-          </div>
-        </div>
-      </div>
       <div class="searchbox">
         <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input id="q" type="search" placeholder="或直接搜关键词，如“投标”“知识库”“私有化”" autocomplete="off" aria-label="按关键词搜索能力">
         <span class="cnt" id="count" aria-live="polite">38 / 38</span>
       </div>
 
+      <div class="cats" id="catChips" role="tablist" aria-label="能力类型"></div>
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
     <div class="list" id="list"></div>
