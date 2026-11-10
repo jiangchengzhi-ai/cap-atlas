@@ -561,6 +561,20 @@ details p{font-size:13px;color:var(--tx-2)}
   .cats{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
   .cats .chip{flex:none;white-space:nowrap}
 }
+
+/* landed projects */
+.proj-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.proj{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.proj-k{margin:0 0 6px;font-size:11px;letter-spacing:.08em;color:var(--tx-3)}
+.proj h3{margin:0 0 6px;font-size:16px;font-weight:700;color:var(--tx)}
+.proj-sum{margin:0 0 12px;font-size:12.5px;line-height:1.8;color:var(--tx-2)}
+.proj-vals{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px}
+.proj-vals li{font-size:12px;line-height:1.7;color:var(--tx-2)}
+.proj-vals b{color:var(--tx);font-weight:600;margin-right:6px}
+.proj-caps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.proj-caps span{font-size:11px;color:var(--tx-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:#FBFCFE}
+.proj-delivery{margin:0;font-size:11.5px;color:var(--tx-3)}
+@media (max-width:900px){.proj-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -569,6 +583,7 @@ details p{font-size:13px;color:var(--tx-2)}
   <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
   <nav class="nav">
     <a href="#dir">能力目录</a>
+    <a href="#projects">落地项目</a>
     <a href="#how">怎么合作</a>
     <a href="#faq">常见问题</a>
   </nav>
@@ -615,6 +630,11 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
+
+  <section class="sec" id="projects">
+    <div class="sec-head"><h2>落地项目</h2><span class="note">已经用起来的场景</span></div>
+    <div class="proj-grid" id="projGrid"></div>
+  </section>
 
   <section class="sec" id="how">
     <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
@@ -4329,6 +4349,30 @@ window.ATLAS_CONTENT = {
       var listEl2 = document.getElementById("list"); var top2 = listEl2.getBoundingClientRect().top + window.scrollY - 24; window.scrollTo({top: top2, behavior:"smooth"});
     });
   }
+
+  // 落地项目
+  (function(){
+    var grid = document.getElementById("projGrid");
+    if (!grid) return;
+    var bps = (C.blueprints || []).slice(0, 6);
+    grid.innerHTML = bps.map(function(bp){
+      var vals = (bp.value || []).slice(0, 3).map(function(v){
+        return '<li><b>' + v.k + '</b><span>' + v.v + '</span></li>';
+      }).join("");
+      var caps = bp.picks.reduce(function(a, g){ return a.concat(g.items); }, []).slice(0, 3).map(function(it){
+        var p = byId[it.id];
+        return p ? '<span>' + p.short + '</span>' : "";
+      }).join("");
+      return '<article class="proj">' +
+        '<p class="proj-k">' + bp.kicker + '</p>' +
+        '<h3>' + bp.title + '</h3>' +
+        '<p class="proj-sum">' + bp.summary + '</p>' +
+        '<ul class="proj-vals">' + vals + '</ul>' +
+        '<div class="proj-caps">' + caps + '</div>' +
+        '<p class="proj-delivery">' + (bp.delivery || "") + '</p>' +
+      '</article>';
+    }).join("");
+  })();
 
   // CTA: focus digital human
   function focusAsk(){
