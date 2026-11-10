@@ -232,6 +232,13 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .need-panel{border:1px solid var(--line);border-radius:12px;background:#FBFCFE;padding:4px 16px 12px;margin:4px 0 14px}
 .need-panel[hidden]{display:none}
 .need-pick{display:none}
+/* unified filter rows */
+.f-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0}
+.f-row+.f-row{border-top:1px dashed #EDF2FA}
+.f-label{flex:none;width:30px;font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--tx-3);padding-top:5px;text-align:left}
+.f-chips{display:flex;flex-wrap:wrap;gap:7px;flex:1;min-width:0}
+.f-sub .f-label{width:30px}
+.dock-head-r{display:none}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -355,10 +362,7 @@ details p{font-size:13px;color:var(--tx-2)}
   <section class="dir" id="dir">
     <div class="dir-head">
       <h2>能力目录</h2>
-      <div class="dir-head-r">
-        <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
-        <button class="need-link" id="needOpen" type="button" aria-expanded="false">不知道找什么？按需求筛选 →</button>
-      </div>
+      <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
     </div>
     <div class="dir-tools">
       <div class="searchbox">
@@ -375,12 +379,10 @@ details p{font-size:13px;color:var(--tx-2)}
         <button class="chip" type="button" data-q="模型">模型调用</button>
         <button class="chip" type="button" data-q="巡检">安全巡检</button>
       </div>
-      <div class="filters" id="catChips"></div>
+      <div class="f-row"><span class="f-label">类型</span><div class="f-chips" id="catChips"></div></div>
+      <div class="f-row"><span class="f-label">需求</span><div class="f-chips" id="gGroups"></div></div>
+      <div class="f-row f-sub" id="gRow2" hidden><span class="f-label"></span><div class="f-chips" id="gOpts"></div></div>
       <div class="filter-bar" id="filterBar" hidden></div>
-    </div>
-    <div class="need-panel" id="needPanel" hidden>
-      <div class="g-row"><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
-      <div class="g-row" id="gRow2" hidden><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
     </div>
     <div class="list" id="list"></div>
   </section>
@@ -3960,24 +3962,12 @@ window.ATLAS_CONTENT = {
 
   function countIds(ids){ return A.products.filter(function(p){ return ids.indexOf(p.id) > -1; }).length; }
 
-  var needOpen = document.getElementById("needOpen");
-  var needPanel = document.getElementById("needPanel");
-  if (needOpen && needPanel){
-    needOpen.addEventListener("click", function(){
-      var open = !needPanel.hidden;
-      needPanel.hidden = open;
-      needOpen.setAttribute("aria-expanded", open ? "false" : "true");
-      needOpen.textContent = open ? "不知道找什么？按需求筛选 →" : "收起按需求筛选 ↑";
-    });
-  }
-
   gGroups.innerHTML = GROUPS.map(function(g){
     return '<button class="g-chip" type="button" data-g="' + g.id + '">' + g.label + '</button>';
   }).join("");
 
   function showGroup(g){
     gGroups.querySelectorAll(".g-chip").forEach(function(b){ b.classList.toggle("on", b.dataset.g === g.id); });
-    gQ.textContent = g.q;
     gOpts.innerHTML = g.opts.map(function(o){
       return '<button class="g-chip" type="button" data-ids="' + o.ids.join(",") + '" data-label="' + o.label + '">' + o.label + '<span>' + countIds(o.ids) + '</span></button>';
     }).join("");
