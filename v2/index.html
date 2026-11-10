@@ -616,17 +616,7 @@ details p{font-size:13px;color:var(--tx-2)}
         <input id="q" type="search" placeholder="或直接搜关键词，如“投标”“知识库”“私有化”" autocomplete="off" aria-label="按关键词搜索能力">
         <span class="cnt" id="count" aria-live="polite">38 / 38</span>
       </div>
-      <details class="more-filters" id="moreFilters">
-        <summary>更多筛选：类型 / 成熟度</summary>
-        <div class="filter-row">
-          <span class="f-label">类型</span>
-          <div class="f-chips" id="catChips"></div>
-        </div>
-        <div class="legend">
-          <span>成熟度：概念预研 → 原型验证 → 试点测试 → 复制推广 → 正式商用</span>
-          <span>类型是能力来源分类，不确定就留在“全部类型”。</span>
-        </div>
-      </details>
+
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
     <div class="list" id="list"></div>
@@ -640,13 +630,7 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
-  <section class="sec" id="scenes-sec">
-    <div class="sec-head">
-      <h2>先按业务问题找</h2>
-      <span class="note">选一个问题，直接看能用哪些能力</span>
-    </div>
-    <div class="scene-grid" id="scenes"></div>
-  </section>
+
 
   <section class="sec" id="how">
     <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
@@ -4094,7 +4078,7 @@ window.ATLAS_CONTENT = {
 
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(m){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]; }); }
 
-  catWrap.innerHTML = '<button class="chip on" type="button" data-cat="all">全部类型</button>' +
+  if (catWrap) catWrap.innerHTML = '<button class="chip on" type="button" data-cat="all">全部类型</button>' +
     CATS.map(function(c){
       return '<button class="chip" type="button" data-cat="' + esc(c.name) + '"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + c.accent + ';margin-right:6px;vertical-align:1px"></span>' + esc(c.name) + '</button>';
     }).join("");
@@ -4237,9 +4221,10 @@ window.ATLAS_CONTENT = {
 
   function resetCatChips(){
     state.cat = "all";
+    if (!catWrap) return;
     catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x.dataset.cat === "all"); });
   }
-  catWrap.addEventListener("click", function(e){
+  if (catWrap) catWrap.addEventListener("click", function(e){
     var b = e.target.closest(".chip"); if (!b) return;
     state.cat = b.dataset.cat;
     catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x === b); });
@@ -4298,21 +4283,15 @@ window.ATLAS_CONTENT = {
   });
 
   // 三步找应用：先选方向，再选具体需求，第三步直接给结果
-  var STEPS = [
-    { label:"自己搭", hint:"用智能体、模型、知识库搭", opts:[
-      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
-      { label:"模型", ids:["p02","p03","p05","p35"] },
-      { label:"数据集", ids:["p01","p36","p06"] },
-      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
-    { label:"直接用", hint:"开通现成应用，马上能用", opts:[
-      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
-      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
-      { label:"模型调用", ids:["p03","p35"] } ] },
-    { label:"找人帮", hint:"规划、测评、硬件支持", opts:[
-      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
-      { label:"测评验收", ids:["p05","p37","p09"] },
-      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
-  ];
+  var STEPS = (window.ATLAS_CONTENT && window.ATLAS_CONTENT.blueprints ? window.ATLAS_CONTENT.blueprints : []).slice(0, 5).map(function(bp){
+    return {
+      label: bp.kicker || bp.title,
+      hint: bp.title,
+      opts: (bp.picks || []).map(function(g){
+        return { label: g.group, ids: g.items.map(function(it){ return it.id; }) };
+      })
+    };
+  });
   var step1El = document.getElementById("step1");
   var step2El = document.getElementById("step2");
   var step3El = document.getElementById("step3");
@@ -4437,6 +4416,7 @@ window.ATLAS_CONTENT = {
     if (window.innerWidth <= 1180) document.getElementById("dock").classList.toggle("open");
   });
 })();
+
 </script>
 </body>
 </html>
