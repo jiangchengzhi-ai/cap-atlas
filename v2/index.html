@@ -10,7 +10,7 @@
   --ink:#0B1B33; --ink-2:#233856; --tx:#12233F; --tx-2:#41536D; --tx-3:#56677F;
   --paper:#F6F8FC; --card:#FFFFFF; --line:#E3EAF4; --blue:#2F6BFF; --blue-deep:#1B47C9;
   --radius:14px; --sans:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
-  --tech:"Consolas","SFMono-Regular",monospace;
+  --tech:"Consolas","SFMono-Regular","Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC",monospace;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -775,6 +775,9 @@ body{padding-right:0}
 .sec-kicker{color:#3A6CEA;font-size:12px;letter-spacing:.26em;font-weight:400}
 .sec-kicker::before{background:#3A6CEA;opacity:1}
 .sec-title{color:#0B1A38;font-size:clamp(30px,3.15vw,42px);font-weight:600;letter-spacing:.42px;line-height:1.25}
+
+/* CJK text always renders as the sans face */
+.sec-title,.sec-lede,.sec-kicker,.faq-item summary,.faq-a,.plan-card,.hero-proof{font-family:var(--sans)}
 </style>
 </head>
 <body>
