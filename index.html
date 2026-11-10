@@ -2527,6 +2527,12 @@ body::after{opacity:.018}
 .atl-center .atl-hub-sub{fill:rgba(39,74,192,.55)}
 .atl-center circle:last-of-type{filter:drop-shadow(0 6px 14px rgba(31,58,120,.10))}
 
+/* 图注前缀改为一个圆点 */
+.stage-label::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--blue);border:0;padding:0;position:relative;top:-3px;
+}
+
 </style>
 <meta name="build" content="2026-11-02-professional-copy">
 </head>
