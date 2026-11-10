@@ -321,6 +321,36 @@ h1{margin-bottom:20px}
 .ex:hover .ex-ic{border-color:#C9DBFB;color:var(--blue)}
 .ex em{font-style:normal;color:var(--tx-3)}
 .ex:hover em{color:var(--blue)}
+/* landing structure: cta, stats, tagline, final cta, reveals */
+.hero-cta{display:flex;align-items:center;gap:12px;margin-top:28px}
+.btn-primary{
+  border:0;border-radius:8px;background:var(--blue);color:#fff;
+  padding:12px 20px;font-family:var(--sans);font-size:16px;font-weight:600;cursor:pointer;
+  transition:background .2s,transform .15s;text-decoration:none;
+}
+.btn-primary:hover{background:var(--blue-deep)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-ghost{
+  border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--tx-2);
+  padding:12px 20px;font-size:16px;font-weight:600;text-decoration:none;
+}
+.btn-ghost:hover{border-color:#C9D8F0;color:var(--blue)}
+.stats{display:flex;gap:48px;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column;gap:4px}
+.stats b{font-size:30px;line-height:1;color:var(--tx);font-weight:700}
+.stats span{font-size:12px;color:var(--tx-3)}
+.tagline{padding:64px 0;border-top:1px solid var(--line)}
+.tagline p{
+  margin:0;max-width:1040px;font-size:clamp(24px,3.4vw,42px);line-height:1.34;font-weight:700;color:var(--tx);text-wrap:balance;
+}
+.tw{color:#C8D2E1;transition:color .5s cubic-bezier(.22,1,.36,1)}
+.tw.on{color:var(--tx)}
+.cta-final{padding:64px 0 72px;border-top:1px solid var(--line);text-align:center}
+.cta-final h2{margin:0 0 10px;font-size:clamp(22px,3vw,32px);line-height:1.3}
+.cta-final p{margin:0 0 24px;font-size:14px;color:var(--tx-2)}
+.sec,.dir,.tagline,.cta-final{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.sec.in,.dir.in,.tagline.in,.cta-final.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.sec,.dir,.tagline,.cta-final{opacity:1;transform:none;transition:none}.tw{transition:none}}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -440,6 +470,16 @@ details p{font-size:13px;color:var(--tx-2)}
     <h1>找到需要的能力，更快构建业务应用</h1>
     <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
     <p class="ways"><a href="#dir">直接说问题，或从示例问句开始 ↓</a></p>
+    <div class="hero-cta">
+      <button class="btn-primary" type="button" id="ctaAsk">让数字人帮我找能力</button>
+      <a class="btn-ghost" href="#dir">浏览能力目录</a>
+    </div>
+    <div class="stats">
+      <div><b>38</b><span>项能力</span></div>
+      <div><b>7</b><span>大能力类型</span></div>
+      <div><b>5</b><span>类已落地场景</span></div>
+      <div><b>4</b><span>步完成交付</span></div>
+    </div>
   </section>
 
 
@@ -474,6 +514,10 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
+
+  <section class="tagline" id="tagline">
+    <p id="taglineText">不用先懂 AI。<br>说清问题，剩下的交给能力目录。</p>
+  </section>
 
   <section class="sec" id="scenes-sec">
     <div class="sec-head">
@@ -510,6 +554,12 @@ details p{font-size:13px;color:var(--tx-2)}
         <details><summary>集团、二级单位与项目部的权限如何划分？</summary><p>采用统一身份认证与分级授权，按组织隔离数据与知识资产。</p></details>
       </div>
     </div>
+  </section>
+
+  <section class="cta-final">
+    <h2>说说你的项目问题，我们给一套能落地的方案</h2>
+    <p>能力组合、部署方式、周期和计费，一次说清。</p>
+    <button class="btn-primary" type="button" id="ctaAsk2">让数字人帮我找能力</button>
   </section>
 
   <footer class="foot"><div class="shell foot-in">
@@ -4066,6 +4116,50 @@ window.ATLAS_CONTENT = {
       document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
     });
   });
+
+  // CTA: focus digital human
+  function focusAsk(){
+    var dock = document.getElementById("dock");
+    if (dock && window.innerWidth <= 1180) dock.classList.add("open");
+    var ai = document.getElementById("askInput");
+    if (ai){ ai.focus(); ai.scrollIntoView({behavior:"smooth", block:"center"}); }
+  }
+  var cta1 = document.getElementById("ctaAsk"); if (cta1) cta1.addEventListener("click", focusAsk);
+  var cta2 = document.getElementById("ctaAsk2"); if (cta2) cta2.addEventListener("click", focusAsk);
+
+  // tagline word reveal
+  (function(){
+    var el = document.getElementById("taglineText");
+    if (!el) return;
+    var lines = el.innerHTML.split("<br>");
+    el.innerHTML = lines.map(function(line){
+      return line.split("").map(function(ch){
+        return ch === " " ? " " : '<span class="tw">' + ch + '</span>';
+      }).join("");
+    }).join("<br>");
+    var words = el.querySelectorAll(".tw");
+    if (!("IntersectionObserver" in window)){ words.forEach(function(w){ w.classList.add("on"); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        words.forEach(function(w, i){
+          setTimeout(function(){ w.classList.add("on"); }, Math.min(i * 28, 900));
+        });
+        io.disconnect();
+      });
+    }, { threshold: 0.35 });
+    io.observe(el);
+  })();
+
+  // section reveal
+  (function(){
+    var secs = document.querySelectorAll(".sec, .dir, .tagline, .cta-final");
+    if (!("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    secs.forEach(function(x){ io.observe(x); });
+  })();
 
   // 数字人对话（演示版：按关键词筛选目录并回复）
   var chatEl = document.getElementById("chat");
