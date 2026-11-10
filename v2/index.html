@@ -184,6 +184,19 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .sec-head .note{font-size:12px;font-weight:500;color:var(--tx-2)}
 .hd-note{font-family:var(--sans);font-size:11.5px;font-weight:500;color:var(--tx-3)}
 .hero .kicker{font-size:11px;font-weight:600;letter-spacing:.08em}
+/* faceted filter bar & collapsible need picker */
+.need-pick{margin:12px 0 14px;border:1px dashed var(--line);border-radius:10px;background:#FBFCFE}
+.need-pick summary{cursor:pointer;list-style:none;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--tx-2)}
+.need-pick summary::-webkit-details-marker{display:none}
+.need-pick summary::after{content:"＋";float:right;color:var(--tx-3);font-weight:400}
+.need-pick[open] summary::after{content:"－"}
+.need-body{padding:2px 14px 14px}
+.g-row{padding:8px 0}
+.g-row+.g-row{border-top:1px dashed var(--line)}
+.filter-bar{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:12px;color:var(--tx-2)}
+.filter-bar[hidden]{display:none}
+.filter-bar button{border:0;background:none;padding:0;color:var(--blue);font-size:12px;cursor:pointer}
+.filter-bar button:hover{text-decoration:underline}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -315,26 +328,27 @@ details p{font-size:13px;color:var(--tx-2)}
       <button class="chip" type="button" data-q="模型">模型调用</button>
       <button class="chip" type="button" data-q="巡检">安全巡检</button>
     </div>
-    <p class="ways">两种方式找到能力：<a href="#dir">直接搜索</a> · <a href="#guided">按需求缩小范围</a></p>
+    <p class="ways">按业务问题或类型直接筛；不知道找什么，可在目录上方按需求逐步缩小。</p>
   </section>
 
   <section class="dir" id="dir">
     <div class="dir-head">
       <h2>能力目录</h2>
-      <span class="n" id="dirNote">方式一 · 直接搜索（关键词 / 类型）</span>
+      <span class="n" id="dirNote">关键词 / 类型 / 需求，可组合筛选</span>
     </div>
-    <button class="door-tag" id="doorTag" type="button" hidden></button>
     <div class="filters" id="catChips"></div>
+    <details class="need-pick" id="needPick">
+      <summary>不知道找什么？按需求缩小范围</summary>
+      <div class="need-body">
+        <div class="g-row"><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
+        <div class="g-row" id="gRow2" hidden><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
+      </div>
+    </details>
+    <div class="filter-bar" id="filterBar" hidden></div>
     <div class="list" id="list"></div>
   </section>
 
-  <section class="sec" id="guided">
-    <div class="sec-head"><h2>按需求缩小范围</h2><span class="note">方式二 · 自己建 / 直接用 / 找支持</span></div>
-    <div class="guide">
-      <div class="g-row"><span class="g-no">1</span><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
-      <div class="g-row" id="gRow2" hidden><span class="g-no">2</span><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
-    </div>
-  </section>
+
 
   <section class="sec" id="scenes-sec">
     <div class="sec-head">
@@ -3829,7 +3843,7 @@ window.ATLAS_CONTENT = {
   function render(){
     var items = A.products.filter(matches);
     countEl.textContent = items.length + " / " + A.products.length;
-    listEl.innerHTML = items.length ? group(items) : '<p class="empty">没有匹配的能力：换个关键词，或点“全部类型”清除筛选。</p>';
+    listEl.innerHTML = items.length ? group(items) : '<p class="empty">当前条件没有同时满足的能力。点上方“清除”去掉部分筛选，或换个关键词。</p>';
     listEl.querySelectorAll(".row-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var rowEl = btn.parentNode;
@@ -3837,6 +3851,26 @@ window.ATLAS_CONTENT = {
         btn.setAttribute("aria-expanded", open ? "true" : "false");
       });
     });
+    paintBar();
+  }
+
+  function clearAll(){
+    state.q = ""; state.cat = "all"; state.ids = null; state.door = "";
+    var qi = document.getElementById("q"); if (qi) qi.value = "";
+    resetCatChips();
+    render();
+  }
+
+  function paintBar(){
+    if (!filterBar) return;
+    var parts = [];
+    if (state.q) parts.push("“" + state.q + "”");
+    if (state.cat !== "all") parts.push(state.cat);
+    if (state.door) parts.push(state.door);
+    if (!parts.length){ filterBar.hidden = true; filterBar.innerHTML = ""; return; }
+    filterBar.hidden = false;
+    filterBar.innerHTML = "<span>已筛选：" + parts.map(esc2).join(" · ") + "</span><button type=\"button\" id=\"clearAll\">清除</button>";
+    document.getElementById("clearAll").addEventListener("click", clearAll);
   }
 
   function resetCatChips(){
@@ -3846,8 +3880,6 @@ window.ATLAS_CONTENT = {
   catWrap.addEventListener("click", function(e){
     var b = e.target.closest(".chip"); if (!b) return;
     state.cat = b.dataset.cat;
-    state.ids = null; state.door = "";
-    if (doorTag) doorTag.hidden = true;
     catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x === b); });
     render();
   });
@@ -3887,7 +3919,7 @@ window.ATLAS_CONTENT = {
   var gRow2 = document.getElementById("gRow2");
   var gQ = document.getElementById("gQ");
   var gOpts = document.getElementById("gOpts");
-  var doorTag = document.getElementById("doorTag");
+  var filterBar = document.getElementById("filterBar");
 
   function countIds(ids){ return A.products.filter(function(p){ return ids.indexOf(p.id) > -1; }).length; }
 
@@ -3914,17 +3946,10 @@ window.ATLAS_CONTENT = {
     var b = e.target.closest(".g-chip"); if (!b) return;
     state.ids = b.dataset.ids.split(",");
     state.door = b.dataset.label;
-    resetCatChips();
     render();
-    if (doorTag){ doorTag.hidden = false; doorTag.textContent = "已按「" + state.door + "」筛选 ✕"; }
     document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
   });
 
-  if (doorTag){
-    doorTag.addEventListener("click", function(){
-      state.ids = null; state.door = ""; doorTag.hidden = true; render();
-    });
-  }
 
   // 落地场景
   var scenes = (C.blueprints || []).slice(0,5);
