@@ -520,6 +520,35 @@ details p{font-size:13px;color:var(--tx-2)}
 /* AA contrast for muted text and selected chips */
 .chip.on{color:#1B47C9}
 .cat-head .cnt,.legend{color:var(--tx-2)}
+/* intent-first finder */
+.intent-block{padding:2px 0 4px}
+.intent-q{margin:0 0 10px;font-size:14px;font-weight:700;color:var(--tx)}
+.intent-row{display:flex;gap:10px;flex-wrap:wrap}
+.intent{
+  flex:1 1 200px;min-width:180px;text-align:left;cursor:pointer;
+  border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.intent b{display:block;font-size:13.5px;font-weight:700;color:var(--tx)}
+.intent span{display:block;margin-top:3px;font-size:11.5px;color:var(--tx-3)}
+.intent:hover{border-color:#C9D8F0;box-shadow:0 6px 16px rgba(31,58,120,.06)}
+.intent.on{border-color:#B9D2FF;background:#F4F8FF}
+.intent.on b{color:var(--blue)}
+.intent.on span{color:var(--tx-2)}
+.more-filters{margin-top:12px;border-top:1px dashed #EFF3FA;padding-top:10px}
+.more-filters summary{cursor:pointer;list-style:none;font-size:12px;color:var(--tx-3);font-weight:500}
+.more-filters summary::-webkit-details-marker{display:none}
+.more-filters summary::after{content:" +";color:var(--tx-3)}
+.more-filters[open] summary::after{content:" −"}
+.more-filters .filter-row{padding-top:12px}
+@media (max-width:760px){
+  .body{padding-right:0}
+  .intent-row{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+  .intent{flex:0 0 78%;min-width:0}
+  .f-chips{flex-wrap:nowrap;overflow-x:auto}
+  .f-chips .chip{flex:none;white-space:nowrap}
+  .dir-tools{padding-bottom:12px}
+}
 </style>
 </head>
 <body>
@@ -554,25 +583,36 @@ details p{font-size:13px;color:var(--tx-2)}
       <span class="n" id="dirNote">共 38 项 · 可组合筛选</span>
     </div>
     <div class="dir-tools">
+      <div class="intent-block">
+        <p class="intent-q">你想做什么？</p>
+        <div class="intent-row" id="intentRow">
+          <button class="intent" type="button" data-intent="use" data-ids="p11,p16,p22,p24,p25,p27,p28,p29,p30,p31,p32,p33,p34,p03,p35" data-label="直接用现成能力">
+            <b>直接用现成能力</b><span>有现成应用，开通就能用</span>
+          </button>
+          <button class="intent" type="button" data-intent="build" data-ids="p04,p12,p10,p11,p17,p15,p18,p02,p03,p05,p35,p01,p36,p06,p13,p25,p27,p14" data-label="自己搭一个">
+            <b>自己搭一个</b><span>用智能体、模型、知识库搭</span>
+          </button>
+          <button class="intent" type="button" data-intent="help" data-ids="p39,p40,p41,p42,p05,p37,p09,p19,p20,p21" data-label="找人帮我做">
+            <b>找人帮我做</b><span>规划、测评、硬件支持</span>
+          </button>
+        </div>
+      </div>
       <div class="searchbox">
         <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="q" type="search" placeholder="也可以直接搜关键词，如“投标”“知识库”" autocomplete="off" aria-label="按关键词搜索能力">
+        <input id="q" type="search" placeholder="或直接搜关键词，如“投标”“知识库”“私有化”" autocomplete="off" aria-label="按关键词搜索能力">
         <span class="cnt" id="count" aria-live="polite">38 / 38</span>
       </div>
-      <div class="need-nav">
-        <span class="need-title">我想做什么</span>
-        <select id="needGroup" aria-label="我想做什么"><option value="">请选择方向</option></select>
-        <select id="needOpts" aria-label="具体想做哪一类" disabled><option value="">先选方向</option></select>
-        <button type="button" class="need-reset" id="needReset" hidden>重置</button>
-      </div>
-      <div class="filter-row">
-        <span class="f-label">类型</span>
-        <div class="f-chips" id="catChips"></div>
-      </div>
-      <div class="legend">
-        <span>成熟度：概念预研 → 原型验证 → 试点测试 → 复制推广 → 正式商用</span>
-        <span>类型是能力来源分类，不确定就留在“全部类型”。</span>
-      </div>
+      <details class="more-filters" id="moreFilters">
+        <summary>更多筛选：类型 / 成熟度</summary>
+        <div class="filter-row">
+          <span class="f-label">类型</span>
+          <div class="f-chips" id="catChips"></div>
+        </div>
+        <div class="legend">
+          <span>成熟度：概念预研 → 原型验证 → 试点测试 → 复制推广 → 正式商用</span>
+          <span>类型是能力来源分类，不确定就留在“全部类型”。</span>
+        </div>
+      </details>
       <div class="filter-bar" id="filterBar" hidden></div>
     </div>
     <div class="list" id="list"></div>
@@ -4167,6 +4207,7 @@ window.ATLAS_CONTENT = {
     state.q = ""; state.cat = "all"; state.ids = null; state.door = "";
     var qi = document.getElementById("q"); if (qi) qi.value = "";
     resetCatChips();
+    if (typeof paintIntent === "function") paintIntent();
     render();
   }
 
@@ -4205,7 +4246,11 @@ window.ATLAS_CONTENT = {
   var t;
   input.addEventListener("input", function(){
     clearTimeout(t);
-    t = setTimeout(function(){ state.q = input.value.trim(); render(); }, 120);
+    t = setTimeout(function(){
+      state.q = input.value.trim();
+      if (state.q){ state.ids = null; state.door = ""; paintIntent(); }
+      render();
+    }, 120);
   });
 
   render();
@@ -4240,59 +4285,26 @@ window.ATLAS_CONTENT = {
     });
   });
 
-  // 需求导航：先选方向，再选具体需求，按能力集合过滤
-  var GROUPS = [
-    { label:"自己建", opts:[
-      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
-      { label:"模型", ids:["p02","p03","p05","p35"] },
-      { label:"数据集", ids:["p01","p36","p06"] },
-      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
-    { label:"直接用", opts:[
-      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
-      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
-      { label:"模型调用", ids:["p03","p35"] } ] },
-    { label:"找支持", opts:[
-      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
-      { label:"测评验收", ids:["p05","p37","p09"] },
-      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
-  ];
-  var needGroup = document.getElementById("needGroup");
-  var needOpts = document.getElementById("needOpts");
-  var needReset = document.getElementById("needReset");
-  if (needGroup){
-    GROUPS.forEach(function(g){
-      var o = document.createElement("option");
-      o.value = g.label; o.textContent = g.label;
-      needGroup.appendChild(o);
-    });
-    needGroup.addEventListener("change", function(){
-      needOpts.innerHTML = '<option value="">请选择具体需求</option>';
-      var g = GROUPS.filter(function(x){ return x.label === needGroup.value; })[0];
-      if (!g){ needOpts.disabled = true; needReset.hidden = true; return; }
-      g.opts.forEach(function(op){
-        var o = document.createElement("option");
-        o.value = op.ids.join(",");
-        o.dataset.label = op.label;
-        o.textContent = op.label + "（" + op.ids.length + " 项）";
-        needOpts.appendChild(o);
-      });
-      needOpts.disabled = false;
-      needReset.hidden = false;
-      state.ids = null; state.door = "";
+  // 意图入口：直接用 / 自己搭 / 找人帮，与搜索互斥
+  var intentRow = document.getElementById("intentRow");
+  var intentBtns = intentRow ? Array.prototype.slice.call(intentRow.querySelectorAll(".intent")) : [];
+
+  function paintIntent(){
+    intentBtns.forEach(function(b){ b.classList.toggle("on", state.door === b.dataset.label); });
+  }
+
+  if (intentRow){
+    intentRow.addEventListener("click", function(e){
+      var b = e.target.closest(".intent"); if (!b) return;
+      var same = state.door === b.dataset.label;
+      state.q = ""; input.value = "";
+      state.cat = "all"; resetCatChips();
+      if (same){ state.ids = null; state.door = ""; }
+      else { state.ids = b.dataset.ids.split(","); state.door = b.dataset.label; }
+      paintIntent();
       render();
+      document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
     });
-    needOpts.addEventListener("change", function(){
-      if (!needOpts.value){ state.ids = null; state.door = ""; render(); return; }
-      state.ids = needOpts.value.split(",");
-      state.door = needGroup.value + " · " + needOpts.options[needOpts.selectedIndex].dataset.label;
-      render();
-    });
-    if (needReset){
-      needReset.addEventListener("click", function(){
-        needGroup.value = ""; needOpts.innerHTML = '<option value="">先选方向</option>'; needOpts.disabled = true;
-        needReset.hidden = true; state.ids = null; state.door = ""; render();
-      });
-    }
   }
 
   // CTA: focus digital human
