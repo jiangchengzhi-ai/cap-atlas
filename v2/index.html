@@ -598,6 +598,12 @@ details p{font-size:13px;color:var(--tx-2)}
 .pc-dots i{width:4px;height:4px;border-radius:50%;background:var(--blue);opacity:.55}
 .plan-more{border-style:dashed;grid-template-columns:1fr;align-items:center}
 @media (max-width:900px){.plan-grid{grid-template-columns:1fr}}
+
+/* more-projects card plus */
+.plan-more{grid-template-columns:minmax(0,1fr) 56px;align-items:center}
+.plan-more .pc-body{grid-area:auto}
+.pc-media-more{color:var(--blue);display:flex;align-items:center;justify-content:center}
+.pc-media-more svg{width:30px;height:30px;border:1px dashed #C9DBFB;border-radius:50%;padding:7px}
 </style>
 </head>
 <body>
@@ -4415,6 +4421,7 @@ SCENE_ART = {
       '<article class="plan-card plan-more">' +
         '<span class="pc-body"><span class="pc-title">更多项目持续推进</span>' +
         '<span class="pc-sum">相关项目方案整理完成后会陆续补充到这里。</span></span>' +
+        '<span class="pc-media pc-media-more" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>' +
       '</article>';
   })();
 
