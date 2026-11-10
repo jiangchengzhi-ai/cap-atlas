@@ -148,6 +148,10 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
   .d-grid{grid-template-columns:1fr}
   .d-col-r{gap:16px}
 }
+/* detail labels: Chinese sans, medium weight */
+.d-label{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--tx-2);margin:0 0 8px}
+.d-item .d-label{margin-bottom:7px}
+.d-lead{font-size:14px;line-height:1.95}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -3753,6 +3757,7 @@ window.ATLAS_CONTENT = {
             '<div class="d-item"><p class="d-label">所属类型</p><div class="d-tags"><span class="tag">' + esc(p.cat) + '</span></div></div>' +
           '</div>' +
         '</div>' +
+      '</div>' +
     '</div>';
   }
 
