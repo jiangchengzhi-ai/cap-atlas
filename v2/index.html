@@ -1,0 +1,3724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 中心 · 能力黄页（设计 v2）</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --ink:#0B1B33; --ink-2:#233856; --tx:#12233F; --tx-2:#41536D; --tx-3:#7B8BA3;
+  --paper:#F6F8FC; --card:#FFFFFF; --line:#E3EAF4; --blue:#2F6BFF; --blue-deep:#1B47C9;
+  --radius:14px; --sans:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+  --tech:"Consolas","SFMono-Regular",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.7}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+.shell{max-width:1300px;margin:0 auto;padding:0 clamp(20px,3.6vw,44px)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(24px,3vw,44px);align-items:start}
+.icon{width:16px;height:16px;display:inline-block;vertical-align:-3px}
+
+/* header */
+.hd{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hd-in{display:flex;align-items:center;gap:26px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-size:15px;letter-spacing:.04em;color:var(--ink);white-space:nowrap}
+.brand b{font-weight:700}
+.brand span{color:var(--tx-3);font-weight:400}
+.nav{display:flex;gap:22px;margin-left:8px;font-size:13px;color:var(--tx-2)}
+.nav a{padding:6px 0;border-bottom:1px solid transparent}
+.nav a:hover{color:var(--blue);border-color:var(--blue)}
+.hd-note{margin-left:auto;font-size:11.5px;color:var(--tx-3);white-space:nowrap}
+
+/* hero */
+.hero{padding:clamp(36px,5vw,64px) 0 clamp(20px,3vw,32px)}
+.hero .kicker{font-family:var(--tech);font-size:10.5px;letter-spacing:.18em;color:var(--blue);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.hero .kicker::before{content:"";width:22px;height:1px;background:var(--blue);opacity:.6}
+h1{font-size:clamp(30px,3.6vw,46px);line-height:1.28;letter-spacing:.01em;margin:0 0 14px;font-weight:700;max-width:820px}
+.hero p{margin:0;max-width:720px;color:var(--tx-2);font-size:14.5px;line-height:1.9}
+.searchbox{margin-top:26px;position:relative;max-width:760px}
+.searchbox input{
+  width:100%;height:56px;padding:0 96px 0 48px;border:1px solid var(--line);border-radius:12px;
+  background:#fff;font:inherit;font-size:15px;color:var(--tx);outline:none;
+  box-shadow:0 10px 30px rgba(31,58,120,.06);transition:border-color .2s,box-shadow .2s;
+}
+.searchbox input:focus{border-color:var(--blue);box-shadow:0 12px 34px rgba(47,107,255,.14)}
+.searchbox .si{position:absolute;left:16px;top:18px;color:var(--tx-3)}
+.searchbox .cnt{position:absolute;right:14px;top:16px;font-family:var(--tech);font-size:11px;color:var(--tx-3)}
+.chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips .lbl{font-size:11.5px;color:var(--tx-3)}
+.chip{
+  border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:11.5px;
+  color:var(--tx-2);cursor:pointer;transition:.2s;
+}
+.chip:hover{border-color:#C9D8F0;color:var(--blue)}
+.chip.on{background:#EDF3FF;border-color:#C9DBFB;color:var(--blue)}
+
+/* directory */
+.dir{padding:clamp(22px,3vw,34px) 0 10px}
+.dir-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px}
+.dir-head h2{font-size:19px;margin:0;letter-spacing:.02em}
+.dir-head .n{font-family:var(--tech);font-size:11.5px;color:var(--tx-3)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.list{border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line);background:transparent}
+.row-btn{display:grid;grid-template-columns:minmax(0,1fr) auto 16px;gap:16px;align-items:center;width:100%;padding:16px 4px;background:none;border:0;text-align:left;cursor:pointer}
+.row-btn:hover .r-name{color:var(--blue)}
+.r-main{min-width:0}
+.r-name{font-size:15.5px;font-weight:600;letter-spacing:.01em;display:flex;align-items:center;gap:9px;flex-wrap:wrap;transition:color .2s}
+.r-cat{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--tx-3);font-weight:400}
+.r-cat i{width:6px;height:6px;border-radius:50%;flex:none}
+.r-desc{margin-top:4px;font-size:12.5px;color:var(--tx-2);line-height:1.7}
+.r-mat{font-family:var(--tech);font-size:10.5px;color:var(--tx-3);white-space:nowrap}
+.r-arrow{color:var(--tx-3);transition:transform .25s var(--ease,ease)}
+.row.open .r-arrow{transform:rotate(90deg);color:var(--blue)}
+.row-detail{display:none;padding:0 4px 20px;animation:fade .25s ease}
+.row.open .row-detail{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.d-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:26px;padding-top:6px}
+.d-grid p{margin:0 0 8px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
+.d-label{font-family:var(--tech);font-size:9.5px;letter-spacing:.16em;color:var(--tx-3);margin:0 0 6px}
+.d-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11px;color:var(--tx-2);border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 8px}
+.empty{padding:26px 4px;color:var(--tx-3);font-size:13px}
+
+/* scenes */
+.sec{padding:clamp(30px,4vw,48px) 0}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px}
+.sec-head h2{font-size:20px;margin:0;letter-spacing:.02em}
+.sec-head .note{font-size:12px;color:var(--tx-3)}
+.scene-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.scene{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;transition:.2s}
+.scene:hover{border-color:#C9D8F0;box-shadow:0 10px 26px rgba(31,58,120,.07)}
+.scene .k{font-family:var(--tech);font-size:9.5px;letter-spacing:.14em;color:var(--tx-3)}
+.scene h3{font-size:15px;margin:6px 0 6px;font-weight:600;line-height:1.5}
+.scene p{margin:0;font-size:12px;color:var(--tx-2);line-height:1.75}
+.scene .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.scene .tags span{font-size:10.5px;color:var(--tx-3);border:1px solid var(--line);border-radius:999px;padding:2px 8px;background:#FBFCFE}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px;border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{list-style:none;cursor:pointer;font-size:13.5px;font-weight:600;display:flex;justify-content:space-between;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--tech);color:var(--tx-3);font-size:15px}
+details[open] summary::after{content:"–"}
+details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
+
+/* footer */
+.foot{border-top:1px solid var(--line);background:#fff;margin-top:20px}
+.foot-in{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:22px 0;font-size:11.5px;color:var(--tx-3);flex-wrap:wrap}
+.foot-in a{color:var(--tx-2);border-bottom:1px solid var(--line)}
+.foot-in a:hover{color:var(--blue);border-color:var(--blue)}
+
+/* dock */
+.dock{position:sticky;top:84px;z-index:40;background:linear-gradient(180deg,#0E2447,#0B1B33);border-radius:16px;color:#E9F0FB;padding:16px;box-shadow:0 18px 44px rgba(6,18,38,.22)}
+.dock-id{display:flex;align-items:center;gap:9px;font-size:12px;color:#9FB4D2}
+.dock-id b{color:#fff;font-size:13px;font-weight:600}
+.dock-av{height:104px;margin:12px 0;border-radius:12px;background:
+  radial-gradient(circle at 50% 38%,rgba(120,170,255,.35),transparent 62%),
+  linear-gradient(160deg,#122E58,#0A1A33);display:grid;place-items:center;font-family:var(--tech);font-size:9px;letter-spacing:.2em;color:#8FB0FF}
+.dock p{margin:0 0 10px;font-size:12px;line-height:1.8;color:#AFC3DE}
+.dock .ask{display:flex;gap:8px}
+.dock input{flex:1;height:34px;border-radius:8px;border:1px solid rgba(160,190,230,.25);background:rgba(255,255,255,.06);color:#fff;padding:0 10px;font:inherit;font-size:12px;outline:none}
+.dock input::placeholder{color:#7E93B2}
+.dock .send{width:34px;height:34px;border-radius:8px;border:0;background:#2F6BFF;color:#fff;cursor:pointer}
+.dock .chips-sm{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dock .chips-sm span{font-size:10.5px;color:#9FB4D2;border:1px solid rgba(160,190,230,.22);border-radius:999px;padding:2px 8px;cursor:pointer}
+.dock .chips-sm span:hover{color:#fff;border-color:#8FB0FF}
+
+@media (max-width:1180px){
+  .layout{grid-template-columns:1fr}
+  main{padding-bottom:56px}
+  .dock{position:fixed;left:0;right:0;top:auto;bottom:0;width:auto;border-radius:14px 14px 0 0;padding:10px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 -10px 30px rgba(6,18,38,.2)}
+  .dock-av{display:none}
+  .dock p{display:none}
+  .dock .ask{flex:1;margin:0}
+  .dock .chips-sm{display:none}
+  .dock-id{flex:none}
+  .hd-note{display:none}
+  .scene-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .d-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .nav{display:none}
+  h1{font-size:26px}
+  .scene-grid{grid-template-columns:1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .row-btn{grid-template-columns:minmax(0,1fr) 14px;row-gap:2px}
+  .r-mat{display:none}
+}
+</style>
+</head>
+<body>
+<header class="hd"><div class="shell hd-in">
+  <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
+  <nav class="nav">
+    <a href="#dir">能力目录</a>
+    <a href="#scenes-sec">落地场景</a>
+    <a href="#faq">常见问题</a>
+  </nav>
+  <span class="hd-note">对外演示版 · 设计 v2</span>
+</div></header>
+
+<div class="shell layout">
+<main>
+  <section class="hero">
+    <p class="kicker">AI 中心 · 能力黄页</p>
+    <h1>找到能用的 AI 能力<br>快速搭出自己的应用</h1>
+    <p>38 项能力，按业务问题、能力类型和成熟度整理。每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
+    <div class="searchbox">
+      <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="搜索能力、业务问题或场景，如“投标”“知识库”“私有化”" autocomplete="off">
+      <span class="cnt" id="count">38 / 38</span>
+    </div>
+    <div class="chips">
+      <span class="lbl">常用搜索</span>
+      <button class="chip" type="button" data-q="投标">投标辅助</button>
+      <button class="chip" type="button" data-q="知识库">知识库</button>
+      <button class="chip" type="button" data-q="数字人">数字人</button>
+      <button class="chip" type="button" data-q="私有化">私有化</button>
+      <button class="chip" type="button" data-q="模型">模型调用</button>
+      <button class="chip" type="button" data-q="巡检">安全巡检</button>
+    </div>
+  </section>
+
+  <section class="dir" id="dir">
+    <div class="dir-head">
+      <h2>能力目录</h2>
+      <span class="n" id="dirNote">按业务问题、类型和成熟度整理</span>
+    </div>
+    <div class="filters" id="catChips"></div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section class="sec" id="scenes-sec">
+    <div class="sec-head">
+      <h2>已经落地的场景</h2>
+      <span class="note">更多项目持续补充</span>
+    </div>
+    <div class="scene-grid" id="scenes"></div>
+  </section>
+
+  <section class="sec" id="faq">
+    <div class="sec-head"><h2>开始之前，先把疑问说清楚</h2><span class="note">数据、周期、计费、权限与验收</span></div>
+    <div class="faq-grid">
+      <div>
+        <details><summary>AI 中心目前能解决哪些业务问题？</summary><p>已落地 5 类场景：施工安全、规划治理、科研管理、公路养护、市场经营；背后是 38 项能力，按 7 类组织。可在上方目录按关键词或类型查找。</p></details>
+        <details><summary>不确定从哪开始，怎么快速缩小范围？</summary><p>先用搜索框输入你的业务问题；也可以直接用右侧数字人描述需求，或按“能力类型”逐个看。</p></details>
+        <details><summary>非技术背景人员能否直接使用？</summary><p>可以。一期以浏览和检索为主；二期可直接向数字人提问、生成方案底稿，都不需要配置模型或写代码。</p></details>
+        <details><summary>数据能否保留在内网？私有化部署怎么实施？</summary><p>支持私有化与内网部署，模型、数据与策略可保留在内网；具体边界需结合客户安全要求确认。</p></details>
+      </div>
+      <div>
+        <details><summary>从确认场景到上线通常需要多久？</summary><p>按“场景诊断—知识与规则准备—试点上线—推广应用”四阶段推进；周期取决于数据条件与推广范围。</p></details>
+        <details><summary>如何计费？由谁对接？</summary><p>可采用平台订阅、按使用量计费或项目制计费；由 AI 中心统一对接，按能力组合与实施范围商谈。</p></details>
+        <details><summary>实施效果如何验收？</summary><p>以业务指标与评测结果作为验收依据，验收口径在项目启动时与业务部门共同确定。</p></details>
+        <details><summary>集团、二级单位与项目部的权限如何划分？</summary><p>采用统一身份认证与分级授权，按组织隔离数据与知识资产。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot"><div class="shell foot-in">
+    <span>AI 中心 · 能力黄页（设计 v2 · 演示版）</span>
+    <span><a href="../index.html">看地图版（v1）</a> · 能力、价格与交付范围以正式发布口径为准</span>
+  </div></footer>
+</main>
+
+<aside class="dock" aria-label="李亚楠数字人">
+  <div class="dock-id"><b>李亚楠</b> · AI 中心数字人</div>
+  <div class="dock-av">DIGITAL HUMAN</div>
+  <p id="dockTip">直接说你的业务问题，我帮你定位到能用的一项能力。</p>
+  <div class="ask">
+    <input id="askInput" type="text" placeholder="例如：投标文件怎么辅助评审？" aria-label="输入问题">
+    <button class="send" id="askSend" type="button" aria-label="发送">↑</button>
+  </div>
+  <div class="chips-sm"><span>投标辅助</span><span>知识库</span><span>私有化</span></div>
+</aside>
+</div>
+
+<script>/* 基于《中交信科集团AI中心能力图谱》产品服务总览整理；已移除源表中划除的 5 项能力（p07/p08/p23/p26/p38），2026-10-28 */
+window.ATLAS = {
+ "meta": {
+  "org": "中交信科集团AI中心",
+  "title": "中交信科集团AI中心能力图谱",
+  "total": 38,
+  "commercial": 25,
+  "validating": 8,
+  "early": 5,
+  "categories": 7,
+  "updated": "2026.10",
+  "source": "《中交信科集团AI中心能力图谱》产品服务总览（2026.10 版；已移除源表中划除的 5 项能力）"
+ },
+ "maturity": {
+  "1": {
+   "label": "概念预研",
+   "short": "概念",
+   "note": "概念预研阶段：以内部论证与反馈收集为主。"
+  },
+  "2": {
+   "label": "原型验证",
+   "short": "原型",
+   "note": "原型验证阶段：可结合试点项目开展验证。"
+  },
+  "3": {
+   "label": "试点测试",
+   "short": "试点",
+   "note": "试点测试阶段：可在受控范围内开展客户试用。"
+  },
+  "4": {
+   "label": "复制推广",
+   "short": "复制",
+   "note": "复制推广阶段：标准版本可交付，并已在多个项目应用。"
+  },
+  "5": {
+   "label": "正式商用",
+   "short": "商用",
+   "note": "正式商用阶段：可纳入正式销售与推广。"
+  }
+ },
+ "categories": [
+  {
+   "name": "高端咨询",
+   "key": "advisory",
+   "en": "Advisory",
+   "code": "A",
+   "layer": 1,
+   "tagline": "顶层规划、业务咨询与能力培训服务",
+   "desc": "提供规划、业务咨询、实训与技能培训。先明确方向与组织安排，再推进系统与工具建设。",
+   "accent": "#D6336C",
+   "count": 4
+  },
+  {
+   "name": "行业应用",
+   "key": "industry",
+   "en": "Industry",
+   "code": "I",
+   "layer": 2,
+   "tagline": "面向交通基建主业的专业应用",
+   "desc": "覆盖施工、航道、疏浚、养护、安全与职教等场景，结合行业知识与规范，辅助专业判断。",
+   "accent": "#2F6BFF",
+   "count": 7
+  },
+  {
+   "name": "岗位应用",
+   "key": "role",
+   "en": "Role App",
+   "code": "R",
+   "layer": 3,
+   "tagline": "面向职能岗位的场景应用",
+   "desc": "覆盖科技、经营、制度与办公等岗位，以岗位为粒度交付，尽量不改变既有职责边界。",
+   "accent": "#7C5CFC",
+   "count": 4
+  },
+  {
+   "name": "AI智能硬件",
+   "key": "hardware",
+   "en": "Device",
+   "code": "H",
+   "layer": 4,
+   "tagline": "面向会议、办公与现场记录的硬件入口",
+   "desc": "将 AI 能力部署在会议设备、桌面设备与随身记录设备上，用于现场信息采集与交互。",
+   "accent": "#E08A1E",
+   "count": 3
+  },
+  {
+   "name": "基础能力",
+   "key": "capability",
+   "en": "Capability",
+   "code": "C",
+   "layer": 5,
+   "tagline": "可嵌入业务系统的通用 AI 能力",
+   "desc": "包括门户、知识、问数、数字人与办公助手等，以标准组件接入现有系统，减少底层重复建设。",
+   "accent": "#12A594",
+   "count": 9
+  },
+  {
+   "name": "技术服务",
+   "key": "service",
+   "en": "Engineering",
+   "code": "S",
+   "layer": 6,
+   "tagline": "按项目交付的工程与技术服务",
+   "desc": "包括数据集建设、垂域模型训练、测评认证与 Token 供给，按项目组织交付。",
+   "accent": "#5B8C00",
+   "count": 3
+  },
+  {
+   "name": "底座平台",
+   "key": "platform",
+   "en": "Platform",
+   "code": "P",
+   "layer": 7,
+   "tagline": "支撑上层应用的模型、知识与数据能力",
+   "desc": "包括数据、算力、模型、智能体、评测、安全与运营等能力，为集团 AI 应用提供统一支撑。",
+   "accent": "#0B7FA8",
+   "count": 8
+  }
+ ],
+ "products": [
+  {
+   "id": "p01",
+   "name": "高质量数据集中心",
+   "short": "高质量数据集中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "数据采集、标注、合成与质量检查平台",
+   "desc": [
+    "面向AI大模型打造的集成式数据处理与管理平台，聚焦数据采集清洗、智能标注、合成质检，是模型训练高质量、合规、可运营的多模态数据底座。",
+    "覆盖数据全生命周期的标准化处理流程：数据采集→数据处理→数据标注→数据合成→数据质检→模型验证→交付运营。"
+   ],
+   "problems": [
+    "行业数据散",
+    "标注成本高",
+    "数据质量低",
+    "多模态数据处理难",
+    "数据资产无法复用"
+   ],
+   "buyers": [
+    "央国企集团",
+    "有扩展需求的二级企业"
+   ],
+   "users": [
+    "AI研发团队",
+    "数据工程师",
+    "模型训练团队",
+    "行业数据管理人员"
+   ],
+   "features": [
+    "数据全生命周期管理",
+    "AI预标注准确率92%、6模态·40场景覆盖",
+    "50+专业标注工具",
+    "150+算子生态",
+    "TC609标准检测"
+   ],
+   "pricing": [
+    "基础产品",
+    "定制开发",
+    "标注服务按量",
+    "算力Token费用",
+    "平台订阅"
+   ],
+   "tags": [
+    "数据标注",
+    "数据治理",
+    "数据集",
+    "多模态",
+    "语料",
+    "清洗",
+    "标注工具",
+    "数据资产",
+    "质检"
+   ]
+  },
+  {
+   "id": "p02",
+   "name": "训练中心",
+   "short": "训练中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "面向大模型微调与增量训练的训练平台",
+   "desc": [
+    "多场景大/小模型能力底座，支持大模型增量预训练、监督微调、QLoRA、强化学习、模型量化、蒸馏等全类型训练任务。",
+    "整合交互式开发、可视化拖拉拽建模及丰富预置模板，大幅降低开发门槛。",
+    "支持baichuan",
+    "Llama",
+    "Falcon、DeepSeek、交融大模型等主流模型。"
+   ],
+   "problems": [
+    "模型训练门槛高",
+    "资源调度难",
+    "训练过程不可控",
+    "端侧部署困难"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "算法工程师",
+    "AI研究员",
+    "模型训练团队",
+    "大模型应用开发者"
+   ],
+   "features": [
+    "多场景训练保障",
+    "可视化+Notebook双模式",
+    "断点续训",
+    "全生命周期安全可控",
+    "支持模型蒸馏量化压缩"
+   ],
+   "pricing": [
+    "算力资源按量计费",
+    "平台服务"
+   ],
+   "tags": [
+    "模型训练",
+    "微调",
+    "预训练",
+    "强化学习",
+    "QLoRA",
+    "蒸馏",
+    "量化",
+    "训练平台",
+    "算法"
+   ]
+  },
+  {
+   "id": "p03",
+   "name": "模型中心（模型广场）",
+   "short": "模型中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "模型管理与安全推理服务",
+   "desc": [
+    "整合公共及集团内AI模型资产，支持模型管理、多版本存储对比与第三方导入，提供多指标效果评估，并通过三层安全机制保障合规。",
+    "预置通义千问、DeepSeek、Llama、文心一言等知名闭源模型及开源大模型，超10款OCR、目标检测等小模型。"
+   ],
+   "problems": [
+    "模型资产分散",
+    "版本管理混乱",
+    "模型效果无法量化评估",
+    "模型调用存在安全风险"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "AI应用开发者",
+    "模型管理人员",
+    "IT架构师",
+    "安全合规团队"
+   ],
+   "features": [
+    "预置丰富模型库",
+    "多维度自动+人工评估",
+    "输入输出双向安全检测",
+    "三层安全机制",
+    "支持多版本管理与对比"
+   ],
+   "pricing": [
+    "平台服务",
+    "API调用按量"
+   ],
+   "tags": [
+    "模型管理",
+    "模型广场",
+    "推理服务",
+    "API",
+    "模型版本",
+    "开源模型",
+    "大模型接入"
+   ]
+  },
+  {
+   "id": "p04",
+   "name": "智能体中心",
+   "short": "智能体中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "智能体应用开发与运行管理",
+   "desc": [
+    "聚焦智能体开发零散、标准不统一、复用性弱、规模化实施难等痛点，依托自研记忆引擎与交融大模型能力，搭建集团统一开放的智能体技术底座。",
+    "覆盖智能体开发、管理、运营全流程，支持可视化编排、模型知识接入、权限治理。"
+   ],
+   "problems": [
+    "智能体开发效率低",
+    "标准不统一",
+    "复用性差",
+    "难以规模化实施"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "智能体开发者",
+    "业务部门AI专员",
+    "技术团队",
+    "集团AI管理部门"
+   ],
+   "features": [
+    "可视化编排",
+    "可视化记忆引擎",
+    "MCP协议支持",
+    "Skill/组件广场",
+    "多智能体协同",
+    "开发运营治理一体化"
+   ],
+   "pricing": [
+    "平台订阅",
+    "智能体定制开发"
+   ],
+   "tags": [
+    "智能体",
+    "Agent",
+    "编排",
+    "MCP",
+    "技能",
+    "记忆引擎",
+    "低代码",
+    "多智能体"
+   ]
+  },
+  {
+   "id": "p05",
+   "name": "评测中心",
+   "short": "评测中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "大模型与 AI 应用效果评估",
+   "desc": [
+    "内置10+多维度评测策略，集成标准院及国内外权威评测数据集，支持开箱即用开展评测任务。",
+    "标准化评测流程，自动执行评测任务，输出完整评测报告与针对性优化改进建议。评测完成后生成行业认可的认证证书。"
+   ],
+   "problems": [
+    "模型/智能体效果不可见",
+    "缺陷难找",
+    "评测流程不标准",
+    "缺乏权威认证"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "AI产品团队",
+    "模型研发团队",
+    "质量保证团队",
+    "合规认证部门"
+   ],
+   "features": [
+    "集成式评测入口",
+    "全链路自动化",
+    "权威标准背书",
+    "生成评测报告与优化建议",
+    "认证证书支撑",
+    "全自主评测智能体：AI中心标准 、安全、支持定制化全自主评测维度"
+   ],
+   "pricing": [
+    "按评测任务收费",
+    "证书服务费",
+    "全自主评测智能体按定制模式计费"
+   ],
+   "tags": [
+    "评测",
+    "测评",
+    "模型评估",
+    "效果评估",
+    "证书",
+    "认证",
+    "质量",
+    "基准"
+   ]
+  },
+  {
+   "id": "p06",
+   "name": "本体中心",
+   "short": "本体中心",
+   "cat": "底座平台",
+   "maturity": 1,
+   "tagline": "集团统一业务语义与知识底座",
+   "desc": [
+    "将分散的数据与业务逻辑映射为统一的对象、规则与行动",
+    "为知识图谱、大模型、智能体提供可推理、可治理的底层语义底座。"
+   ],
+   "problems": [
+    "术语语义不一致",
+    "异构数据难对齐",
+    "AI推理无标准",
+    "知识不沉淀"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "集团业务骨干",
+    "AI研发与数据开发者",
+    "集团管理层"
+   ],
+   "features": [
+    "支持实体、属性、关系、约束可视化建模",
+    "对接多源异构数据，生成知识实例",
+    "搭载业务约束，支持可解释推理校验",
+    "提供语义查询 API，支撑上层 AI 应用",
+    "沉淀可复用领域知识资产"
+   ],
+   "pricing": [
+    "平台订阅",
+    "定制开发"
+   ],
+   "tags": [
+    "本体",
+    "知识图谱",
+    "语义",
+    "实体",
+    "关系",
+    "推理",
+    "业务语义",
+    "标准"
+   ]
+  },
+  {
+   "id": "p09",
+   "name": "监控中心",
+   "short": "监控中心",
+   "cat": "底座平台",
+   "maturity": 5,
+   "tagline": "集团 AI 运营监控",
+   "desc": [
+    "面向集团AI生态打造的集成式运营监控平台",
+    "聚焦交融AI门户运行态势、训推与智能体平台资源调度、问之平台使用效能的多维直观展示，是集团统一、智能、高效的AI运营指挥中枢。"
+   ],
+   "problems": [
+    "AI生态运行不可见",
+    "资源调度不透明",
+    "使用效能无法量化",
+    "运营决策缺乏数据支撑"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "集团AI运营团队",
+    "IT管理部门",
+    "决策层"
+   ],
+   "features": [
+    "跨平台数据集中呈现",
+    "核心指标汇总",
+    "趋势与排行分析",
+    "联动能力开通与资源管理",
+    "统一运营指挥中枢"
+   ],
+   "pricing": [
+    "集团统一部署",
+    "平台订阅"
+   ],
+   "tags": [
+    "监控",
+    "运营",
+    "可观测",
+    "指标",
+    "看板",
+    "资源用量",
+    "效能"
+   ]
+  },
+  {
+   "id": "p10",
+   "name": "开放平台",
+   "short": "开放平台",
+   "cat": "底座平台",
+   "maturity": 3,
+   "tagline": "集团 AI 能力开放与资源管理",
+   "desc": [
+    "集团已有的智能体底座能力对外开放的统一入口",
+    "面向所有想把自己业务能力\"智能体化\"的人、业务条线、分子公司、技术团队、外部伙伴",
+    "涵盖五大开放生态、四大开源共创能力、交融底人工智能底座图谱。"
+   ],
+   "problems": [
+    "专家经验难以沉淀",
+    "业务系统互不联通",
+    "能力建设重复投入",
+    "成果分发缺少渠道"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "集团业务骨干",
+    "AI应用研发者",
+    "AI研发部门"
+   ],
+   "features": [
+    "能力形态五类可选",
+    "技术底座代码开源",
+    "全链路生产与保障",
+    "发布分发一套渠道",
+    "标准协议即插即用",
+    "安全合规自主可控。"
+   ],
+   "pricing": [
+    "平台订阅",
+    "能力上架与分发服务"
+   ],
+   "tags": [
+    "开放平台",
+    "生态",
+    "能力开放",
+    "上架",
+    "分发",
+    "开发者",
+    "伙伴"
+   ]
+  },
+  {
+   "id": "p11",
+   "name": "AI门户",
+   "short": "AI门户",
+   "cat": "基础能力",
+   "maturity": 5,
+   "tagline": "集团 AI 综合服务门户",
+   "desc": [
+    "面向中交集团AI生态打造的统一集成入口与综合服务中心",
+    "聚焦交融全系AI系统资源统筹、多平台能力开放与调度、行业智能体与解决方案生态汇聚，是集团统一认证、资源纳管、生态协同的AI核心平台。"
+   ],
+   "problems": [
+    "AI资源分散",
+    "入口割裂",
+    "能力找不到",
+    "生态协同难"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类民企"
+   ],
+   "users": [
+    "集团全体员工",
+    "AI应用开发者",
+    "业务部门",
+    "AI管理部门"
+   ],
+   "features": [
+    "资源统一汇聚",
+    "能力开放接入",
+    "多维检索与文档社区",
+    "统一认证与安全保障",
+    "行业场景方案汇聚"
+   ],
+   "pricing": [
+    "集团统一部署"
+   ],
+   "tags": [
+    "门户",
+    "入口",
+    "统一认证",
+    "资源汇聚",
+    "应用市场",
+    "全员"
+   ]
+  },
+  {
+   "id": "p12",
+   "name": "超级智能体",
+   "short": "超级智能体",
+   "cat": "基础能力",
+   "maturity": 5,
+   "tagline": "桌面端 AI 办公工作台",
+   "desc": [
+    "AI办公工作台，将AI的强大功能无缝集成到桌面。",
+    "具备实时联网搜索、多文档智能处理、MCP协议生态集成等能力。",
+    "旨在成为兼顾极致效率与数据隐私的理想工作伙伴。"
+   ],
+   "problems": [
+    "AI工具零散",
+    "信息获取滞后",
+    "多文档处理繁琐",
+    "专业工具调用不便"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "职场人士",
+    "管理层",
+    "专业技术人员",
+    "日常办公用户"
+   ],
+   "features": [
+    "实时联网搜索",
+    "多文档智能分析",
+    "MCP生态扩展",
+    "闪电响应速度",
+    "深度工作专注模式",
+    "专业工具调用"
+   ],
+   "pricing": [
+    "客户端订阅"
+   ],
+   "tags": [
+    "办公",
+    "工作台",
+    "客户端",
+    "联网搜索",
+    "文档处理",
+    "MCP",
+    "个人助理"
+   ]
+  },
+  {
+   "id": "p13",
+   "name": "知识中枢",
+   "short": "知识中枢",
+   "cat": "基础能力",
+   "maturity": 5,
+   "tagline": "企业知识治理与问答服务",
+   "desc": [
+    "集团统一的AI知识底座，把分散的知识资产统一治理加工。",
+    "文档解析、自动分类、智能打标、摘要生成、实体抽取与向量化切片，多库联合语义检索，答案逐句绑定原文出处可核验。"
+   ],
+   "problems": [
+    "知识分散难利用",
+    "检索低效",
+    "答案不可信",
+    "业务系统重复建设AI底层"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类民企",
+    "项目"
+   ],
+   "users": [
+    "知识管理部门",
+    "业务系统建设团队",
+    "科研人员",
+    "工程技术人员"
+   ],
+   "features": [
+    "知识统一治理",
+    "智能检索问答",
+    "答案溯源可验",
+    "Skill组件标准输出",
+    "分级权限管控",
+    "支撑四大业务系统"
+   ],
+   "pricing": [
+    "平台订阅",
+    "检索次数/流量计费",
+    "知识包/文件库",
+    "知识治理服务"
+   ],
+   "tags": [
+    "知识库",
+    "知识管理",
+    "检索",
+    "问答",
+    "RAG",
+    "溯源",
+    "文档解析",
+    "语义检索",
+    "知识资产"
+   ]
+  },
+  {
+   "id": "p14",
+   "name": "问数能力",
+   "short": "问数能力",
+   "cat": "基础能力",
+   "maturity": 4,
+   "tagline": "自然语言数据查询与分析",
+   "desc": [
+    "聚焦企业数据分析门槛高、操作复杂、建模成本高等痛点。",
+    "支持自然语言问数与上下文追问，自动生成SQL、图表和报告，20+数据源统一接入。",
+    "业务人员自助分析，无需编写代码。"
+   ],
+   "problems": [
+    "数据分析门槛高",
+    "需要专业SQL",
+    "响应周期长",
+    "数据利用效率低"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "业务分析师",
+    "管理人员",
+    "数据分析师",
+    "运营人员"
+   ],
+   "features": [
+    "自然语言问数",
+    "自动生成SQL与图表",
+    "20+数据源接入",
+    "NL2SQL全链路可解释",
+    "私有化部署支持"
+   ],
+   "pricing": [
+    "平台订阅",
+    "用户数"
+   ],
+   "tags": [
+    "问数",
+    "数据分析",
+    "报表",
+    "SQL",
+    "NL2SQL",
+    "BI",
+    "指标",
+    "经营分析"
+   ]
+  },
+  {
+   "id": "p15",
+   "name": "数字人创建能力",
+   "short": "数字人创建能力",
+   "cat": "基础能力",
+   "maturity": 5,
+   "tagline": "数字人形象、语音与内容生成",
+   "desc": [
+    "集成式整体数字人创建与应用平台。",
+    "深度融合形象生成+声纹克隆+智能体大脑交互流程，原生打通交融系列智能体生态。",
+    "支持图片、视频及VRM模型多类方式定制形象，支持拟人音色与语调克隆。"
+   ],
+   "problems": [
+    "数字人构建门槛高",
+    "形象声音定制难",
+    "无法与AI智能体结合",
+    "数据安全无保障"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "市场宣传部门",
+    "展厅展馆",
+    "教育培训机构",
+    "企业品牌团队"
+   ],
+   "features": [
+    "多模态形象定制",
+    "声音克隆",
+    "智能体大脑直连",
+    "口播自动化生成",
+    "全媒体资源管控",
+    "私有化部署"
+   ],
+   "pricing": [
+    "平台订阅",
+    "数字人定制服务"
+   ],
+   "tags": [
+    "数字人",
+    "虚拟人",
+    "形象克隆",
+    "声音克隆",
+    "口播",
+    "展厅",
+    "播报",
+    "交互"
+   ]
+  },
+  {
+   "id": "p16",
+   "name": "交融WPS AI助手",
+   "short": "交融WPS AI助手",
+   "cat": "基础能力",
+   "maturity": 5,
+   "tagline": "WPS 文档智能处理助手",
+   "desc": [
+    "面向企业级文字写作场景打造的智能办公底座。",
+    "深度融合交通行业知识中枢、智能自动排版、AI文档校对等能力，通过智能体生态无缝集成第三方专有AI能力。"
+   ],
+   "problems": [
+    "文档排版耗时",
+    "校对不准确",
+    "行业知识缺乏",
+    "写作效率低"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "办公人员",
+    "文秘",
+    "报告撰写人员",
+    "法务合规人员"
+   ],
+   "features": [
+    "自动排版",
+    "AI辅助校对",
+    "行业知识问答",
+    "交融智能体生态",
+    "多套专业模板",
+    "端侧部署"
+   ],
+   "pricing": [
+    "插件订阅"
+   ],
+   "tags": [
+    "WPS",
+    "文档",
+    "写作",
+    "排版",
+    "校对",
+    "办公套件",
+    "插件"
+   ]
+  },
+  {
+   "id": "p17",
+   "name": "系统智能体（PageAgent）",
+   "short": "系统智能体",
+   "cat": "基础能力",
+   "maturity": 3,
+   "tagline": "面向已建业务系统的 AI 助手",
+   "desc": [
+    "浏览器页面代理助手，以自然语言驱动浏览器自动完成跨网站信息抓取、表单填报与数据导出等多类复杂任务。",
+    "支持插件接入和嵌入系统两种形式，支持人工接管、定时任务与本地隐私保护。"
+   ],
+   "problems": [
+    "重复性网页操作繁琐",
+    "数据汇总填报工作量大",
+    "定时任务容易遗漏",
+    "系统对接成本高"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "行政办公人员",
+    "数据录入人员",
+    "运营人员",
+    "系统集成团队"
+   ],
+   "features": [
+    "自然语言指令驱动",
+    "自动化定时任务",
+    "知识库支撑",
+    "人工接管支持",
+    "本地隐私保护"
+   ],
+   "pricing": [
+    "插件订阅",
+    "集成服务"
+   ],
+   "tags": [
+    "浏览器",
+    "页面自动化",
+    "表单填报",
+    "RPA",
+    "抓取",
+    "跨系统",
+    "定时任务"
+   ]
+  },
+  {
+   "id": "p18",
+   "name": "协同工作系统",
+   "short": "协同工作系统",
+   "cat": "基础能力",
+   "maturity": 3,
+   "tagline": "人机协同的任务协作空间",
+   "desc": [
+    "任务创建、AI智能拆解、子任务分配、阶段成果提交、最终交付与验收办结被整合为完整流程。",
+    "团队成员及项目管理者可实时查看进度、沟通协作。",
+    "AI全程参与理解任务、规划路径、分析材料、主动预警风险并同步状态给负责人，实现人与AI的高效协同。"
+   ],
+   "problems": [
+    "执行者工作效率不高",
+    "管理者项目管理失控",
+    "团队协作信息割裂",
+    "项目上下文无法沉淀"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "集团决策层",
+    "项目执行层",
+    "项目管理层"
+   ],
+   "features": [
+    "AI任务拆解与路径规划",
+    "交付物全流程管理",
+    "AI全链路支持",
+    "成员协同流程"
+   ],
+   "pricing": [
+    "客户端订阅",
+    "集成服务"
+   ],
+   "tags": [
+    "任务管理",
+    "协作",
+    "项目",
+    "拆解",
+    "交付",
+    "进度",
+    "流程"
+   ]
+  },
+  {
+   "id": "p19",
+   "name": "AI会议助手",
+   "short": "AI会议助手",
+   "cat": "AI智能硬件",
+   "maturity": 2,
+   "tagline": "会议协作与决议跟踪平台",
+   "desc": [
+    "议题、记录、决议、任务分发、跟踪、复盘，全流程流程。",
+    "结论、进度、待办实时可见，跨部门在线协作。",
+    "AI贯穿会前、会中、会后与执行，全程智能协同。",
+    "软硬一体：设备采集、平台治理、私有化部署。",
+    "打通OA与项目系统，任务直达、状态自动回写。"
+   ],
+   "problems": [
+    "会议内容难以沉淀",
+    "决议落实缺少跟踪",
+    "任务分发依赖口头",
+    "执行进度无法可视"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "集团决策层",
+    "集团数字化部",
+    "项目执行层",
+    "项目负责人"
+   ],
+   "features": [
+    "软硬一体开箱即用",
+    "会议内容自动沉淀",
+    "决议任务智能拆解",
+    "任务分发直达到人",
+    "执行进度实时可视",
+    "AI全程协同治理"
+   ],
+   "pricing": [
+    "硬件买断+软件年订阅",
+    "硬件租赁+软件订阅",
+    "私有化部署+定制化开发"
+   ],
+   "tags": [
+    "会议",
+    "纪要",
+    "决议",
+    "议题",
+    "软硬一体",
+    "会议室",
+    "跟踪"
+   ]
+  },
+  {
+   "id": "p20",
+   "name": "AI语音助手",
+   "short": "AI语音助手",
+   "cat": "AI智能硬件",
+   "maturity": 1,
+   "tagline": "会议记录与任务转化助手",
+   "desc": [
+    "集成式 AI 随身记录与任务转化设备。",
+    "深度融合六麦拾音+云端转写+任务生成流程，原生打通集团会议治理与知识库生态。",
+    "支持亮灯告知、默认不录、转后即焚的合规采集，支持自动生成纪要、要点与汇报材料。"
+   ],
+   "problems": [
+    "会议录音合规风险",
+    "现场交流难以沉淀",
+    "会后整理耗时费力",
+    "记录执行两张皮",
+    "灵感一闪难以留存"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "集团决策层",
+    "二级单位负责人",
+    "项目负责人",
+    "项目经理",
+    "采购谈判"
+   ],
+   "features": [
+    "六麦阵列拾音",
+    "独立联网运行",
+    "亮灯合规告知",
+    "自动生成任务",
+    "智能体随时对话"
+   ],
+   "pricing": [
+    "按项目商议"
+   ],
+   "tags": [
+    "语音",
+    "录音",
+    "转写",
+    "随身",
+    "拾音",
+    "纪要",
+    "合规采集"
+   ]
+  },
+  {
+   "id": "p21",
+   "name": "AI鼠标",
+   "short": "AI鼠标",
+   "cat": "AI智能硬件",
+   "maturity": 1,
+   "tagline": "桌面端 AI 助手",
+   "desc": [
+    "语音键、翻译键、AI 键、搜索键四键双用：单击保留前进、后退等原生操作，长按分别唤起语音输入、语音翻译、AI 问答与智能中心，新增能力不覆盖原有习惯。",
+    "AI 键兼作截图键，看到什么问什么：截屏后直接提问、解释、翻译或改写，答案回到当前窗口，不打断手头的事。",
+    "长按语音键即说即写、长按翻译键即说即译，语音转写与双语对照直接落在光标处，适用于会议记录、外文资料阅读和即时沟通。"
+   ],
+   "problems": [
+    "AI 工具入口太深",
+    "岗位知识难以调用",
+    "键盘输入效率低下",
+    "截图问答来回搬运"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "职场人士",
+    "管理层",
+    "专业技术人员",
+    "日常办公用户"
+   ],
+   "features": [
+    "四键双用不改习惯",
+    "长按语音即说即写",
+    "长按翻译双语对照",
+    "单击AI随问随答",
+    "截屏即问所见即答",
+    "知识广场自动切换"
+   ],
+   "pricing": [
+    "硬件买断+软件年订阅",
+    "硬件租赁+软件订阅",
+    "私有化部署+定制化开发"
+   ],
+   "tags": [
+    "鼠标",
+    "端侧",
+    "硬件",
+    "翻译",
+    "截图",
+    "语音输入",
+    "快捷入口"
+   ]
+  },
+  {
+   "id": "p22",
+   "name": "科技+AI（科研项目AI管理）",
+   "short": "科技+AI",
+   "cat": "岗位应用",
+   "maturity": 5,
+   "tagline": "科研项目管理智能化",
+   "desc": [
+    "覆盖立项-执行-验收-成果转化全流程，破解知识难利用、决策偏主观、效率待提高、监管稍滞后、风险未全控、成果难转化六大系统性痛点。",
+    "提供情报AI采集、科研方向决策、深度研究、专利自动撰写、技术想法查新等应用。"
+   ],
+   "problems": [
+    "科研管理全流程痛点",
+    "知识难用",
+    "决策主观",
+    "效率低",
+    "监管滞后",
+    "风险失控",
+    "成果难转化"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "科技管理部门",
+    "科研院所",
+    "研发中心",
+    "项目负责人"
+   ],
+   "features": [
+    "科研动态自动采集（打标、分类、摘要）",
+    "方向决策支撑分析",
+    "立项智能查重",
+    "执行与经费监管",
+    "成果智能转化匹配",
+    "智能问答与深度研究"
+   ],
+   "pricing": [
+    "平台部署",
+    "定制开发",
+    "能力调用次数"
+   ],
+   "tags": [
+    "科研",
+    "科技管理",
+    "立项",
+    "查新",
+    "专利",
+    "成果转化",
+    "情报",
+    "研发管理"
+   ]
+  },
+  {
+   "id": "p24",
+   "name": "商机罗盘（商机+AI）",
+   "short": "商机罗盘",
+   "cat": "岗位应用",
+   "maturity": 5,
+   "tagline": "商机与招投标信息推荐",
+   "desc": [
+    "基于270w+市场公开招投标数据，融合企业画像和商机意向，构建覆盖商机发现、智能匹配、深度研判、持续跟踪的AI投标决策助手。",
+    "自动生成项目深度匹配分析、SWOT、BANT、风险提示报告。"
+   ],
+   "problems": [
+    "商机发现不及时",
+    "招标信息分散",
+    "项目筛选凭经验",
+    "投标资源配置不合理"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企"
+   ],
+   "users": [
+    "经营团队",
+    "投标团队",
+    "市场部",
+    "商务经理"
+   ],
+   "features": [
+    "270w+招投标数据库",
+    "AI推荐度评分",
+    "项目深度研判报告",
+    "SWOT/BANT/风险分析",
+    "移动端信息流交互"
+   ],
+   "pricing": [
+    "平台订阅（20 万/年/10 账号，价格待定）",
+    "按用户数收费"
+   ],
+   "tags": [
+    "商机",
+    "招投标",
+    "投标",
+    "市场",
+    "经营",
+    "标讯",
+    "SWOT",
+    "客户"
+   ]
+  },
+  {
+   "id": "p25",
+   "name": "制度AI",
+   "short": "制度AI",
+   "cat": "岗位应用",
+   "maturity": 3,
+   "tagline": "制度问答、冲突审核与有效性评估",
+   "desc": [
+    "聚焦大型企业制度体系繁杂、检索低效等管理痛点。",
+    "支持制度问答与多轮追问，答案溯源与原文预览，制度冲突审核与合规审查。",
+    "服务集团全员及制度管理人员。"
+   ],
+   "problems": [
+    "制度体系繁杂",
+    "检索低效",
+    "冲突难发现",
+    "合规风险高",
+    "制度查询响应慢"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企"
+   ],
+   "users": [
+    "制度管理部门",
+    "合规部门",
+    "法务部门",
+    "全体员工"
+   ],
+   "features": [
+    "制度智能问答",
+    "答案溯源可验",
+    "制度冲突审核",
+    "合规审查",
+    "PC/移动端协同",
+    "信创适配"
+   ],
+   "pricing": [
+    "平台订阅",
+    "知识库建设"
+   ],
+   "tags": [
+    "制度",
+    "规章",
+    "合规审查",
+    "冲突",
+    "问答",
+    "法务",
+    "内控"
+   ]
+  },
+  {
+   "id": "p27",
+   "name": "AI阅读",
+   "short": "AI阅读",
+   "cat": "岗位应用",
+   "maturity": 5,
+   "tagline": "长文与专业文献阅读辅助",
+   "desc": [
+    "帮助用户快速理解长文主题概要，自动总结文章结构主题。",
+    "框选内容进行AI辅助导读，如解读深层含义、联网搜索相关事实数据、针对性自由提问等。",
+    "支持审查文章用词、结构、格式不当之处。"
+   ],
+   "problems": [
+    "长文阅读耗时长",
+    "专业文献理解难",
+    "事实查证不便",
+    "文章审查不规范"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "研究人员",
+    "工程师",
+    "管理人员",
+    "需要处理大量文档的专业人士"
+   ],
+   "features": [
+    "自动总结文章结构",
+    "AI辅助导读",
+    "联网事实查证",
+    "针对性自由提问",
+    "规则化文章审查",
+    "支持多种文档格式"
+   ],
+   "pricing": [
+    "客户端订阅"
+   ],
+   "tags": [
+    "阅读",
+    "长文档",
+    "摘要",
+    "文献",
+    "审稿",
+    "理解",
+    "导读"
+   ]
+  },
+  {
+   "id": "p28",
+   "name": "施工方案审查",
+   "short": "施工方案审查",
+   "cat": "行业应用",
+   "maturity": 5,
+   "tagline": "施工方案合规校验与风险识别",
+   "desc": [
+    "面向工程建设打造的智能化方案审核应用",
+    "依托工程知识库实现施工方案合规校验、风险智能预警、审核报告自动生成，快速识别错漏缺项与危大工程隐患，支撑工程安全管控。"
+   ],
+   "problems": [
+    "方案审核依赖人工",
+    "周期长",
+    "风险识别不全",
+    "审核标准不统一",
+    "危大工程隐患难发现"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "施工单位技术部门",
+    "监理单位",
+    "建设单位安全部门",
+    "工程审核人员"
+   ],
+   "features": [
+    "审核报告自动生成",
+    "问题辅助关联定位",
+    "基础数据灵活配置",
+    "危大工程隐患识别",
+    "合规校验自动化"
+   ],
+   "pricing": [
+    "按项目定制",
+    "按审核次数计费"
+   ],
+   "tags": [
+    "施工方案",
+    "方案审查",
+    "危大工程",
+    "安全",
+    "合规校验",
+    "审核报告",
+    "技术方案"
+   ]
+  },
+  {
+   "id": "p29",
+   "name": "内河航道选线AI",
+   "short": "内河航道选线AI",
+   "cat": "行业应用",
+   "maturity": 3,
+   "tagline": "内河航道选线辅助设计",
+   "desc": [
+    "面向水运工程打造的智能化选线决策应用，深度融合大模型与GIS技术，集成知识检索、参数审核、线路生成优化等业务能力。",
+    "智能知识检索问答、关键参数智能审核、航线智能生成与多维度智能比选优化。"
+   ],
+   "problems": [
+    "航道选线依赖经验",
+    "参数审核繁琐",
+    "方案比选工作量大",
+    "知识检索慢"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "水运工程设计院",
+    "航道设计工程师",
+    "水路交通管理部门"
+   ],
+   "features": [
+    "大模型+GIS融合",
+    "专业规范智能检索",
+    "参数合规自动校验",
+    "航线方案智能生成",
+    "多维度比选优化",
+    "原始资料溯源"
+   ],
+   "pricing": [
+    "项目制交付"
+   ],
+   "tags": [
+    "航道",
+    "选线",
+    "水运",
+    "GIS",
+    "设计",
+    "比选",
+    "参数审核"
+   ]
+  },
+  {
+   "id": "p30",
+   "name": "节能报告生成",
+   "short": "节能报告生成",
+   "cat": "行业应用",
+   "maturity": 3,
+   "tagline": "节能报告辅助生成",
+   "desc": [
+    "面向节能咨询场景打造的智能应用，以交融超级智能体为底座，融合知识库与AI报告生成能力",
+    "打通知识管理、报告编制、节能评估智能研判、能耗对比分析全流程一体化作业。"
+   ],
+   "problems": [
+    "节能报告编制耗时长",
+    "设备信息提取难",
+    "能耗核算复杂",
+    "报告质量参差不齐"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "节能咨询机构",
+    "工程咨询公司",
+    "设计院",
+    "能源管理部门"
+   ],
+   "features": [
+    "设备信息智能提取",
+    "能耗碳排放自动核算",
+    "评估报告自动生成",
+    "人机协同减负",
+    "全流程一体化"
+   ],
+   "pricing": [
+    "按报告次数计费",
+    "按项目定制"
+   ],
+   "tags": [
+    "节能",
+    "能耗",
+    "双碳",
+    "报告",
+    "咨询",
+    "评估",
+    "碳排放"
+   ]
+  },
+  {
+   "id": "p31",
+   "name": "疏浚助手",
+   "short": "疏浚助手",
+   "cat": "行业应用",
+   "maturity": 5,
+   "tagline": "疏浚船舶作业辅助",
+   "desc": [
+    "基于交融大模型，在疏浚船上完成疏浚AI智能体船端部署。",
+    "实现疏浚知识问答、设备图纸解析、自然语言问数查询、离线运行等功能，构建船舶专属辅助应用。",
+    "已在天麟号疏浚船部署。"
+   ],
+   "problems": [
+    "船舶知识管理难",
+    "设备故障排查慢",
+    "船端数据查询不便",
+    "海上网络受限"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "疏浚船队",
+    "船舶管理公司",
+    "船员",
+    "疏浚工程技术人员"
+   ],
+   "features": [
+    "船舶专属知识库",
+    "多模态图纸问答",
+    "船端数据自然语言查询",
+    "离线私有化部署",
+    "懂行业懂现场的智能助手"
+   ],
+   "pricing": [
+    "项目制：船端部署 + 运维服务"
+   ],
+   "tags": [
+    "疏浚",
+    "船舶",
+    "船端",
+    "离线",
+    "图纸",
+    "设备",
+    "天麟号",
+    "航道疏浚"
+   ]
+  },
+  {
+   "id": "p32",
+   "name": "公路智慧养管系统",
+   "short": "公路智慧养管系统",
+   "cat": "行业应用",
+   "maturity": 2,
+   "tagline": "公路养护智能化管理",
+   "desc": [
+    "面向交通运输主管部门、路产公司、公路运营养护单位和一线技术人员，按照AI交互与执行逻辑对业务流程进行适配和重构。",
+    "配备日常巡查、养护作业、成本管控、稽查收费、机电维护、物资管理、道路评定、养护决策、方案编制、养护知识、养护管家等数字员工。"
+   ],
+   "problems": [
+    "公路养护管理流程繁琐",
+    "成本管控粗放",
+    "养护决策凭经验",
+    "一线技术力量不足"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "交通运输主管部门",
+    "路产公司",
+    "公路运营单位",
+    "养护公司",
+    "一线技术人员"
+   ],
+   "features": [
+    "自然语言统一驱动",
+    "全流程AI交互执行",
+    "多数字员工协同",
+    "日常巡查+养护作业+成本管控+道路评定+养护决策",
+    "流程追踪"
+   ],
+   "pricing": [
+    "定制开发 + 系统集成"
+   ],
+   "tags": [
+    "公路",
+    "养护",
+    "养管",
+    "巡查",
+    "路产",
+    "收费",
+    "机电",
+    "数字员工"
+   ]
+  },
+  {
+   "id": "p33",
+   "name": "AI赋能一会三卡",
+   "short": "一会三卡",
+   "cat": "行业应用",
+   "maturity": 3,
+   "tagline": "班前会与安全交底管理",
+   "desc": [
+    "支撑\"一会三卡\"安全生产管理体系。自动梳理风险点与应急措施对应关系，智能生成标准化班前会演讲稿并自动检查班前会质量。",
+    "AI解析安全政策文件，自动提炼简化形成警示通报。"
+   ],
+   "problems": [
+    "班前会交底流于形式",
+    "安全政策传达不及时",
+    "基层安全意识薄弱",
+    "现场管控难以压实"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "建筑施工单位",
+    "项目经理",
+    "班组长",
+    "安全管理人员"
+   ],
+   "features": [
+    "风险点智能梳理",
+    "班前会演讲稿自动生成",
+    "政策文件AI解读",
+    "警示通报自动推送",
+    "小程序一线触达"
+   ],
+   "pricing": [
+    "按工地/项目"
+   ],
+   "tags": [
+    "一会三卡",
+    "班前会",
+    "工地",
+    "安全交底",
+    "警示教育",
+    "施工安全",
+    "班组"
+   ]
+  },
+  {
+   "id": "p34",
+   "name": "职业教育AI",
+   "short": "职业教育AI",
+   "cat": "行业应用",
+   "maturity": 4,
+   "tagline": "职业教育 AI 教学应用",
+   "desc": [
+    "构建覆盖交通行业与职业教育领域的高质量数据底座，训练交通职教专属大模型，打造集学校AI门户、智能体平台和行业应用于一体的智慧职教平台。",
+    "拥有2T+教育原始语料与标准化数据处理流程。"
+   ],
+   "problems": [
+    "职业教育AI应用缺乏",
+    "交通行业教学内容更新慢",
+    "实训资源不足、教学效率待提升"
+   ],
+   "buyers": [
+    "各类高校的交通或土木学校"
+   ],
+   "users": [
+    "交通类职业院校",
+    "培训机构",
+    "教育管理部门",
+    "行业培训机构"
+   ],
+   "features": [
+    "交通职教专属大模型",
+    "AI应用门户",
+    "智能体低代码开发",
+    "教创工服研赛全过程",
+    "2T+教育原始语料"
+   ],
+   "pricing": [
+    "平台部署 + 内容定制"
+   ],
+   "tags": [
+    "职教",
+    "职业教育",
+    "院校",
+    "教学",
+    "实训",
+    "课程",
+    "人才培养"
+   ]
+  },
+  {
+   "id": "p35",
+   "name": "Token统一大市场",
+   "short": "Token统一大市场",
+   "cat": "技术服务",
+   "maturity": 5,
+   "tagline": "Token 统一供给服务",
+   "desc": [
+    "汇聚行业主流的开源与商业模型，经交融AI中心统一部署与行业增强，以规模化算力调度降低推理成本。",
+    "提供模型广场、控制台、统一API网关。",
+    "综合使用成本显著低于公有云通用API。"
+   ],
+   "problems": [
+    "模型选型分散",
+    "推理成本高",
+    "API接入复杂",
+    "用量成本不可控"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "AI应用开发者",
+    "创业团队",
+    "企业研发团队",
+    "模型应用方"
+   ],
+   "features": [
+    "模型广场集成式选购",
+    "Token用量成本驾驶舱",
+    "统一API网关",
+    "按量计费透明可控",
+    "行业增强安全可控"
+   ],
+   "pricing": [
+    "Token按量计费"
+   ],
+   "tags": [
+    "Token",
+    "API",
+    "推理成本",
+    "模型调用",
+    "计费",
+    "网关",
+    "低成本"
+   ]
+  },
+  {
+   "id": "p36",
+   "name": "高质量数据集建设服务",
+   "short": "高质量数据集建设服务",
+   "cat": "技术服务",
+   "maturity": 5,
+   "tagline": "数据集建设与咨询服务",
+   "desc": [
+    "提供覆盖数据采集、治理加工、智能标注、质量评测及数据集管理的全流程建设能力。",
+    "提供规划策划—加工建设—质量评测—贯标认证—成果申报集成式服务。",
+    "深度参与14项高质量数据集标准制定（4项国标、6项行标、4项团标）。"
+   ],
+   "problems": [
+    "数据集建设缺乏规划",
+    "数据质量不达标",
+    "无法通过标准认证",
+    "数据资产价值无法释放"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类民企",
+    "项目"
+   ],
+   "users": [
+    "AI研发团队",
+    "数据部门",
+    "想建立数据资产的企业",
+    "需要贯标认证的单位"
+   ],
+   "features": [
+    "集成式建设服务",
+    "14项标准制定参与",
+    "400亿Token预训练语料",
+    "30余项行业专识数据集",
+    "首批国标贯标试点"
+   ],
+   "pricing": [
+    "按项目/数据集"
+   ],
+   "tags": [
+    "数据集建设",
+    "贯标",
+    "标准",
+    "数据资产",
+    "语料",
+    "咨询",
+    "认证"
+   ]
+  },
+  {
+   "id": "p37",
+   "name": "测评服务（测评证书）",
+   "short": "测评服务",
+   "cat": "技术服务",
+   "maturity": 5,
+   "tagline": "数据集、模型与智能体测评服务",
+   "desc": [
+    "面向数据集、大模型、智能体及AI平台，提供标准咨询、预测预检、正式测评对接及认证取证服务。",
+    "对接中国信通院、中国九天研究院等专业测评机构。",
+    "覆盖模型、算法、数据集、智能体、AI平台等多类对象。"
+   ],
+   "problems": [
+    "AI产品效果无法权威认证",
+    "合规备案流程不熟悉",
+    "测评资源缺乏",
+    "认证周期长成本高"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类民企",
+    "项目"
+   ],
+   "users": [
+    "AI产品团队",
+    "模型研发团队",
+    "合规部门",
+    "需要获取认证的AI企业"
+   ],
+   "features": [
+    "对接权威测评机构",
+    "覆盖多类测评对象",
+    "成熟测评经验",
+    "全流程服务",
+    "认证周期短成本低"
+   ],
+   "pricing": [
+    "按测评项目"
+   ],
+   "tags": [
+    "测评",
+    "证书",
+    "信通院",
+    "认证",
+    "备案",
+    "合规",
+    "第三方"
+   ]
+  },
+  {
+   "id": "p39",
+   "name": "AI顶层规划",
+   "short": "AI顶层规划",
+   "cat": "高端咨询",
+   "maturity": 5,
+   "tagline": "AI 顶层规划与实施路径设计",
+   "desc": [
+    "面向政府、央企及事业单位，系统承接国家\"人工智能+\"战略部署，贯通政策要求、发展战略与主责主业，构建\"战略—能力—场景—治理—价值\"一体化蓝图。",
+    "交付《AI顶层规划与政策对标报告》《AI能力架构与治理蓝图》《场景图谱与重点工程清单》《行动路线图与投资测算》。"
+   ],
+   "problems": [
+    "AI建设缺乏顶层设计",
+    "战略与执行脱节",
+    "能力与场景不匹配",
+    "治理机制缺失",
+    "投资价值不明"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "政府部门",
+    "央企集团",
+    "事业单位",
+    "企业高层",
+    "战略规划部门"
+   ],
+   "features": [
+    "政策与对标研判",
+    "战略蓝图与目标",
+    "能力架构与治理规划",
+    "场景路线与投资测算",
+    "可量化考核的行动路径"
+   ],
+   "pricing": [
+    "项目制咨询费"
+   ],
+   "tags": [
+    "顶层规划",
+    "规划",
+    "蓝图",
+    "战略",
+    "路线图",
+    "投资测算",
+    "十五五",
+    "政策"
+   ]
+  },
+  {
+   "id": "p40",
+   "name": "业务咨询",
+   "short": "业务咨询",
+   "cat": "高端咨询",
+   "maturity": 5,
+   "tagline": "AI 业务咨询与能力建设",
+   "desc": [
+    "面向主责主业开展业务咨询服务，构建\"需求发现—价值评估—方案设计—试点验证—复制推广\"完整实施流程。",
+    "通过协同挖掘痛点、行业研究分析、科学划定建设优先级、规模化复制运营，把AI投入转化为生产提质、管理提效、产业增值的可量化成果。"
+   ],
+   "problems": [
+    "AI场景找不到",
+    "优先级混乱",
+    "试点效果无法复制",
+    "AI投入价值无法量化"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "业务部门",
+    "AI转型负责人",
+    "技术团队",
+    "管理层"
+   ],
+   "features": [
+    "需求发现与诊断",
+    "五维价值评估分级",
+    "方案设计与试点验证",
+    "规模复制运营迭代",
+    "多维度评估体系"
+   ],
+   "pricing": [
+    "项目制咨询费 + 实施交付"
+   ],
+   "tags": [
+    "业务咨询",
+    "场景挖掘",
+    "价值评估",
+    "试点",
+    "复制推广",
+    "咨询",
+    "诊断"
+   ]
+  },
+  {
+   "id": "p41",
+   "name": "FDE²交付体系实训",
+   "short": "FDE²交付体系实训",
+   "cat": "高端咨询",
+   "maturity": 5,
+   "tagline": "FDE² 交付体系实训",
+   "desc": [
+    "行业首创FDE²交付工作机制（前向部署工程师+前向部署业务专家双梯队）。",
+    "面向政府、央国企开展AI能力建设培训，将咨询体系深度融入真实实施项目。",
+    "训战一体、双向支撑、四果同收（业务+人才+组织+资产）。"
+   ],
+   "problems": [
+    "AI应用实施难",
+    "团队能力不足",
+    "业务与技术脱节",
+    "实施经验无法沉淀复制"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "AI交付团队",
+    "业务专家",
+    "技术工程师",
+    "AI转型组织"
+   ],
+   "features": [
+    "训战一体不脱离项目",
+    "五阶段项目制培养",
+    "双梯队共创模式",
+    "四个共同工作打法",
+    "四果同收"
+   ],
+   "pricing": [
+    "FDE 实施按测评项目",
+    "FDE 培训按天计费（基准 2 万/天）"
+   ],
+   "tags": [
+    "FDE",
+    "训战",
+    "交付体系",
+    "人才培养",
+    "实训",
+    "驻场",
+    "能力建设"
+   ]
+  },
+  {
+   "id": "p42",
+   "name": "AI技能培训",
+   "short": "AI技能培训",
+   "cat": "高端咨询",
+   "maturity": 5,
+   "tagline": "AI 理论与实操培训",
+   "desc": [
+    "面向集团业务骨干与技术负责人，提供\"大模型-数据-智能体-应用\"全链路技术培训。",
+    "构建从AI通识扫盲到智能体深度开发的全层级培训体系。",
+    "分层递进、理论+实操、产教融合、专业讲师团。"
+   ],
+   "problems": [
+    "团队AI能力不足",
+    "知识体系零散",
+    "缺乏实操经验",
+    "培训与业务脱节"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业",
+    "各类中小民企",
+    "项目部"
+   ],
+   "users": [
+    "业务骨干",
+    "技术负责人",
+    "AI开发者",
+    "集团员工"
+   ],
+   "features": [
+    "分层递进课程体系",
+    "理论+实操教学",
+    "基于交融产品实操",
+    "智能体开发实战",
+    "大模型工程化能力"
+   ],
+   "pricing": [
+    "按课程/人次计费（基准 1 万/次）"
+   ],
+   "tags": [
+    "培训",
+    "课程",
+    "支撑",
+    "通识",
+    "实操",
+    "认证培训",
+    "全员培训"
+   ]
+  },
+  {
+   "id": "p43",
+   "name": "情报能力",
+   "short": "情报能力",
+   "cat": "基础能力",
+   "maturity": 3,
+   "tagline": "一站式行业情报与资讯服务平台",
+   "desc": [
+    "中交头条是面向企业打造的一站式行业情报与资讯服务平台，聚合 500+ 行业权威公众号及公开网站数据源。",
+    "依托 AI 智能提炼、精准推送与多终端适配技术，帮助企业及时掌握行业动态、政策风向与技术前沿，为经营决策提供专业信息支撑。"
+   ],
+   "problems": [
+    "信息源分散",
+    "动态跟踪慢",
+    "政策解读难",
+    "资讯筛选成本高"
+   ],
+   "buyers": [
+    "央国企集团",
+    "二级企业"
+   ],
+   "users": [
+    "经营决策人员",
+    "市场与战略部门",
+    "业务骨干"
+   ],
+   "features": [],
+   "pricing": [
+    "平台订阅"
+   ],
+   "tags": [
+    "情报",
+    "资讯",
+    "行业动态",
+    "政策",
+    "推送"
+   ]
+  }
+
+ ]
+};
+</script>
+<script>/* 能力组合规则库：场景蓝图、匹配词表与数字人回复文本
+   按 2026.10 能力图谱整理；已移除源表中划除的 5 项能力。 */
+window.ATLAS_CONTENT = {
+ "persona": {
+  "name": "李亚楠",
+  "role": "AI中心 · 数字人（内部试用）",
+  "org": "中交信科集团AI中心",
+  "intro": "我是李亚楠，中交信科集团 AI 中心数字人。可协助查询能力信息，也可结合项目情况提供方案建议。",
+  "short": "李亚楠 · 数字人"
+ },
+ "prompts": [
+  {
+   "label": "能力查询",
+   "text": "请介绍 AI 中心目前的能力范围。"
+  },
+  {
+   "label": "方案建议",
+   "text": "我有一个项目，希望基于 AI 中心能力形成一套方案。"
+  },
+  {
+   "label": "场景参考",
+   "text": "有哪些典型场景可供参考？"
+  }
+ ],
+ "clarify": {
+  "text": "该方向可以形成能力组合。请确认优先切入的能力类型，以便进一步收敛方案。",
+  "options": [
+   {
+    "label": "岗位与办公效率",
+    "text": "优先从岗位和办公场景切入，先验证使用效果。"
+   },
+   {
+    "label": "工程现场与生产",
+    "text": "优先从工程现场、施工与生产环节切入。"
+   },
+   {
+    "label": "知识与数据资产",
+    "text": "优先治理知识与数据资产，再推进应用建设。"
+   },
+   {
+    "label": "顶层规划与治理",
+    "text": "优先开展顶层规划、能力架构与治理机制设计。"
+   }
+  ]
+ },
+ "fallback": [
+  "未能从当前描述中识别具体场景。请补充业务对象、现场环节与预期结果；信息越完整，组合建议越具针对性。",
+  "也可以从下方场景中选择，系统将先生成初步能力组合，再根据实际情况调整。"
+ ],
+ "productQuestions": [
+  "多少钱",
+  "价格",
+  "报价",
+  "收费",
+  "计费",
+  "成熟度",
+  "什么阶段",
+  "商用了吗",
+  "介绍",
+  "是什么"
+ ],
+ "blueprints": [
+  {
+   "id": "bp-safety",
+   "title": "智慧工地安全管理",
+   "kicker": "施工安全",
+   "triggers": [
+    "工地",
+    "安全",
+    "班前会",
+    "一会三卡",
+    "施工方案",
+    "危大",
+    "交底",
+    "隐患",
+    "项目部",
+    "现场",
+    "警示",
+    "安全生产",
+    "风险"
+   ],
+   "question": "现场安全管理的关键，是确认班前会、安全交底与危大工程方案审查是否按制度执行并留有记录。",
+   "summary": "覆盖班前会、安全交底与施工方案审查，形成可追溯的管理记录。",
+    "pain": "安全检查仍以纸质记录为主，整改闭环难以追溯。",
+   "diagnosis": "施工现场安全管理已有制度基础，主要问题在于执行过程缺少可核验记录，包括班前会是否召开、安全交底是否覆盖、危大工程方案是否完成审查。建议先通过两个轻量入口将关键执行环节数字化，再将数据汇总至项目管理层。",
+   "picks": [
+    {
+     "group": "现场入口",
+     "items": [
+      {
+       "id": "p33",
+       "why": "班前会演讲稿按风险点生成，通过小程序推送至班组，并支持对班前会质量进行检查。"
+      },
+      {
+       "id": "p28",
+       "why": "对施工方案进行合规校验和危大工程隐患识别，生成审核报告，辅助解决审查覆盖不足与口径不一致的问题。"
+      }
+     ]
+    },
+    {
+     "group": "知识与底座",
+     "items": [
+      {
+       "id": "p13",
+       "why": "统一治理规范、工法与事故案例，回答内容关联原文出处，便于一线核验。"
+      }
+     ]
+    },
+    {
+     "group": "管理与运营",
+     "items": [
+      {
+       "id": "p20",
+       "why": "现场交流与检查记录可随身采集并转为任务，减少记录与执行脱节。"
+      },
+      {
+       "id": "p09",
+       "why": "汇总项目端执行数据，形成集团视图，支持安全指标对比与考核。"
+      },
+      {
+       "id": "p40",
+       "why": "通过场景诊断与价值评估确定试点项目和验收口径，控制实施范围。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—3 周",
+     "name": "场景诊断",
+     "out": "选定 1—2 个试点项目，明确交底与审核的验收标准。"
+    },
+    {
+     "t": "第 4—8 周",
+     "name": "知识与规则准备",
+     "out": "完成规范、工法、事故案例入库，并配置方案审查规则库。"
+    },
+    {
+     "t": "第 9—14 周",
+     "name": "试点上线",
+     "out": "班前会与方案审查在试点项目完成验证，形成执行记录。"
+    },
+    {
+     "t": "第 15 周起",
+     "name": "推广应用",
+     "out": "按项目推广，相关指标纳入集团安全考核。"
+    }
+   ],
+   "value": [
+    {
+     "k": "交底覆盖",
+     "v": "班前会由是否召开转为内容是否讲清，可逐场核验。"
+    },
+    {
+     "k": "审核效率",
+     "v": "方案初审由全文通读转为问题定位，并生成审核报告初稿。"
+    },
+    {
+     "k": "风险跟踪",
+     "v": "隐患、整改与复查在同一记录中登记，形成跟踪记录。"
+    }
+   ],
+   "limits": [
+    "需项目部提供近两年的施工方案与事故案例样本。",
+    "班前会应用效果依赖一线使用习惯，建议配套培训、激励与抽查机制。"
+   ],
+   "delivery": "试点阶段按项目计费，推广阶段按工地或项目数量结算"
+  },
+  {
+   "id": "bp-governance",
+   "title": "集团 AI 顶层规划与治理",
+   "kicker": "规划与治理",
+   "triggers": [
+    "顶层规划",
+    "规划",
+    "蓝图",
+    "战略",
+    "路线图",
+    "投资",
+    "治理",
+    "架构",
+    "十五五",
+    "对标",
+    "政策",
+    "集团",
+    "管控",
+    "考核"
+   ],
+   "question": "顶层规划需要同时明确能力建在哪、场景优先做什么、投入如何测算，并将三者纳入同一套方案。",
+   "summary": "从政策对标、能力架构到场景清单与投资测算。",
+    "pain": "AI 规划多停留在概念层面，难以转化为可落地项目。",
+   "diagnosis": "AI 顶层规划常见的问题有两类：能力供给与业务场景不匹配，投入与产出缺少测算依据。建议先完成能力架构、场景优先级与治理机制设计，再启动平台建设。",
+   "picks": [
+    {
+     "group": "规划与诊断",
+     "items": [
+      {
+       "id": "p39",
+       "why": "交付政策对标、能力架构、场景图谱与投资测算四类成果，可作为立项论证依据。"
+      },
+      {
+       "id": "p40",
+       "why": "对场景进行多维价值评估与优先级排序，明确建设顺序。"
+      }
+     ]
+    },
+    {
+     "group": "承载平台",
+     "items": [
+      {
+       "id": "p11",
+       "why": "统一门户承载能力开放与资源纳管，可作为规划实施的首批成果。"
+      },
+      {
+       "id": "p09",
+       "why": "运营监控提供使用率、资源用量与效能指标，为治理提供数据依据。"
+      }
+     ]
+    },
+    {
+     "group": "组织与能力",
+     "items": [
+      {
+       "id": "p42",
+       "why": "分层培训提升组织应用能力，支撑规划持续实施。"
+      },
+      {
+       "id": "p05",
+       "why": "以统一评测口径评估各单位建设成果，减少重复投入。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—4 周",
+     "name": "政策与现状对标",
+     "out": "形成政策要求清单与现状差距分析。"
+    },
+    {
+     "t": "第 5—8 周",
+     "name": "能力架构设计",
+     "out": "形成七层能力架构，明确共享与自建边界。"
+    },
+    {
+     "t": "第 9—12 周",
+     "name": "场景与投资",
+     "out": "形成场景图谱、优先级排序与三年投资测算建议。"
+    },
+    {
+     "t": "第 13—16 周",
+     "name": "路线图与治理",
+     "out": "形成行动路线图、组织机制与考核指标。"
+    }
+   ],
+   "value": [
+    {
+     "k": "立项依据",
+     "v": "四类成果可作为预算申报与项目立项的论证材料。"
+    },
+    {
+     "k": "避免重复",
+     "v": "明确统一建设与二级单位自建的能力边界。"
+    },
+    {
+     "k": "可考核",
+     "v": "重点场景形成量化指标与验收口径。"
+    }
+   ],
+   "limits": [
+    "需集团层面明确牵头部门与决策机制。",
+    "规划成果的实施受年度预算安排影响。"
+   ],
+   "delivery": "采用项目制咨询，按阶段交付成果"
+  },
+  {
+   "id": "bp-research",
+   "title": "科研项目全过程管理智能化",
+   "kicker": "科技管理",
+   "triggers": [
+    "科研",
+    "科技管理",
+    "立项",
+    "查新",
+    "专利",
+    "成果转化",
+    "研发",
+    "课题",
+    "情报",
+    "研究院"
+   ],
+   "question": "科研管理的共性难点，是将分散的论文、专利、标准与项目信息转化为可用于判断的知识。",
+   "summary": "覆盖科研立项、执行、验收与成果转化环节。",
+    "pain": "科研立项、验收与成果转化分属不同环节，协同不足。",
+   "diagnosis": "科研管理的主要问题集中在知识复用、方向判断、立项查重、过程监管与成果转化等环节，其共同基础是行业知识与情报的结构化治理。",
+   "picks": [
+    {
+     "group": "核心应用",
+     "items": [
+      {
+       "id": "p22",
+       "why": "覆盖科研动态采集与标注、方向决策支持、立项查重、经费监管和成果转化匹配。"
+      },
+      {
+       "id": "p13",
+       "why": "统一治理论文、专利、标准与项目文档，为深度研究和问答提供可溯源的知识基础。"
+      }
+     ]
+    },
+    {
+     "group": "数据与分析",
+     "items": [
+      {
+       "id": "p01",
+       "why": "科研语料的多模态采集与标注，是提升垂域模型效果的基础。"
+      },
+      {
+       "id": "p14",
+       "why": "经费、进度与成果数据支持自然语言查询，减少对固定报表的依赖。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—4 周",
+     "name": "流程与数据盘点",
+     "out": "梳理立项至成果转化的关键节点与现有数据。"
+    },
+    {
+     "t": "第 5—10 周",
+     "name": "知识库建设",
+     "out": "论文、专利、标准与历史项目入库，并完成实体抽取。"
+    },
+    {
+     "t": "第 11—16 周",
+     "name": "应用上线",
+     "out": "情报采集、查新与专利撰写辅助在试点单位试运行。"
+    },
+    {
+     "t": "第 17 周起",
+     "name": "推广与运营",
+     "out": "逐步覆盖二级单位，形成科研知识资产。"
+    }
+   ],
+   "value": [
+    {
+     "k": "立项质量",
+     "v": "将查重与情报分析前置，减少低水平重复立项。"
+    },
+    {
+     "k": "过程监管",
+     "v": "对经费与进度异常进行预警，将监管环节前移。"
+    },
+    {
+     "k": "成果转化",
+     "v": "将成果与企业需求进行匹配，为转化提供线索。"
+    }
+   ],
+   "limits": [
+    "需打通科研管理系统与财务系统数据。",
+    "专利撰写辅助结果须经代理人复核后提交。"
+   ],
+   "delivery": "平台部署与定制开发，按单位数量扩展"
+  },
+  {
+   "id": "bp-highway",
+   "title": "公路养护智能化体系",
+   "kicker": "公路养护",
+   "triggers": [
+    "公路",
+    "养护",
+    "养管",
+    "巡查",
+    "路产",
+    "收费",
+    "机电",
+    "道路评定",
+    "运营",
+    "高速",
+    "养护决策"
+   ],
+   "question": "公路养护的智能化，需要将巡查、评定、决策与方案编制纳入统一的业务与数据流程。",
+   "summary": "覆盖巡检、病害识别与处置建议。",
+    "pain": "巡检记录仍以纸质为主，处置主要依赖经验判断。",
+   "diagnosis": "公路养护业务链条较长、参与方较多，经验依赖个别技术人员。单点工具难以覆盖完整流程，需要在梳理业务环节的基础上配置相应的智能化应用。",
+   "picks": [
+    {
+     "group": "核心应用",
+     "items": [
+      {
+       "id": "p32",
+       "why": "按业务流程配置巡查、养护作业、成本管控、道路评定与养护决策等智能应用，支持自然语言交互。"
+      },
+      {
+       "id": "p13",
+       "why": "养护规范、历史病害与处治方案统一入库，为决策提供依据。"
+      }
+     ]
+    },
+    {
+     "group": "数据与分析",
+     "items": [
+      {
+       "id": "p14",
+       "why": "路况、成本与工单数据支持自然语言查询，减少对月报的依赖。"
+      },
+      {
+       "id": "p20",
+       "why": "现场巡查语音记录可转为任务，减少记录与执行分离。"
+      }
+     ]
+    },
+    {
+     "group": "运营",
+     "items": [
+      {
+       "id": "p09",
+       "why": "展示养护投入与路况改善的关系，为年度养护计划提供参考。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—4 周",
+     "name": "流程诊断",
+     "out": "选定路段，梳理巡查至决策的完整流程。"
+    },
+    {
+     "t": "第 5—12 周",
+     "name": "智能应用配置",
+     "out": "按岗位配置智能应用与知识库。"
+    },
+    {
+     "t": "第 13—20 周",
+     "name": "路段试点",
+     "out": "完成一个养护周期的试点验证。"
+    },
+    {
+     "t": "第 21 周起",
+     "name": "推广应用",
+     "out": "逐步推广，形成标准化养护作业手册。"
+    }
+   ],
+   "value": [
+    {
+     "k": "一线减负",
+     "v": "记录、填报与汇总由系统辅助完成，技术人员可更多投入专业判断。"
+    },
+    {
+     "k": "决策依据",
+     "v": "养护方案关联历史案例与规范条文，便于追溯。"
+    },
+    {
+     "k": "成本可见",
+     "v": "养护投入与路况改善可按路段对比。"
+    }
+   ],
+   "limits": [
+    "需接入现有路况检测与工单系统。",
+    "智能应用的权限边界需与养护管理制度保持一致。"
+   ],
+   "delivery": "定制开发与系统集成，按路段规模分期实施"
+  },
+  {
+   "id": "bp-bid",
+   "title": "市场经营与投标辅助决策",
+   "kicker": "市场经营",
+   "triggers": [
+    "商机",
+    "招投标",
+    "投标",
+    "招标",
+    "市场",
+    "经营",
+    "标讯",
+    "中标",
+    "客户",
+    "商务",
+    "报价"
+   ],
+   "question": "经营团队的主要挑战，是在大量标讯中识别匹配度较高的项目，并为投标决策提供依据。",
+   "summary": "覆盖商机筛选、投标研判与标书编制辅助。",
+    "pain": "商机、投标与标书材料分散在不同人员手中，难以复用。",
+   "diagnosis": "经营团队面临的主要问题包括信息分散、判断依赖个人经验。建议先将外部标讯与企业资质、业绩数据关联，形成推荐度评分，再以研判报告辅助投标决策。",
+   "picks": [
+    {
+     "group": "核心应用",
+     "items": [
+      {
+       "id": "p24",
+       "why": "提供招投标数据、推荐度评分及 SWOT、BANT 与风险研判报告，辅助投标决策。"
+      },
+      {
+       "id": "p13",
+       "why": "统一入库企业资质、业绩与区域资源，为项目匹配提供依据。"
+      }
+     ]
+    },
+    {
+     "group": "分析与合规",
+     "items": [
+      {
+       "id": "p14",
+       "why": "中标率、区域分布与投入产出支持自然语言查询，减少手工制表。"
+      },
+      {
+       "id": "p25",
+       "why": "投标文件涉及的制度与合规要求支持检索，辅助降低废标风险。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—2 周",
+     "name": "经营口径对齐",
+     "out": "明确区域、专业与客户类型的筛选规则。"
+    },
+    {
+     "t": "第 3—6 周",
+     "name": "画像与知识入库",
+     "out": "企业资质、业绩、历史投标与竞争对手信息入库。"
+    },
+    {
+     "t": "第 7—10 周",
+     "name": "试点运行",
+     "out": "选择一个经营团队试运行，校准推荐度。"
+    },
+    {
+     "t": "第 11 周起",
+     "name": "推广应用",
+     "out": "逐步覆盖各区域经营机构，形成商机池。"
+    }
+   ],
+   "value": [
+    {
+     "k": "筛选效率",
+     "v": "从人工查阅标讯转为按推荐度排序，优先评估匹配度较高的项目。"
+    },
+    {
+     "k": "决策质量",
+     "v": "投标决策可参考 SWOT、BANT 与风险提示。"
+    },
+    {
+     "k": "资源聚焦",
+     "v": "引导投标资源向匹配度较高的项目集中。"
+    }
+   ],
+   "limits": [
+    "推荐度需结合本单位历史中标数据校准。",
+    "外部标讯的覆盖范围需按区域确认。"
+   ],
+   "delivery": "平台订阅，按账号数量计费"
+  },
+  {
+   "id": "bp-office",
+   "title": "智能办公与岗位效率",
+   "kicker": "办公协同",
+   "triggers": [
+    "办公",
+    "写作",
+    "公文",
+    "文档",
+    "WPS",
+    "效率",
+    "员工",
+    "日常",
+    "会议纪要",
+    "阅读",
+    "表格",
+    "填报",
+    "鼠标"
+   ],
+   "question": "办公场景的智能化建设，重点在于减少系统切换，将写作、阅读、查询、填报与任务协同集中到统一入口。",
+   "summary": "覆盖写作、阅读、问答、填报与任务协同等办公环节。",
+   "diagnosis": "员工日常使用的 AI 工具较多，主要问题在于入口分散、切换成本较高。建议先统一客户端入口，再按岗位配置能力，并通过使用数据判断各项能力的实际需求。",
+   "picks": [
+    {
+     "group": "统一入口",
+     "items": [
+      {
+       "id": "p12",
+       "why": "桌面工作台，联网搜索、多文档处理、MCP 生态集于一处，兼顾效率与数据隐私。"
+      },
+      {
+       "id": "p11",
+       "why": "集团统一门户承载应用与能力，避免各单位重复建入口。"
+      }
+     ]
+    },
+    {
+     "group": "高频能力",
+     "items": [
+      {
+       "id": "p16",
+       "why": "WPS 内直接排版、校对、问答，写作场景零迁移成本。"
+      },
+      {
+       "id": "p27",
+       "why": "长文档与专业文献快速理解，支持联网查证。"
+      },
+      {
+       "id": "p17",
+       "why": "已建系统的重复网页操作交给页面智能体，填报、导出自动化。"
+      }
+     ]
+    },
+    {
+     "group": "协同与硬件",
+     "items": [
+      {
+       "id": "p18",
+       "why": "任务拆解、分配、交付、验收流程，系统提供辅助。"
+      },
+      {
+       "id": "p21",
+       "why": "鼠标即入口，语音输入、翻译、截屏问答不打断手头工作。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—2 周",
+     "name": "岗位盘点",
+     "out": "识别 3—5 个高频重复动作"
+    },
+    {
+     "t": "第 3—6 周",
+     "name": "入口与能力配置",
+     "out": "客户端下发，按岗位开通对应能力"
+    },
+    {
+     "t": "第 7—10 周",
+     "name": "试点部门",
+     "out": "选取两个部门试用，收集使用数据"
+    },
+    {
+     "t": "第 11 周起",
+     "name": "全员推广",
+     "out": "按活跃度迭代能力清单"
+    }
+   ],
+   "value": [
+    {
+     "k": "入口统一",
+     "v": "减少工具切换，员工不必记哪个功能在哪个系统"
+    },
+    {
+     "k": "文档效率",
+     "v": "排版、校对、摘要由 AI 承接，人专注判断与表达"
+    },
+    {
+     "k": "可度量",
+     "v": "使用活跃度与任务完成量可被统计"
+    }
+   ],
+   "limits": [
+    "需明确企业知识的使用边界与权限",
+    "客户端推广依赖 IT 统一分发"
+   ],
+   "delivery": "客户端订阅，按人数计费"
+  },
+  {
+   "id": "bp-meeting",
+   "title": "会议决议与任务管理",
+   "kicker": "会议治理",
+   "triggers": [
+    "会议",
+    "纪要",
+    "决议",
+    "开会",
+    "议题",
+    "督办",
+    "跟踪",
+    "会议室",
+    "录音",
+    "待办"
+   ],
+   "question": "会议的问题不在开会，而在会后：决议有没有变成任务、任务有没有被跟踪。软硬一体的价值就是把这条链闭合。",
+   "summary": "覆盖议题、记录、决议、任务分发与跟踪等会议管理环节。",
+   "diagnosis": "会议内容沉淀难、决议落实缺跟踪、任务分发靠口头，是三个连续失效点。建议用硬件解决采集合规，用平台解决决议转任务，用协同工具解决跟踪。",
+   "picks": [
+    {
+     "group": "采集与会议",
+     "items": [
+      {
+       "id": "p19",
+       "why": "软硬一体，会议内容自动沉淀，决议任务智能拆解并直达到人。"
+      },
+      {
+       "id": "p20",
+       "why": "随身记录设备，亮灯告知、默认不录、转后即焚，合规采集现场交流。"
+      }
+     ]
+    },
+    {
+     "group": "任务与知识",
+     "items": [
+      {
+       "id": "p18",
+       "why": "决议转任务后进入协同空间，进度、交付物、验收全程可见。"
+      },
+      {
+       "id": "p13",
+       "why": "会议材料与历史决议入库，下一次会议可直接引用过往结论。"
+      }
+     ]
+    },
+    {
+     "group": "运营",
+     "items": [
+      {
+       "id": "p09",
+       "why": "决议完成率、会议时长、督办超期可被统计与比较。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—2 周",
+     "name": "会议制度梳理",
+     "out": "明确议题、决议、督办的模板与责任"
+    },
+    {
+     "t": "第 3—5 周",
+     "name": "设备与平台部署",
+     "out": "试点会议室上线，打通 OA 与项目系统"
+    },
+    {
+     "t": "第 6—10 周",
+     "name": "试点运行",
+     "out": "决议转任务流程完成验证，形成督办记录"
+    },
+    {
+     "t": "第 11 周起",
+     "name": "推广",
+     "out": "覆盖主要会议室与领导班子会议"
+    }
+   ],
+   "value": [
+    {
+     "k": "决议实施",
+     "v": "每条决议都有责任人、时限与状态"
+    },
+    {
+     "k": "资产沉淀",
+     "v": "会议结论可检索、可引用，不随人员流动丢失"
+    },
+    {
+     "k": "合规",
+     "v": "采集过程亮灯告知，支持转后即焚"
+    }
+   ],
+   "limits": [
+    "硬件采购需走固定资产流程",
+    "涉及经营决策的会议需设定更严格的权限"
+   ],
+   "delivery": "硬件买断或租赁 + 软件年订阅"
+  },
+  {
+   "id": "bp-compliance",
+   "title": "制度合规与知识问答",
+   "kicker": "制度与法务",
+   "triggers": [
+    "制度",
+    "合规",
+    "规章",
+    "法务",
+    "内控",
+    "审查",
+    "冲突",
+    "员工查询",
+    "政策",
+    "风险"
+   ],
+   "question": "制度 AI 的第一要求不是聪明，是「答得准、找得到出处」。答案不能溯源，员工就不敢用。",
+   "summary": "覆盖制度问答、冲突审核与有效性评估。",
+   "diagnosis": "大型企业制度体系繁杂、版本多、彼此冲突。建议先把制度统一治理并建立版本关系，再做问答与冲突审查；否则问答越快，风险越大。",
+   "picks": [
+    {
+     "group": "核心应用",
+     "items": [
+      {
+       "id": "p25",
+       "why": "制度问答与多轮追问、答案溯源与原文预览、冲突审核与合规审查。"
+      },
+      {
+       "id": "p13",
+       "why": "文档解析、实体抽取与语义检索，是制度问答准确率的地基。"
+      }
+     ]
+    },
+    {
+     "group": "风控与验收",
+     "items": [
+      {
+       "id": "p05",
+       "why": "用固定题集评测问答准确率与引用正确率，避免上线即失控。"
+      },
+      {
+       "id": "p37",
+       "why": "需要对外证明合规能力时，可对接权威机构完成测评与取证。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—3 周",
+     "name": "制度盘点",
+     "out": "制度清单、版本关系与效力状态梳理"
+    },
+    {
+     "t": "第 4—8 周",
+     "name": "知识治理",
+     "out": "制度入库、切片、权限分级"
+    },
+    {
+     "t": "第 9—12 周",
+     "name": "问答与审查",
+     "out": "问答上线，冲突审查完成验证首批制度"
+    },
+    {
+     "t": "第 13 周起",
+     "name": "推广",
+     "out": "全员可用，纳入制度修订流程"
+    }
+   ],
+   "value": [
+    {
+     "k": "查询效率",
+     "v": "从翻文件到自然语言问答，答案带原文出处"
+    },
+    {
+     "k": "冲突发现",
+     "v": "新制度发布前自动比对既有条款，减少打架"
+    },
+    {
+     "k": "合规留痕",
+     "v": "问答与审查过程可追溯，便于内控检查"
+    }
+   ],
+   "limits": [
+    "制度文本的版本管理必须先理清",
+    "涉密制度需在受限环境部署"
+   ],
+   "delivery": "平台订阅 + 知识库建设"
+  },
+  {
+   "id": "bp-waterway",
+   "title": "水运工程设计与咨询",
+   "kicker": "水运与咨询",
+   "triggers": [
+    "航道",
+    "水运",
+    "选线",
+    "设计院",
+    "港口",
+    "节能",
+    "能耗",
+    "双碳",
+    "咨询报告",
+    "评估"
+   ],
+   "question": "设计和咨询的 AI 化，价值在「比选」：把参数、规范、历史方案放在一起算，人再做判断。",
+   "summary": "面向航道选线与节能咨询，覆盖规范检索、参数校验与方案生成辅助。",
+   "diagnosis": "水运设计与节能咨询的共同点是规范密集、比选工作量大。适合先做「规范检索 + 参数校验 + 方案生成」三件事，把工程师从翻规范和套模板里解放出来。",
+   "picks": [
+    {
+     "group": "专业应用",
+     "items": [
+      {
+       "id": "p29",
+       "why": "大模型 + GIS 融合，支持规范检索、参数合规校验、航线生成与多维比选。"
+      },
+      {
+       "id": "p30",
+       "why": "设备信息提取、能耗碳排放核算、评估报告自动生成。"
+      }
+     ]
+    },
+    {
+     "group": "底座",
+     "items": [
+      {
+       "id": "p13",
+       "why": "规范、标准、历史方案统一治理，检索结果可溯源。"
+      },
+      {
+       "id": "p14",
+       "why": "历史项目造价、能耗数据自然语言查询，支撑比选。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—4 周",
+     "name": "规范与案例入库",
+     "out": "设计规范、典型方案、历史项目数据结构化"
+    },
+    {
+     "t": "第 5—10 周",
+     "name": "应用配置",
+     "out": "选线参数与校验规则、报告模板配置"
+    },
+    {
+     "t": "第 11—16 周",
+     "name": "项目试用",
+     "out": "在真实项目上完成一轮方案比选"
+    },
+    {
+     "t": "第 17 周起",
+     "name": "推广",
+     "out": "纳入设计院标准作业流程"
+    }
+   ],
+   "value": [
+    {
+     "k": "比选效率",
+     "v": "多方案比选从数天缩短到小时级"
+    },
+    {
+     "k": "规范一致",
+     "v": "参数校验依据可追溯，减少返工"
+    },
+    {
+     "k": "报告质量",
+     "v": "模板化生成，格式与口径统一"
+    }
+   ],
+   "limits": [
+    "GIS 数据需具备可用的基础底图与勘测资料",
+    "生成方案须由注册工程师复核"
+   ],
+   "delivery": "项目制交付"
+  },
+  {
+   "id": "bp-vocational",
+   "title": "交通职业教育智能化",
+   "kicker": "教育实训",
+   "triggers": [
+    "职教",
+    "职业教育",
+    "院校",
+    "学校",
+    "教学",
+    "实训",
+    "课程",
+    "人才培养",
+    "培训体系",
+    "教师"
+   ],
+   "question": "职教的 AI 不能只做问答，得能进课堂、进实训、进备课。所以要平台、内容、工具一起给。",
+   "summary": "以交通职教模型与 AI 门户为基础，覆盖教学、实训与竞赛等环节。",
+   "diagnosis": "职业院校的建设重点在于行业语料、实训场景与教学工具的组合，单一通用大模型难以覆盖教学需求。建议以院校为单位整体部署，优先完成备课与实训两个高频场景。",
+   "picks": [
+    {
+     "group": "核心平台",
+     "items": [
+      {
+       "id": "p34",
+       "why": "交通职教专属大模型 + 学校 AI 门户 + 智能体平台，2T+ 教育语料支撑。"
+      },
+      {
+       "id": "p04",
+       "why": "教师可低代码搭建课程智能体，教学场景自己长出来。"
+      }
+     ]
+    },
+    {
+     "group": "内容与交互",
+     "items": [
+      {
+       "id": "p01",
+       "why": "校本语料与实训数据的采集标注，形成学校自己的数据资产。"
+      },
+      {
+       "id": "p15",
+       "why": "数字人用于课程播报、招生宣传与虚拟实训指导。"
+      }
+     ]
+    },
+    {
+     "group": "支撑",
+     "items": [
+      {
+       "id": "p42",
+       "why": "教师 AI 能力培训，确保平台上线后被使用。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—4 周",
+     "name": "专业与课程盘点",
+     "out": "确定试点专业与课程包"
+    },
+    {
+     "t": "第 5—12 周",
+     "name": "平台与语料",
+     "out": "专属模型微调、校本语料入库"
+    },
+    {
+     "t": "第 13—20 周",
+     "name": "教学试点",
+     "out": "备课、实训、评价三个场景完成验证"
+    },
+    {
+     "t": "第 21 周起",
+     "name": "全校推广",
+     "out": "形成校本 AI 教学资源库"
+    }
+   ],
+   "value": [
+    {
+     "k": "备课效率",
+     "v": "教案、课件、题库生成，教师专注教学设计"
+    },
+    {
+     "k": "实训条件",
+     "v": "虚拟仿真实训降低设备依赖"
+    },
+    {
+     "k": "专业特色",
+     "v": "交通行业语料形成差异化"
+    }
+   ],
+   "limits": [
+    "需要学校提供课程与语料授权",
+    "涉及学生数据需符合教育数据管理要求"
+   ],
+   "delivery": "平台部署 + 内容定制"
+  },
+  {
+   "id": "bp-digitalhuman",
+   "title": "数字人交互与品牌服务",
+   "kicker": "数字人",
+   "triggers": [
+    "数字人",
+    "虚拟人",
+    "展厅",
+    "讲解",
+    "播报",
+    "形象",
+    "声音克隆",
+    "客服",
+    "接待",
+    "品牌"
+   ],
+   "question": "数字人最容易做成「会说话的视频」。要它有用，得把形象、声音和智能体大脑接在一起。",
+   "summary": "基于数字人形象、语音与内容生成能力，用于展厅讲解、品牌播报与业务咨询。",
+   "diagnosis": "展厅与品牌场景需要稳定的形象输出，业务咨询场景需要准确的知识回答。两者共用一套数字人平台，差别在背后接的智能体与知识库。",
+   "picks": [
+    {
+     "group": "数字人",
+     "items": [
+      {
+       "id": "p15",
+       "why": "图片、视频、VRM 多方式定制形象，声纹克隆，直连智能体大脑。"
+      },
+      {
+       "id": "p04",
+       "why": "为数字人配置专属智能体，接入业务知识与工具。"
+      }
+     ]
+    },
+    {
+     "group": "知识",
+     "items": [
+      {
+       "id": "p13",
+       "why": "企业知识与产品资料统一治理，回答有出处。"
+      },
+      {
+       "id": "p12",
+       "why": "复杂问题转交工作台深处理，数字人不必硬答。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—2 周",
+     "name": "形象与场景确认",
+     "out": "确定形象风格、音色与使用场景"
+    },
+    {
+     "t": "第 3—6 周",
+     "name": "知识接入",
+     "out": "业务知识入库，配置问答边界"
+    },
+    {
+     "t": "第 7—9 周",
+     "name": "联调上线",
+     "out": "展厅或线上入口上线试运行"
+    },
+    {
+     "t": "第 10 周起",
+     "name": "运营",
+     "out": "按咨询记录迭代知识"
+    }
+   ],
+   "value": [
+    {
+     "k": "一致性",
+     "v": "形象与话术统一，跨渠道不失控"
+    },
+    {
+     "k": "可用性",
+     "v": "7×24 接待，复杂问题可转人工或转智能体"
+    },
+    {
+     "k": "成本",
+     "v": "口播与讲解内容自动化生成"
+    }
+   ],
+   "limits": [
+    "形象定制需肖像与声音授权",
+    "面向公众的场景需配置内容安全策略"
+   ],
+   "delivery": "平台订阅 + 数字人定制服务"
+  },
+  {
+   "id": "bp-port",
+   "title": "港口 AI 建设（一期）",
+   "kicker": "港口建设",
+   "triggers": [
+    "港口",
+    "港口ai",
+    "港口人工智能",
+    "港口大模型",
+    "港口能力建设",
+    "港口建设",
+    "智慧港口",
+    "码头",
+    "码头ai",
+    "港区",
+    "集装箱",
+    "散货",
+    "件杂货",
+    "岸桥",
+    "场桥",
+    "堆场",
+    "闸口",
+    "集卡",
+    "理货",
+    "引航",
+    "拖轮",
+    "港机",
+    "皮带机",
+    "水尺",
+    "泊位",
+    "港口安全"
+   ],
+   "question": "先确认港口类型与最痛场景；一期只做安全、知识与数据底座，调度、视频与港口大模型放二期。",
+   "summary": "一期建设安全、知识与数据底座；调度、视频与港口大模型纳入二期。",
+   "diagnosis": "港口 AI 的难点不在模型，在场景分层：生产调度、安全应急、设备设施、经营知识是四类不同的事。一期建议从安全、知识与数据底座切入，把调度、视频与港口大模型放到二期。",
+   "picks": [
+    {
+     "group": "现场与安全",
+     "items": [
+      {
+       "id": "p33",
+       "why": "班前会演讲稿按风险点自动生成，交底与开会质量可检查。"
+      },
+      {
+       "id": "p28",
+       "why": "港口工程与危大方案做合规校验、隐患识别，审核报告自动生成。"
+      }
+     ]
+    },
+    {
+     "group": "知识与经营",
+     "items": [
+      {
+       "id": "p13",
+       "why": "港口规程、SOP、事故案例统一治理，答案逐句溯源。"
+      },
+      {
+       "id": "p14",
+       "why": "生产、成本、绩效数据支持自然语言查询，无需等待报表生成。"
+      }
+     ]
+    },
+    {
+     "group": "底座与评测",
+     "items": [
+      {
+       "id": "p01",
+       "why": "港口文档、影像、业务数据的采集清洗标注，是模型与知识库的原料。"
+      },
+      {
+       "id": "p04",
+       "why": "港口场景智能体统一开发、管理、复用。"
+      },
+      {
+       "id": "p05",
+       "why": "安全、知识、问数的效果用评测确认，不靠演示。"
+      }
+     ]
+    },
+    {
+     "group": "按需增补",
+     "items": [
+      {
+       "id": "p31",
+       "why": "涉及疏浚、港池维护时，船端离线问答与问数。"
+      },
+      {
+       "id": "p29",
+       "why": "涉及进港航道、内河转运时，选线与方案比选。"
+      }
+     ]
+    }
+   ],
+   "path": [
+    {
+     "t": "第 1—3 周",
+     "name": "场景诊断",
+     "out": "选定 1—2 个港区场景（安全交底、知识检索、生产问数），定验收指标"
+    },
+    {
+     "t": "第 4—8 周",
+     "name": "数据与知识",
+     "out": "港口规程、案例、业务数据入库；确定数据集与评测口径"
+    },
+    {
+     "t": "第 9—14 周",
+     "name": "试点上线",
+     "out": "在 1 个港区或项目部完成验证最小流程，安全与知识各出一个指标"
+    },
+    {
+     "t": "第 15 周起",
+     "name": "推广",
+     "out": "沉淀港口标准包，向其他港区推广；港口模型按语料情况启动"
+    }
+   ],
+   "value": [
+    {
+     "k": "安全执行",
+     "v": "班前会、交底从「有没有开」变成「讲没讲清」，可逐场核验"
+    },
+    {
+     "k": "知识检索",
+     "v": "规程、案例、档案可溯源，减少反复问人"
+    },
+    {
+     "k": "生产问数",
+     "v": "生产、成本数据自然语言查询，经营分析提效"
+    }
+   ],
+   "limits": [
+    "港口生产调度（TOS、闸口、堆场、集卡）没有现成 SKU，需要基于智能体中心、问数与系统智能体做定制集成。",
+    "视频违章、周界与设备巡检识别需基于数据集与训练定制，不在现成能力清单内。",
+    "疏浚助手、航道选线、港口垂域模型只在涉及相应场景时加入，不建议一期全上。"
+   ],
+   "delivery": "一期按场景或项目计费；数据与模型建设按数据集、训练任务计费；推广阶段按港区或项目数结算。"
+  }
+ ],
+ "modifiers": [
+  {
+   "keys": [
+    "私有化",
+    "信创",
+    "内网",
+    "涉密",
+    "自主可控"
+   ],
+   "note": "按私有化部署设计，模型、算力与安全策略部署在内网。",
+   "add": [
+    "p03",
+    "p07",
+    "p08"
+   ]
+  },
+  {
+   "keys": [
+    "成本",
+    "降本",
+    "预算",
+    "省钱",
+    "贵",
+    "投入"
+   ],
+   "note": "优先采用按量计费与共享底座，减少一次性重资产投入。",
+   "add": [
+    "p35",
+    "p07"
+   ]
+  },
+  {
+   "keys": [
+    "评测",
+    "认证",
+    "证书",
+    "验收",
+    "标准"
+   ],
+   "note": "将评测与贯标要求纳入验收条款，作为效果评估依据。",
+   "add": [
+    "p05",
+    "p37"
+   ]
+  },
+  {
+   "keys": [
+    "培训",
+    "赋能",
+    "人才",
+    "组织",
+    "能力提升"
+   ],
+   "note": "配套培训与实践，支撑系统上线后的实际使用。",
+   "add": [
+    "p41",
+    "p42"
+   ]
+  }
+ ]
+};
+</script>
+<script>
+(function(){
+  var A = window.ATLAS, C = window.ATLAS_CONTENT || {};
+  var byId = {}; A.products.forEach(function(p){ byId[p.id] = p; });
+  var catByName = {}; A.categories.forEach(function(c){ catByName[c.name] = c; });
+  var MAT = {1:"概念预研",2:"原型验证",3:"试点测试",4:"复制推广",5:"正式商用"};
+  var state = { q:"", cat:"all" };
+
+  var listEl = document.getElementById("list");
+  var countEl = document.getElementById("count");
+  var catWrap = document.getElementById("catChips");
+  var input = document.getElementById("q");
+
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(m){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]; }); }
+
+  catWrap.innerHTML = '<button class="chip on" type="button" data-cat="all">全部类型</button>' +
+    A.categories.map(function(c){
+      return '<button class="chip" type="button" data-cat="' + esc(c.name) + '"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + c.accent + ';margin-right:6px;vertical-align:1px"></span>' + esc(c.name) + '</button>';
+    }).join("");
+
+  function matches(p){
+    if (state.cat !== "all" && p.cat !== state.cat) return false;
+    if (!state.q) return true;
+    var hay = [p.name, p.short, p.tagline, p.cat, (p.tags||[]).join(" "), (p.problems||[]).join(" ")].join(" ");
+    return hay.toLowerCase().indexOf(state.q.toLowerCase()) > -1;
+  }
+
+  function row(p, i){
+    var c = catByName[p.cat] || {};
+    var id = "row-" + p.id;
+    return '<div class="row" id="' + id + '">' +
+      '<button class="row-btn" type="button" aria-expanded="false" data-id="' + p.id + '">' +
+        '<span class="r-main">' +
+          '<span class="r-name">' + esc(p.short) +
+            '<span class="r-cat"><i style="background:' + (c.accent||"#2F6BFF") + '"></i>' + esc(p.cat) + '</span>' +
+          '</span>' +
+          '<span class="r-desc">' + esc(p.tagline) + '</span>' +
+        '</span>' +
+        '<span class="r-mat">' + (MAT[p.maturity]||"") + '</span>' +
+        '<span class="r-arrow">›</span>' +
+      '</button>' +
+      '<div class="row-detail">' +
+        '<div class="d-grid">' +
+          '<div>' +
+            '<p class="d-label">能力说明</p>' +
+            (p.desc||[]).map(function(d){ return "<p>" + esc(d) + "</p>"; }).join("") +
+            (p.problems && p.problems.length ? '<p class="d-label" style="margin-top:12px">解决的问题</p><div class="d-tags">' + p.problems.map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' : "") +
+          '</div>' +
+          '<div>' +
+            '<p class="d-label">适用对象</p><div class="d-tags">' + (p.users||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+            '<p class="d-label" style="margin-top:12px">业主类型</p><div class="d-tags">' + (p.buyers||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+            '<p class="d-label" style="margin-top:12px">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+            '<p class="d-label" style="margin-top:12px">成熟度</p><div class="d-tags"><span class="tag">' + (MAT[p.maturity]||"") + '（第 ' + p.maturity + ' 级）</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function render(){
+    var items = A.products.filter(matches);
+    countEl.textContent = items.length + " / " + A.products.length;
+    listEl.innerHTML = items.length ? items.map(row).join("") : '<p class="empty">没有匹配的能力，换个关键词试试，或点“全部类型”。</p>';
+    listEl.querySelectorAll(".row-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var rowEl = btn.parentNode;
+        var open = rowEl.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+  }
+
+  catWrap.addEventListener("click", function(e){
+    var b = e.target.closest(".chip"); if (!b) return;
+    state.cat = b.dataset.cat;
+    catWrap.querySelectorAll(".chip").forEach(function(x){ x.classList.toggle("on", x === b); });
+    render();
+  });
+
+  document.querySelectorAll("[data-q]").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.q = b.dataset.q; input.value = state.q; render();
+      document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+
+  var t;
+  input.addEventListener("input", function(){
+    clearTimeout(t);
+    t = setTimeout(function(){ state.q = input.value.trim(); render(); }, 120);
+  });
+
+  render();
+
+  // 落地场景
+  var scenes = (C.blueprints || []).slice(0,5);
+  var sg = document.getElementById("scenes");
+  if (sg && scenes.length){
+    sg.innerHTML = scenes.map(function(bp){
+      var picks = bp.picks.slice(0,2).reduce(function(a,g){ return a.concat(g.items); }, []).slice(0,3).map(function(it){
+        var p = byId[it.id]; return p ? p.short : it.id;
+      });
+      return '<article class="scene">' +
+        '<div class="k">' + esc(bp.kicker) + '</div>' +
+        '<h3>' + esc(bp.title) + '</h3>' +
+        '<p>' + esc(bp.summary) + '</p>' +
+        '<div class="tags">' + picks.map(function(n){ return '<span>' + esc(n) + '</span>'; }).join("") + '</div>' +
+      '</article>';
+    }).join("");
+  }
+
+  // 数字人：发送即滚动提示（演示版不做真实回答）
+  var ask = document.getElementById("askInput");
+  var send = document.getElementById("askSend");
+  function reply(){
+    if (!ask.value.trim()) return;
+    var box = document.getElementById("dockTip");
+    if (box) box.textContent = "已记录问题，AI 中心会尽快回复；也可以先在能力目录里按关键词搜索。";
+    ask.value = "";
+  }
+  if (send) send.addEventListener("click", reply);
+  if (ask) ask.addEventListener("keydown", function(e){ if (e.key === "Enter") reply(); });
+  document.querySelectorAll(".chips-sm span").forEach(function(s){
+    s.addEventListener("click", function(){ ask.value = s.textContent; ask.focus(); });
+  });
+})();
+</script>
+</body>
+</html>
