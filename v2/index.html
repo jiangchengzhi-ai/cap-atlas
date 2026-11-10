@@ -681,6 +681,22 @@ details p{margin:8px 0 0;line-height:1.8}
 .dir-tools{padding:0}
 .cats{margin:16px 0}
 .list{margin:0}
+
+/* hero proof line (v1) */
+.hero-proof{display:flex;flex-wrap:wrap;gap:8px 22px;margin:16px 0 0;font-size:12.5px;color:var(--tx-2)}
+.hero-proof b{color:var(--tx);font-weight:700;margin-right:2px}
+/* expandable plan detail */
+.plan-card{grid-template-areas:"top media" "body media" "foot media" "detail detail";cursor:pointer}
+.plan-card[role="button"]:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pc-detail{grid-area:detail;display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.plan-card.open .pc-detail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}
+.pc-label{margin:0 0 6px;font-size:11px;font-weight:600;color:var(--tx-3)}
+.pc-detail ol,.pc-detail ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.pc-detail li{font-size:12px;line-height:1.7;color:var(--tx-2)}
+.pc-detail li b{color:var(--tx);margin-right:6px;font-weight:600}
+.pc-delivery{grid-column:1/-1;margin:0;font-size:12px;color:var(--tx-2)}
+.pc-delivery b{color:var(--tx);margin-right:8px}
+@media (max-width:760px){.plan-card.open .pc-detail{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -701,6 +717,11 @@ details p{margin:8px 0 0;line-height:1.8}
   <section class="hero">
     <h1>找到需要的能力，<br>更快构建业务应用</h1>
     <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
+    <p class="hero-proof">
+      <span><b>25</b> 项已进入复制推广或正式商用阶段</span>
+      <span>参与 <b>14</b> 项数据集相关标准</span>
+      <span>港珠澳大桥、蒙内铁路、天麟号等项目经验</span>
+    </p>
 
   </section>
 
@@ -791,11 +812,7 @@ details p{margin:8px 0 0;line-height:1.8}
     </div>
   </section>
 
-  <section class="cta-final">
-    <h2>说说你的项目问题，我们给一套能落地的方案</h2>
-    <p>能力组合、部署方式、周期和计费，一次说清。</p>
-    <button class="btn-primary" type="button" id="ctaAsk2">让数字人帮我找能力</button>
-  </section>
+
 
   <footer class="foot"><div class="shell foot-in">
     <span>AI 中心 · 能力黄页（设计 v2 · 演示版）</span>
@@ -4486,7 +4503,7 @@ SCENE_ART = {
       var restN = Math.max(0, allPicks.length - chain.length);
       var dots = "";
       for (var d = 0; d < (bp.path || []).length; d++) dots += "<i></i>";
-      return '<article class="plan-card">' +
+      return '<article class="plan-card" role="button" tabindex="0" aria-expanded="false">' +
         '<span class="pc-top"><span class="pc-idx">' + ("0" + (bi + 1)).slice(-2) + '</span>' +
           '<span class="pc-kicker">' + esc(bp.kicker) + '</span></span>' +
         '<span class="pc-body">' +
@@ -4497,6 +4514,16 @@ SCENE_ART = {
           }).join("") + (restN ? '<span class="pc-chip pc-chip-more">+' + restN + '</span>' : "") + '</span>' +
         '</span>' +
         '<span class="pc-media" aria-hidden="true">' + (SCENE_ART[bp.id] || "") + '</span>' +
+        '<div class="pc-detail">' +
+          '<div class="pc-sec"><p class="pc-label">实施路径</p><ol>' +
+            (bp.path || []).map(function(st){ return '<li><b>' + esc(st.name) + '</b><span>' + esc(st.t) + ' · ' + esc(st.out) + '</span></li>'; }).join("") +
+          '</ol></div>' +
+          '<div class="pc-sec"><p class="pc-label">带来的变化</p><ul>' +
+            (bp.value || []).map(function(v){ return '<li><b>' + esc(v.k) + '</b><span>' + esc(v.v) + '</span></li>'; }).join("") +
+          '</ul></div>' +
+          (bp.limits && bp.limits.length ? '<div class="pc-sec"><p class="pc-label">适用边界</p><ul>' + bp.limits.map(function(x){ return '<li><span>' + esc(x) + '</span></li>'; }).join("") + '</ul></div>' : '') +
+          '<p class="pc-delivery"><b>交付与计费</b>' + esc(bp.delivery || "") + '</p>' +
+        '</div>' +
         '<span class="pc-foot"><span>' + total + ' 项能力</span>' +
           '<span class="pc-path"><span class="pc-dots" aria-hidden="true">' + dots + '</span>' + (bp.path || []).length + ' 阶段实施</span></span>' +
       '</article>';
@@ -4506,6 +4533,16 @@ SCENE_ART = {
         '<span class="pc-sum">相关项目方案整理完成后会陆续补充到这里。</span></span>' +
         '<span class="pc-media pc-media-more" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>' +
       '</article>';
+    grid.querySelectorAll('.plan-card[role="button"]').forEach(function(card){
+      function toggle(){
+        var open = card.classList.toggle("open");
+        card.setAttribute("aria-expanded", open ? "true" : "false");
+      }
+      card.addEventListener("click", toggle);
+      card.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+      });
+    });
   })();
 
   // CTA: focus digital human
