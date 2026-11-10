@@ -292,6 +292,21 @@ h1{margin-bottom:20px}
 .chip{padding:7px 14px}
 .list{margin-top:18px}
 .dir-tools{padding-bottom:22px}
+/* problem-first scenes + delivery */
+.scene{cursor:pointer}
+.scene:hover{border-color:#C9D8F0}
+.scene h3{margin-top:4px}
+.how-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.how-step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 22px}
+.how-no{font-family:var(--tech);font-size:11px;letter-spacing:.14em;color:var(--blue)}
+.how-step h3{font-size:15px;margin:10px 0 8px;font-weight:700}
+.how-step p{margin:0;font-size:12.5px;line-height:1.9;color:var(--tx-2)}
+.how-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:18px;font-size:12.5px;color:var(--tx-2)}
+.how-meta span{font-weight:600;color:var(--tx)}
+.how-meta i{font-style:normal;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px}
+.how-meta em{font-style:normal;color:var(--tx-3)}
+@media (max-width:1180px){.how-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.how-grid{grid-template-columns:1fr}}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -396,8 +411,9 @@ details p{font-size:13px;color:var(--tx-2)}
 <header class="hd"><div class="shell hd-in">
   <a class="brand" href="./"><b>AI中心</b><span>· 能力黄页</span></a>
   <nav class="nav">
+    <a href="#scenes-sec">业务问题</a>
     <a href="#dir">能力目录</a>
-    <a href="#scenes-sec">落地场景</a>
+    <a href="#how">怎么合作</a>
     <a href="#faq">常见问题</a>
   </nav>
   <span class="hd-note">对外演示版 · 设计 v2</span>
@@ -410,6 +426,14 @@ details p{font-size:13px;color:var(--tx-2)}
     <h1>找到需要的能力，更快构建业务应用</h1>
     <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
     <p class="ways"><a href="#dir">直接说问题，或从示例问句开始 ↓</a></p>
+  </section>
+
+  <section class="sec" id="scenes-sec">
+    <div class="sec-head">
+      <h2>先按业务问题找</h2>
+      <span class="note">选一个问题，直接看能用哪些能力</span>
+    </div>
+    <div class="scene-grid" id="scenes"></div>
   </section>
 
   <section class="dir" id="dir">
@@ -443,12 +467,17 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
-  <section class="sec" id="scenes-sec">
-    <div class="sec-head">
-      <h2>已经落地的场景</h2>
-      <span class="note">更多项目持续补充</span>
+
+
+  <section class="sec" id="how">
+    <div class="sec-head"><h2>怎么合作</h2><span class="note">从问题到上线，四步</span></div>
+    <div class="how-grid">
+      <div class="how-step"><span class="how-no">01</span><h3>说清问题</h3><p>带着项目问题来，或直接问右侧数字人；我们帮你判断适不适合用 AI。</p></div>
+      <div class="how-step"><span class="how-no">02</span><h3>定方案与报价</h3><p>给出能力组合、部署方式、周期和计费，明确验收口径。</p></div>
+      <div class="how-step"><span class="how-no">03</span><h3>试点上线</h3><p>选一个项目先跑通，用真实数据验证效果。</p></div>
+      <div class="how-step"><span class="how-no">04</span><h3>推广复制</h3><p>沉淀成标准能力，在其他单位或项目复制。</p></div>
     </div>
-    <div class="scene-grid" id="scenes"></div>
+    <div class="how-meta"><span>计费方式</span><i>平台订阅</i><i>按使用量</i><i>项目制</i><em>具体范围与价格面谈确定</em></div>
   </section>
 
   <section class="sec" id="faq">
@@ -4002,7 +4031,8 @@ window.ATLAS_CONTENT = {
       var picks = bp.picks.slice(0,2).reduce(function(a,g){ return a.concat(g.items); }, []).slice(0,3).map(function(it){
         var p = byId[it.id]; return p ? p.short : it.id;
       });
-      return '<article class="scene">' +
+      var pickIds = picks.map(function(n){ var hit = A.products.filter(function(x){ return x.short === n; })[0]; return hit ? hit.id : null; }).filter(Boolean);
+      return '<article class="scene" role="button" tabindex="0" data-ids="' + pickIds.join(",") + '">' +
         '<div class="k">' + esc(bp.kicker) + '</div>' +
         '<h3>' + esc(bp.title) + '</h3>' +
         '<p>' + esc(bp.summary) + '</p>' +
@@ -4010,6 +4040,18 @@ window.ATLAS_CONTENT = {
       '</article>';
     }).join("");
   }
+
+  document.querySelectorAll(".scene").forEach(function(card){
+    card.addEventListener("click", function(){
+      var ids = (card.dataset.ids || "").split(",").filter(Boolean);
+      if (!ids.length) return;
+      state.ids = ids; state.door = "场景能力组合"; state.cat = "all"; state.q = "";
+      var qi = document.getElementById("q"); if (qi) qi.value = "";
+      resetCatChips();
+      render();
+      document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
 
   // 数字人对话（演示版：按关键词筛选目录并回复）
   var chatEl = document.getElementById("chat");
