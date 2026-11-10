@@ -778,6 +778,51 @@ body{padding-right:0}
 
 /* CJK text always renders as the sans face */
 .sec-title,.sec-lede,.sec-kicker,.faq-item summary,.faq-a,.plan-card,.hero-proof{font-family:var(--sans)}
+
+/* ==== TYPE SYSTEM (single source of truth) ==== */
+:root{
+  --fs-h1: clamp(34px,4.4vw,52px);
+  --fs-h2: clamp(30px,3.15vw,42px);
+  --fs-item: 16px;
+  --fs-body: 14px;
+  --fs-sm: 13px;
+  --fs-cap: 12px;
+  --lh-h: 1.28;
+  --lh-h2: 1.25;
+  --lh-body: 1.7;
+  --lh-loose: 2;
+  --w-reg: 400; --w-med: 500; --w-semi: 600; --w-bold: 700;
+  --c-strong:#0B1A38; --c-body:#12233F; --c-2:#41536D; --c-3:#56677F;
+  --c-brand:#2F6BFF; --c-kicker:#3A6CEA; --c-line:#E3EAF4;
+}
+body{font-size:var(--fs-body);line-height:var(--lh-body);color:var(--c-body)}
+h1{font-size:var(--fs-h1);line-height:var(--lh-h);color:var(--c-strong);font-weight:var(--w-bold)}
+.sec-title{font-size:var(--fs-h2);line-height:var(--lh-h2);color:var(--c-strong);font-weight:var(--w-semi)}
+.sec-kicker{font-size:var(--fs-cap);letter-spacing:.26em;color:var(--c-kicker);font-weight:var(--w-reg)}
+.sec-lede{font-size:var(--fs-body);line-height:var(--lh-loose);color:var(--c-2);font-weight:var(--w-reg)}
+.hero p{font-size:var(--fs-body);line-height:1.8;color:var(--c-2)}
+.hero-proof{font-size:var(--fs-sm);color:var(--c-2)}
+.hero-proof b{color:var(--c-strong);font-weight:var(--w-bold)}
+.r-name{font-size:var(--fs-item);font-weight:var(--w-semi);color:var(--c-body);line-height:1.5}
+.r-desc{font-size:var(--fs-sm);color:var(--c-2);line-height:1.6}
+.r-mat{font-size:var(--fs-cap);color:var(--c-3)}
+.cat-head b{font-size:var(--fs-sm);font-weight:var(--w-semi);color:var(--c-body)}
+.cat-head .cnt{font-size:var(--fs-cap);color:var(--c-3)}
+.chip{font-size:var(--fs-sm);color:var(--c-2);font-weight:var(--w-med)}
+.searchbox input{font-size:var(--fs-body);color:var(--c-body)}
+.searchbox .cnt{font-size:var(--fs-cap);color:var(--c-3)}
+.pc-title{font-size:var(--fs-item);font-weight:var(--w-bold);color:var(--c-body)}
+.pc-sum{font-size:var(--fs-sm);color:var(--c-2);line-height:1.7}
+.pc-kicker,.pc-idx,.pc-foot,.pc-delivery{font-size:var(--fs-cap);color:var(--c-3)}
+.pc-chip{font-size:var(--fs-cap);color:var(--c-2)}
+.faq-item summary{font-size:var(--fs-item);font-weight:var(--w-semi);color:var(--c-body);line-height:1.6}
+.faq-a{font-size:var(--fs-body);line-height:var(--lh-body);color:var(--c-2)}
+.foot-in{font-size:var(--fs-cap);color:var(--c-3)}
+.how-step h3{font-size:var(--fs-item);font-weight:var(--w-bold);color:var(--c-body)}
+.how-step p{font-size:var(--fs-sm);line-height:1.7;color:var(--c-2)}
+.sol-lead{font-size:var(--fs-body);line-height:1.8;color:var(--c-2)}
+.sol-head h2{font-size:26px;line-height:1.3;font-weight:var(--w-bold);color:var(--c-strong)}
+.sol-pick-name{font-size:var(--fs-sm);font-weight:var(--w-semi);color:var(--c-body)}
 </style>
 </head>
 <body>
