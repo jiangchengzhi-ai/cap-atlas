@@ -110,6 +110,24 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .ways{margin:18px 0 0;font-size:12px;color:var(--tx-3)}
 .ways a{color:var(--blue);border-bottom:1px solid rgba(47,107,255,.3)}
 .ways a:hover{border-color:var(--blue)}
+/* directory grouped visuals */
+.cat-block{border-top:1px solid var(--line)}
+.cat-head{display:flex;align-items:center;gap:8px;padding:16px 6px 6px;font-family:var(--tech);font-size:10px;letter-spacing:.12em;color:var(--tx-3)}
+.cat-head i{width:8px;height:8px;border-radius:2px;flex:none}
+.cat-head b{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--tx)}
+.cat-head .cnt{color:var(--tx-3)}
+.row{border-bottom:0}
+.row-btn{grid-template-columns:42px minmax(0,1fr) auto 14px;gap:14px;padding:12px 6px 12px 4px;border-bottom:1px solid #EEF2FA}
+.cat-block .row:last-child .row-btn{border-bottom:1px solid var(--line)}
+.r-ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:15px;font-weight:700;flex:none}
+.r-main{min-width:0}
+.r-name{font-size:15px}
+.r-desc{margin-top:3px}
+.r-mat{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-size:10.5px;color:var(--tx-3);white-space:nowrap}
+.m-dots{display:inline-flex;gap:3px}
+.m-dots i{width:5px;height:5px;border-radius:50%;background:#E1E8F4}
+.m-dots i.on{background:#2F6BFF}
+.row-btn:hover{background:#FAFCFF}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -3659,6 +3677,8 @@ window.ATLAS_CONTENT = {
   var A = window.ATLAS, C = window.ATLAS_CONTENT || {};
   var byId = {}; A.products.forEach(function(p){ byId[p.id] = p; });
   var catByName = {}; A.categories.forEach(function(c){ catByName[c.name] = c; });
+  var CAT_ORDER = ["行业应用","岗位应用","AI智能硬件","基础能力","底座平台","高端咨询","技术服务"];
+  var CATS = A.categories.slice().sort(function(a,b){ return CAT_ORDER.indexOf(a.name) - CAT_ORDER.indexOf(b.name); });
   var MAT = {1:"概念预研",2:"原型验证",3:"试点测试",4:"复制推广",5:"正式商用"};
   var state = { q:"", cat:"all", ids:null, door:"" };
 
@@ -3670,7 +3690,7 @@ window.ATLAS_CONTENT = {
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(m){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]; }); }
 
   catWrap.innerHTML = '<button class="chip on" type="button" data-cat="all">全部类型</button>' +
-    A.categories.map(function(c){
+    CATS.map(function(c){
       return '<button class="chip" type="button" data-cat="' + esc(c.name) + '"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + c.accent + ';margin-right:6px;vertical-align:1px"></span>' + esc(c.name) + '</button>';
     }).join("");
 
@@ -3682,18 +3702,20 @@ window.ATLAS_CONTENT = {
     return hay.toLowerCase().indexOf(state.q.toLowerCase()) > -1;
   }
 
-  function row(p, i){
+  function row(p){
     var c = catByName[p.cat] || {};
-    var id = "row-" + p.id;
-    return '<div class="row" id="' + id + '">' +
-      '<button class="row-btn" type="button" aria-expanded="false" data-id="' + p.id + '">' +
+    var color = c.accent || "#2F6BFF";
+    var initial = (p.short || p.name || "·").trim().charAt(0);
+    var dots = "";
+    for (var d = 1; d <= 5; d++) dots += '<i class="' + (d <= p.maturity ? "on" : "") + '"></i>';
+    return '<div class="row">' +
+      '<button class="row-btn" type="button" aria-expanded="false">' +
+        '<span class="r-ico" style="background:' + color + '14;color:' + color + '">' + esc(initial) + '</span>' +
         '<span class="r-main">' +
-          '<span class="r-name">' + esc(p.short) +
-            '<span class="r-cat"><i style="background:' + (c.accent||"#2F6BFF") + '"></i>' + esc(p.cat) + '</span>' +
-          '</span>' +
+          '<span class="r-name">' + esc(p.short) + '</span>' +
           '<span class="r-desc">' + esc(p.tagline) + '</span>' +
         '</span>' +
-        '<span class="r-mat">' + (MAT[p.maturity]||"") + '</span>' +
+        '<span class="r-mat"><span class="m-dots" aria-hidden="true">' + dots + '</span>' + (MAT[p.maturity]||"") + '</span>' +
         '<span class="r-arrow">›</span>' +
       '</button>' +
       '<div class="row-detail">' +
@@ -3707,17 +3729,31 @@ window.ATLAS_CONTENT = {
             '<p class="d-label">适用对象</p><div class="d-tags">' + (p.users||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
             '<p class="d-label" style="margin-top:12px">业主类型</p><div class="d-tags">' + (p.buyers||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
             '<p class="d-label" style="margin-top:12px">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
-            '<p class="d-label" style="margin-top:12px">成熟度</p><div class="d-tags"><span class="tag">' + (MAT[p.maturity]||"") + '（第 ' + p.maturity + ' 级）</span></div>' +
+            '<p class="d-label" style="margin-top:12px">所属类型</p><div class="d-tags"><span class="tag">' + esc(p.cat) + '</span></div>' +
           '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
   }
 
+  function group(items){
+    var order = CATS.map(function(c){ return c.name; });
+    var map = {};
+    items.forEach(function(p){ (map[p.cat] = map[p.cat] || []).push(p); });
+    return order.filter(function(n){ return map[n]; }).map(function(n){
+      var c = catByName[n] || {};
+      var color = c.accent || "#2F6BFF";
+      return '<section class="cat-block">' +
+        '<div class="cat-head"><i style="background:' + color + '"></i><b>' + esc(n) + '</b><span class="cnt">' + map[n].length + ' 项</span></div>' +
+        map[n].map(row).join("") +
+      '</section>';
+    }).join("");
+  }
+
   function render(){
     var items = A.products.filter(matches);
     countEl.textContent = items.length + " / " + A.products.length;
-    listEl.innerHTML = items.length ? items.map(row).join("") : '<p class="empty">没有匹配的能力，换个关键词试试，或点“全部类型”。</p>';
+    listEl.innerHTML = items.length ? group(items) : '<p class="empty">没有匹配的能力，换个关键词试试，或点“全部类型”。</p>';
     listEl.querySelectorAll(".row-btn").forEach(function(btn){
       btn.addEventListener("click", function(){
         var rowEl = btn.parentNode;
