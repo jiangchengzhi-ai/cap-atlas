@@ -575,6 +575,29 @@ details p{font-size:13px;color:var(--tx-2)}
 .proj-caps span{font-size:11px;color:var(--tx-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:#FBFCFE}
 .proj-delivery{margin:0;font-size:11.5px;color:var(--tx-3)}
 @media (max-width:900px){.proj-grid{grid-template-columns:1fr}}
+
+/* landed projects: v1 plan cards */
+.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.plan-card{display:grid;grid-template-columns:minmax(0,1fr) 64px;grid-template-areas:"top media" "body media" "foot media";
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;gap:0 12px;position:relative}
+.pc-top{grid-area:top;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.pc-idx{font-family:var(--tech);font-size:10px;color:var(--tx-3)}
+.pc-kicker{font-size:11px;color:var(--tx-3)}
+.pc-body{grid-area:body;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pc-title{font-size:16px;font-weight:700;color:var(--tx)}
+.pc-sum{font-size:12.5px;line-height:1.75;color:var(--tx-2)}
+.pc-chain{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.pc-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:#FBFCFE}
+.pc-chip i{width:5px;height:5px;border-radius:50%}
+.pc-chip-more{color:var(--tx-3)}
+.pc-media{grid-area:media;align-self:center;color:#B9CBE4;display:flex;justify-content:flex-end}
+.pc-media svg{width:56px;height:56px}
+.pc-foot{grid-area:foot;display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--tx-3)}
+.pc-path{display:inline-flex;align-items:center;gap:6px}
+.pc-dots{display:inline-flex;gap:3px}
+.pc-dots i{width:4px;height:4px;border-radius:50%;background:var(--blue);opacity:.55}
+.plan-more{border-style:dashed;grid-template-columns:1fr;align-items:center}
+@media (max-width:900px){.plan-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -631,9 +654,9 @@ details p{font-size:13px;color:var(--tx-2)}
 
 
 
-  <section class="sec" id="projects">
-    <div class="sec-head"><h2>落地项目</h2><span class="note">已经用起来的场景</span></div>
-    <div class="proj-grid" id="projGrid"></div>
+  <section class="sec plans" id="projects">
+    <div class="sec-head"><h2>看看已经落地的项目怎么用</h2><span class="note">能力组合 · 实施阶段 · 预期成效</span></div>
+    <div class="plan-grid" id="projGrid"></div>
   </section>
 
   <section class="sec" id="how">
@@ -4350,28 +4373,49 @@ window.ATLAS_CONTENT = {
     });
   }
 
-  // 落地项目
+SCENE_ART = {
+    "bp-safety": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 36a22 22 0 0 1 44 0v6H10z"/><path d="M24 22v-4a4 4 0 0 1 8 0v4"/><path d="M10 42h44v6H10z"/><path d="M24 48v5M40 48v5"/></svg>',
+    "bp-governance": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 54h48"/><path d="M16 54V24l16-10 16 10v30"/><path d="M26 54V38h12v16"/><path d="M24 30h6M34 30h6"/></svg>',
+    "bp-research": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8h16"/><path d="M28 8v20L18 48a4 4 0 0 0 4 6h20a4 4 0 0 0 4-6L36 28V8"/><path d="M22 44h20"/><path d="M27 39h10"/></svg>',
+    "bp-highway": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 54c8-20 18-30 24-46"/><path d="M56 54c-8-20-18-30-24-46"/><path d="M32 14v8M32 30v8M32 46v8"/></svg>',
+    "bp-bid": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 54h48"/><path d="M16 46V32M28 46V22M40 46V38M52 46V16"/><path d="M12 18l10 6 10-8 12 4"/></svg>'
+  };
+
+  // 落地项目（复用 v1 方案卡）
   (function(){
     var grid = document.getElementById("projGrid");
     if (!grid) return;
-    var bps = (C.blueprints || []).slice(0, 6);
-    grid.innerHTML = bps.map(function(bp){
-      var vals = (bp.value || []).slice(0, 3).map(function(v){
-        return '<li><b>' + v.k + '</b><span>' + v.v + '</span></li>';
-      }).join("");
-      var caps = bp.picks.reduce(function(a, g){ return a.concat(g.items); }, []).slice(0, 3).map(function(it){
+    var list = (C.blueprints || []).slice(0, 5);
+    grid.innerHTML = list.map(function(bp, bi){
+      var total = bp.picks.reduce(function(n, g){ return n + g.items.length; }, 0);
+      var allPicks = bp.picks.slice(0, 2).reduce(function(arr, g){ return arr.concat(g.items); }, []);
+      var chain = allPicks.slice(0, 3).map(function(it){
         var p = byId[it.id];
-        return p ? '<span>' + p.short + '</span>' : "";
-      }).join("");
-      return '<article class="proj">' +
-        '<p class="proj-k">' + bp.kicker + '</p>' +
-        '<h3>' + bp.title + '</h3>' +
-        '<p class="proj-sum">' + bp.summary + '</p>' +
-        '<ul class="proj-vals">' + vals + '</ul>' +
-        '<div class="proj-caps">' + caps + '</div>' +
-        '<p class="proj-delivery">' + (bp.delivery || "") + '</p>' +
+        var cat = p ? catByName[p.cat] : null;
+        return { name: p ? p.short : it.id, accent: cat ? cat.accent : "#9DB9E8" };
+      });
+      var restN = Math.max(0, allPicks.length - chain.length);
+      var dots = "";
+      for (var d = 0; d < (bp.path || []).length; d++) dots += "<i></i>";
+      return '<article class="plan-card">' +
+        '<span class="pc-top"><span class="pc-idx">' + ("0" + (bi + 1)).slice(-2) + '</span>' +
+          '<span class="pc-kicker">' + esc(bp.kicker) + '</span></span>' +
+        '<span class="pc-body">' +
+          '<span class="pc-title">' + esc(bp.title) + '</span>' +
+          '<span class="pc-sum">' + esc(bp.summary) + '</span>' +
+          '<span class="pc-chain">' + chain.map(function(c){
+            return '<span class="pc-chip"><i style="background:' + c.accent + '"></i>' + esc(c.name) + '</span>';
+          }).join("") + (restN ? '<span class="pc-chip pc-chip-more">+' + restN + '</span>' : "") + '</span>' +
+        '</span>' +
+        '<span class="pc-media" aria-hidden="true">' + (SCENE_ART[bp.id] || "") + '</span>' +
+        '<span class="pc-foot"><span>' + total + ' 项能力</span>' +
+          '<span class="pc-path"><span class="pc-dots" aria-hidden="true">' + dots + '</span>' + (bp.path || []).length + ' 阶段实施</span></span>' +
       '</article>';
-    }).join("");
+    }).join("") +
+      '<article class="plan-card plan-more">' +
+        '<span class="pc-body"><span class="pc-title">更多项目持续推进</span>' +
+        '<span class="pc-sum">相关项目方案整理完成后会陆续补充到这里。</span></span>' +
+      '</article>';
   })();
 
   // CTA: focus digital human
