@@ -107,6 +107,24 @@ summary::after{content:"+";font-family:var(--tech);color:var(--tx-3);font-size:1
 details[open] summary::after{content:"–"}
 details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 
+.ways{margin:18px 0 0;font-size:12px;color:var(--tx-3)}
+.ways a{color:var(--blue);border-bottom:1px solid rgba(47,107,255,.3)}
+.ways a:hover{border-color:var(--blue)}
+/* guided finder */
+.guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
+.g-row+.g-row{border-top:1px dashed var(--line)}
+.g-no{font-family:var(--tech);font-size:10px;color:var(--blue);border:1px solid #CFE0FB;background:#EDF3FF;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;flex:none;margin-top:2px}
+.g-body{flex:1;min-width:0}
+.g-t{margin:0 0 8px;font-size:12px;color:var(--tx-3)}
+.g-chips{display:flex;flex-wrap:wrap;gap:8px}
+.g-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;color:var(--tx-2);cursor:pointer;transition:.2s}
+.g-chip:hover{border-color:#C9D8F0;color:var(--blue)}
+.g-chip.on{background:#EDF3FF;border-color:#C9DBFB;color:var(--blue)}
+.g-chip span{font-family:var(--tech);font-size:10px;color:var(--tx-3);margin-left:6px}
+.door-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--blue);background:#EDF3FF;border:1px solid #DCE7FF;border-radius:999px;padding:3px 10px;margin-bottom:12px;cursor:pointer}
+.door-tag[hidden]{display:none}
+
 /* footer */
 .foot{border-top:1px solid var(--line);background:#fff;margin-top:20px}
 .foot-in{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:22px 0;font-size:11.5px;color:var(--tx-3);flex-wrap:wrap}
@@ -196,15 +214,25 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
       <button class="chip" type="button" data-q="模型">模型调用</button>
       <button class="chip" type="button" data-q="巡检">安全巡检</button>
     </div>
+    <p class="ways">两种方式找到能力：<a href="#dir">直接搜索</a> · <a href="#guided">按需求缩小范围</a></p>
   </section>
 
   <section class="dir" id="dir">
     <div class="dir-head">
       <h2>能力目录</h2>
-      <span class="n" id="dirNote">按业务问题、类型和成熟度整理</span>
+      <span class="n" id="dirNote">方式一 · 直接搜索（关键词 / 类型）</span>
     </div>
+    <button class="door-tag" id="doorTag" type="button" hidden></button>
     <div class="filters" id="catChips"></div>
     <div class="list" id="list"></div>
+  </section>
+
+  <section class="sec" id="guided">
+    <div class="sec-head"><h2>按需求缩小范围</h2><span class="note">方式二 · 自己建 / 直接用 / 找支持</span></div>
+    <div class="guide">
+      <div class="g-row"><span class="g-no">1</span><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
+      <div class="g-row" id="gRow2" hidden><span class="g-no">2</span><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
+    </div>
   </section>
 
   <section class="sec" id="scenes-sec">
@@ -3632,7 +3660,7 @@ window.ATLAS_CONTENT = {
   var byId = {}; A.products.forEach(function(p){ byId[p.id] = p; });
   var catByName = {}; A.categories.forEach(function(c){ catByName[c.name] = c; });
   var MAT = {1:"概念预研",2:"原型验证",3:"试点测试",4:"复制推广",5:"正式商用"};
-  var state = { q:"", cat:"all" };
+  var state = { q:"", cat:"all", ids:null, door:"" };
 
   var listEl = document.getElementById("list");
   var countEl = document.getElementById("count");
@@ -3647,6 +3675,7 @@ window.ATLAS_CONTENT = {
     }).join("");
 
   function matches(p){
+    if (state.ids && state.ids.indexOf(p.id) === -1) return false;
     if (state.cat !== "all" && p.cat !== state.cat) return false;
     if (!state.q) return true;
     var hay = [p.name, p.short, p.tagline, p.cat, (p.tags||[]).join(" "), (p.problems||[]).join(" ")].join(" ");
@@ -3719,6 +3748,64 @@ window.ATLAS_CONTENT = {
   });
 
   render();
+
+  // 三步引导：选方向 -> 选需求 -> 过滤目录
+  var GROUPS = [
+    { id:"build", label:"自己建", q:"想自己建哪一类？", opts:[
+      { label:"智能体", ids:["p04","p12","p10","p11","p17","p15","p18"] },
+      { label:"模型", ids:["p02","p03","p05","p35"] },
+      { label:"数据集", ids:["p01","p36","p06"] },
+      { label:"知识库", ids:["p13","p25","p27","p14","p06"] } ] },
+    { id:"use", label:"直接用", q:"想直接用哪一类？", opts:[
+      { label:"办公应用", ids:["p11","p16","p22","p24","p25","p27"] },
+      { label:"行业应用", ids:["p28","p29","p30","p31","p32","p33","p34"] },
+      { label:"模型调用", ids:["p03","p35"] } ] },
+    { id:"support", label:"找支持", q:"需要哪一类支持？", opts:[
+      { label:"规划咨询", ids:["p39","p40","p41","p42"] },
+      { label:"测评验收", ids:["p05","p37","p09"] },
+      { label:"智能硬件", ids:["p19","p20","p21"] } ] }
+  ];
+  var gGroups = document.getElementById("gGroups");
+  var gRow2 = document.getElementById("gRow2");
+  var gQ = document.getElementById("gQ");
+  var gOpts = document.getElementById("gOpts");
+  var doorTag = document.getElementById("doorTag");
+
+  function countIds(ids){ return A.products.filter(function(p){ return ids.indexOf(p.id) > -1; }).length; }
+
+  gGroups.innerHTML = GROUPS.map(function(g){
+    return '<button class="g-chip" type="button" data-g="' + g.id + '">' + g.label + '</button>';
+  }).join("");
+
+  function showGroup(g){
+    gGroups.querySelectorAll(".g-chip").forEach(function(b){ b.classList.toggle("on", b.dataset.g === g.id); });
+    gQ.textContent = g.q;
+    gOpts.innerHTML = g.opts.map(function(o){
+      return '<button class="g-chip" type="button" data-ids="' + o.ids.join(",") + '" data-label="' + o.label + '">' + o.label + '<span>' + countIds(o.ids) + '</span></button>';
+    }).join("");
+    gRow2.hidden = false;
+  }
+
+  gGroups.addEventListener("click", function(e){
+    var b = e.target.closest(".g-chip"); if (!b) return;
+    var g = GROUPS.filter(function(x){ return x.id === b.dataset.g; })[0];
+    if (g) showGroup(g);
+  });
+
+  gOpts.addEventListener("click", function(e){
+    var b = e.target.closest(".g-chip"); if (!b) return;
+    state.ids = b.dataset.ids.split(",");
+    state.door = b.dataset.label;
+    render();
+    if (doorTag){ doorTag.hidden = false; doorTag.textContent = "已按「" + state.door + "」筛选 ✕"; }
+    document.getElementById("dir").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  if (doorTag){
+    doorTag.addEventListener("click", function(){
+      state.ids = null; state.door = ""; doorTag.hidden = true; render();
+    });
+  }
 
   // 落地场景
   var scenes = (C.blueprints || []).slice(0,5);
