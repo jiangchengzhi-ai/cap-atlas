@@ -207,6 +207,24 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .list{margin-top:6px}
 .ways a{color:var(--blue);border-bottom:1px solid rgba(47,107,255,.3)}
 @media (max-width:1180px){.dir-tools{top:60px}}
+/* elegant need picker */
+.need-pick{margin:10px 0 6px;border:0;background:none}
+.need-pick summary{
+  display:inline-flex;align-items:center;gap:9px;width:auto;
+  padding:6px 13px;border:1px solid var(--line);border-radius:999px;background:#fff;
+  list-style:none;cursor:pointer;font-size:12px;font-weight:500;color:var(--tx-2);
+  transition:border-color .2s,background .2s,color .2s;
+}
+.need-pick summary::-webkit-details-marker{display:none}
+.need-pick summary::after{
+  content:"";width:6px;height:6px;border-right:1.5px solid var(--tx-3);border-bottom:1.5px solid var(--tx-3);
+  transform:rotate(45deg);margin-left:1px;transition:transform .2s,border-color .2s;
+}
+.need-pick summary:hover{border-color:#C9D8F0;color:var(--blue)}
+.need-pick summary:hover::after{border-color:var(--blue)}
+.need-pick[open] summary{border-color:#C9DBFB;background:#EDF3FF;color:var(--blue)}
+.need-pick[open] summary::after{transform:rotate(-135deg);border-color:var(--blue)}
+.need-body{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:#FBFCFE;padding:4px 16px 12px}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -349,7 +367,7 @@ details p{font-size:13px;color:var(--tx-2)}
       </div>
       <div class="filters" id="catChips"></div>
       <details class="need-pick" id="needPick">
-        <summary>不知道找什么？按需求缩小范围</summary>
+        <summary>不知道找什么？按需求筛选</summary>
         <div class="need-body">
           <div class="g-row"><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
           <div class="g-row" id="gRow2" hidden><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
