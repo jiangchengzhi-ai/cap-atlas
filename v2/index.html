@@ -197,6 +197,16 @@ details p{margin:9px 0 2px;font-size:12.5px;color:var(--tx-2);line-height:1.85}
 .filter-bar[hidden]{display:none}
 .filter-bar button{border:0;background:none;padding:0;color:var(--blue);font-size:12px;cursor:pointer}
 .filter-bar button:hover{text-decoration:underline}
+/* directory toolbar: search + filters sticky together */
+.dir-head{margin-bottom:10px}
+.dir-tools{position:sticky;top:64px;z-index:9;background:var(--paper);padding:10px 0 10px;margin:0 -6px;box-shadow:0 12px 18px -18px rgba(31,58,120,.35)}
+.dir-tools .searchbox{margin-top:0;max-width:none}
+.dir-tools .chips{margin-top:10px}
+.dir-tools .filters{margin:12px 0 6px}
+.dir-tools .need-pick{margin:6px 0 4px}
+.list{margin-top:6px}
+.ways a{color:var(--blue);border-bottom:1px solid rgba(47,107,255,.3)}
+@media (max-width:1180px){.dir-tools{top:60px}}
 /* guided finder */
 .guide{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
 .g-row{display:flex;gap:16px;align-items:flex-start;padding:10px 0}
@@ -313,22 +323,8 @@ details p{font-size:13px;color:var(--tx-2)}
   <section class="hero">
     <p class="kicker">AI 中心 · 能力黄页</p>
     <h1>找到需要的能力，更快构建业务应用</h1>
-    <p>38 项能力，按业务问题、能力类型和成熟度整理。每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
-    <div class="searchbox">
-      <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="搜索能力、业务问题或场景，如“投标”“知识库”“私有化”" autocomplete="off">
-      <span class="cnt" id="count">38 / 38</span>
-    </div>
-    <div class="chips">
-      <span class="lbl">常用搜索</span>
-      <button class="chip" type="button" data-q="投标">投标辅助</button>
-      <button class="chip" type="button" data-q="知识库">知识库</button>
-      <button class="chip" type="button" data-q="数字人">数字人</button>
-      <button class="chip" type="button" data-q="私有化">私有化</button>
-      <button class="chip" type="button" data-q="模型">模型调用</button>
-      <button class="chip" type="button" data-q="巡检">安全巡检</button>
-    </div>
-    <p class="ways">按业务问题或类型直接筛；不知道找什么，可在目录上方按需求逐步缩小。</p>
+    <p>38 项能力，按业务问题、类型和成熟度整理；每项都写清楚能解决什么、适合谁、怎么交付和计费。</p>
+    <p class="ways"><a href="#dir">在目录里搜索，或按类型 / 需求筛选 ↓</a></p>
   </section>
 
   <section class="dir" id="dir">
@@ -336,15 +332,31 @@ details p{font-size:13px;color:var(--tx-2)}
       <h2>能力目录</h2>
       <span class="n" id="dirNote">关键词 / 类型 / 需求，可组合筛选</span>
     </div>
-    <div class="filters" id="catChips"></div>
-    <details class="need-pick" id="needPick">
-      <summary>不知道找什么？按需求缩小范围</summary>
-      <div class="need-body">
-        <div class="g-row"><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
-        <div class="g-row" id="gRow2" hidden><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
+    <div class="dir-tools">
+      <div class="searchbox">
+        <svg class="si" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜索能力、业务问题或场景，如“投标”“知识库”“私有化”" autocomplete="off">
+        <span class="cnt" id="count">38 / 38</span>
       </div>
-    </details>
-    <div class="filter-bar" id="filterBar" hidden></div>
+      <div class="chips">
+        <span class="lbl">常用搜索</span>
+        <button class="chip" type="button" data-q="投标">投标辅助</button>
+        <button class="chip" type="button" data-q="知识库">知识库</button>
+        <button class="chip" type="button" data-q="数字人">数字人</button>
+        <button class="chip" type="button" data-q="私有化">私有化</button>
+        <button class="chip" type="button" data-q="模型">模型调用</button>
+        <button class="chip" type="button" data-q="巡检">安全巡检</button>
+      </div>
+      <div class="filters" id="catChips"></div>
+      <details class="need-pick" id="needPick">
+        <summary>不知道找什么？按需求缩小范围</summary>
+        <div class="need-body">
+          <div class="g-row"><div class="g-body"><p class="g-t">你现在更接近哪种情况？</p><div class="g-chips" id="gGroups"></div></div></div>
+          <div class="g-row" id="gRow2" hidden><div class="g-body"><p class="g-t" id="gQ">具体想做哪一类？</p><div class="g-chips" id="gOpts"></div></div></div>
+        </div>
+      </details>
+      <div class="filter-bar" id="filterBar" hidden></div>
+    </div>
     <div class="list" id="list"></div>
   </section>
 
