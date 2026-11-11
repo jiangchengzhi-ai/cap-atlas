@@ -933,6 +933,9 @@ h1 .hl{color:#2F6BFF}
 @media (max-width:760px){
   .hd .nav{position:static;transform:none;margin:0;gap:18px;font-size:12.5px}
 }
+
+/* nav scroll-spy state */
+.hd .nav a.on{color:var(--blue);font-weight:500;border-bottom-color:var(--blue)}
 </style>
 
 <style>
@@ -4956,6 +4959,31 @@ SCENE_ART = {
     document.getElementById("solutionClose").addEventListener("click", closeSolution);
     document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeSolution(); });
   }
+
+  // 顶部导航跟随滚动高亮当前模块
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll(".hd .nav a"));
+    var map = links.map(function(a){
+      return { a: a, sec: document.querySelector(a.getAttribute("href")) };
+    }).filter(function(x){ return x.sec; });
+    if (!map.length) return;
+    var ticking = false;
+    function update(){
+      ticking = false;
+      var line = window.scrollY + 160;
+      var current = null;
+      map.forEach(function(x){
+        var top = x.sec.getBoundingClientRect().top + window.scrollY;
+        if (top <= line) current = x;
+      });
+      map.forEach(function(x){ x.a.classList.toggle("on", x === current); });
+    }
+    window.addEventListener("scroll", function(){
+      if (!ticking){ ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
 
   // 数字人对话（演示版：按关键词筛选目录并回复）
   var chatEl = document.getElementById("chat") || null;
