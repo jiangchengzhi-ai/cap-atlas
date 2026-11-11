@@ -900,6 +900,14 @@ h1{font-size:var(--fs-h1);line-height:var(--lh-h);color:var(--c-strong);font-wei
 .sol-pick-why{font-size:12px;line-height:1.7}
 .sol-vals,.sol-limits{gap:10px}
 .sol-price{font-size:13px}
+
+/* facts band: four equal, centred cells */
+.sol-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:28px 0 24px;padding:0;border:0}
+.sol-facts div{padding:0;border:0;text-align:center}
+.sol-facts div+div{border-left:1px solid var(--line)}
+.sol-facts b{font-size:26px;font-weight:700;color:#0B1A38;line-height:1.1}
+.sol-facts span{display:block;margin-top:6px;font-size:12px;color:var(--c-3)}
+@media (max-width:760px){.sol-facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}.sol-facts div:nth-child(3){border-left:0}}
 </style>
 </head>
 <body>
