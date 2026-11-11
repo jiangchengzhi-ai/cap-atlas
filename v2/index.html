@@ -839,6 +839,9 @@ h1{font-size:var(--fs-h1);line-height:var(--lh-h);color:var(--c-strong);font-wei
 
 /* hero lede: no orphan tail */
 .hero p{max-width:920px;text-wrap:pretty}
+
+/* featured star */
+.r-star{color:#E8A33D;font-size:12px;margin-right:5px;vertical-align:1px}
 </style>
 </head>
 <body>
@@ -4333,7 +4336,7 @@ window.ATLAS_CONTENT = {
   var A = window.ATLAS, C = window.ATLAS_CONTENT || {};
   var byId = {}; A.products.forEach(function(p){ byId[p.id] = p; });
   var catByName = {}; A.categories.forEach(function(c){ catByName[c.name] = c; });
-  var CAT_ORDER = ["行业应用","岗位应用","AI智能硬件","基础能力","底座平台","高端咨询","技术服务"];
+  var CAT_ORDER = ["基础能力","底座平台","岗位应用","技术服务","高端咨询","行业应用","AI智能硬件"];
   var CATS = A.categories.slice().sort(function(a,b){ return CAT_ORDER.indexOf(a.name) - CAT_ORDER.indexOf(b.name); });
   var MAT = {1:"概念预研",2:"原型验证",3:"试点测试",4:"复制推广",5:"正式商用"};
   var state = { q:"", cat:"all", ids:null, door:"" };
@@ -4420,6 +4423,9 @@ window.ATLAS_CONTENT = {
     return out;
   }
 
+  // 主推能力：排到所属类型最前，并打星标
+  var FEATURED = ["p11","p13","p15","p16","p17","p18","p43","p01","p03","p04","p05","p22","p24","p31","p34"];
+
   function row(p){
     var c = catByName[p.cat] || {};
     var color = c.accent || "#2F6BFF";
@@ -4429,7 +4435,7 @@ window.ATLAS_CONTENT = {
       '<button class="row-btn" type="button" aria-expanded="false">' +
 
         '<span class="r-main">' +
-          '<span class="r-name">' + highlight(p.short) + '</span>' +
+          '<span class="r-name">' + (FEATURED.indexOf(p.id) > -1 ? '<span class="r-star" aria-label="主推">★</span>' : '') + highlight(p.short) + '</span>' +
           '<span class="r-desc">' + esc(p.tagline) + '</span>' +
         '</span>' +
         '<span class="r-mat"><span class="m-dots" aria-hidden="true">' + dots + '</span>' + (MAT[p.maturity]||"") + '</span>' +
@@ -4451,6 +4457,12 @@ window.ATLAS_CONTENT = {
     var order = CATS.map(function(c){ return c.name; });
     var map = {};
     items.forEach(function(p){ (map[p.cat] = map[p.cat] || []).push(p); });
+    Object.keys(map).forEach(function(k){
+      var arr = map[k];
+      var feat = arr.filter(function(p){ return FEATURED.indexOf(p.id) > -1; });
+      var rest = arr.filter(function(p){ return FEATURED.indexOf(p.id) === -1; });
+      map[k] = feat.concat(rest);
+    });
     return order.filter(function(n){ return map[n]; }).map(function(n){
       var c = catByName[n] || {};
       var color = c.accent || "#2F6BFF";
