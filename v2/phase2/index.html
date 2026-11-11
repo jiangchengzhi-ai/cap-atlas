@@ -4556,14 +4556,7 @@ window.ATLAS_CONTENT = {
   }
 
   function highlight(text){
-    var out = esc(text);
-    var terms = queryTerms(state.q).filter(function(t){ return t.length >= 2; }).slice(0, 6);
-    terms.forEach(function(t){
-      try {
-        out = out.replace(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), function(m){ return "<mark>" + m + "</mark>"; });
-      } catch (e) {}
-    });
-    return out;
+    return esc(text);
   }
 
   // 主推能力：排到所属类型最前，并打星标
