@@ -936,6 +936,13 @@ h1 .hl{color:#2F6BFF}
 
 /* nav scroll-spy state */
 .hd .nav a.on{color:var(--blue);font-weight:500;border-bottom-color:var(--blue)}
+
+/* empty state: message then inline actions */
+.empty{padding:28px 4px 8px}
+.empty-msg{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--c-body)}
+.empty-line{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin:0;font-size:13px;color:var(--c-2)}
+.empty-line button{border:0;background:none;padding:0;font:inherit;font-size:13px;color:#2F6BFF;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.empty-line button:hover{color:#1B47C9}
 </style>
 </head>
 <body>
@@ -4586,23 +4593,19 @@ window.ATLAS_CONTENT = {
         sub = "可以看看其他类型。";
       } else if (q){
         msg = "没有找到与“" + esc(q) + "”相关的能力。";
-        sub = "换个说法试试，或者看看这些：";
+        sub = "换个说法试试，比如用更短的关键词。";
       } else if (door){
         msg = "「" + esc(door) + "」下暂时没有匹配的能力。";
         sub = "可以清除条件看全部能力。";
       } else {
         msg = "暂时没有可展示的能力。";
       }
-      var sug = q ? '<div class="empty-sug">' + ["投标", "知识库", "私有化", "数字人", "巡检"].map(function(w){ return '<button type="button" data-sug="' + w + '">' + w + '</button>'; }).join("") + '</div>' : "";
       var acts = "";
       if (catName) acts += '<button type="button" data-all>在全部类型中搜索</button>';
       if (q || door) acts += '<button type="button" data-clear>清除筛选</button>';
       listEl.innerHTML = '<div class="empty"><p class="empty-msg">' + msg + '</p>' +
-        (sub ? '<p class="empty-sub">' + sub + '</p>' : "") + sug +
-        (acts ? '<p class="empty-actions">' + acts + '</p>' : "") + '</div>';
-      listEl.querySelectorAll("[data-sug]").forEach(function(b){
-        b.addEventListener("click", function(){ state.q = b.dataset.sug; input.value = state.q; state.cat = "all"; resetCatChips(); render(); });
-      });
+        ((sub || acts) ? '<p class="empty-line">' + (sub ? '<span>' + sub + '</span>' : "") + acts + '</p>' : "") +
+        '</div>';
       var allBtn = listEl.querySelector("[data-all]");
       if (allBtn) allBtn.addEventListener("click", function(){ state.cat = "all"; state.ids = null; state.door = ""; resetCatChips(); render(); });
       var clrBtn = listEl.querySelector("[data-clear]");
