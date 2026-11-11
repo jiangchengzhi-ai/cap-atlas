@@ -857,6 +857,14 @@ h1{font-size:var(--fs-h1);line-height:var(--lh-h);color:var(--c-strong);font-wei
 .sol-vals,.sol-limits{gap:8px}
 .sol-bottom,.sol-delivery-block{display:none}
 @media (max-width:900px){.sol-cols{grid-template-columns:1fr;gap:28px}.sol-col{gap:24px}}
+
+/* modal: shared grid rows so sections align across columns */
+.sol-cols{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,0.88fr);gap:32px 56px;align-items:start}
+.sol-sec{min-width:0}
+.sol-sec h4{margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--c-2)}
+.sol-price{margin:0;font-size:13px;line-height:1.7;color:var(--c-2)}
+.sol-vals,.sol-limits{gap:8px}
+@media (max-width:900px){.sol-cols{grid-template-columns:1fr;gap:28px}.sol-spacer{display:none}}
 </style>
 </head>
 <body>
@@ -4760,21 +4768,18 @@ SCENE_ART = {
       '<p class="sol-lead">' + esc(bp.diagnosis || bp.question || bp.summary || "") + '</p>' +
       '<div class="sol-facts">' + facts + '</div>' +
       '<div class="sol-cols">' +
-        '<div class="sol-col">' +
-          '<section class="sol-sec"><h4>能力组合</h4>' + picks + '</section>' +
-          '<section class="sol-sec"><h4>带来的变化</h4><ul class="sol-vals">' +
-            values.map(function(v){ return '<li><b>' + esc(v.k) + '</b><span>' + esc(v.v) + '</span></li>'; }).join("") +
-          '</ul></section>' +
-        '</div>' +
-        '<div class="sol-col">' +
-          '<section class="sol-sec"><h4>实施路径</h4><ol class="sol-path">' +
-            path.map(function(st, i){ return '<li><b>' + (i + 1) + '</b><div><span class="sol-path-name">' + esc(st.name) + '</span><em>' + esc(st.t) + '</em><p>' + esc(st.out) + '</p></div></li>'; }).join("") +
-          '</ol></section>' +
-          '<section class="sol-sec"><h4>适用边界</h4><ul class="sol-limits">' +
-            limits.map(function(l){ return '<li>' + esc(l) + '</li>'; }).join("") +
-          '</ul></section>' +
-          '<section class="sol-sec"><h4>定价策略</h4><p class="sol-price">' + esc(bp.delivery || "") + '</p></section>' +
-        '</div>' +
+        '<section class="sol-sec"><h4>能力组合</h4>' + picks + '</section>' +
+        '<section class="sol-sec"><h4>实施路径</h4><ol class="sol-path">' +
+          path.map(function(st, i){ return '<li><b>' + (i + 1) + '</b><div><span class="sol-path-name">' + esc(st.name) + '</span><em>' + esc(st.t) + '</em><p>' + esc(st.out) + '</p></div></li>'; }).join("") +
+        '</ol></section>' +
+        '<section class="sol-sec"><h4>带来的变化</h4><ul class="sol-vals">' +
+          values.map(function(v){ return '<li><b>' + esc(v.k) + '</b><span>' + esc(v.v) + '</span></li>'; }).join("") +
+        '</ul></section>' +
+        '<section class="sol-sec"><h4>适用边界</h4><ul class="sol-limits">' +
+          limits.map(function(l){ return '<li>' + esc(l) + '</li>'; }).join("") +
+        '</ul></section>' +
+        '<div class="sol-spacer" aria-hidden="true"></div>' +
+        '<section class="sol-sec"><h4>定价策略</h4><p class="sol-price">' + esc(bp.delivery || "") + '</p></section>' +
       '</div>';
     solPanel.hidden = false; solScrim.hidden = false;
     document.body.style.overflow = "hidden";
