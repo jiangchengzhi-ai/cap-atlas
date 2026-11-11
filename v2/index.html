@@ -924,6 +924,15 @@ h1 .hl{color:#2F6BFF}
 .hd .nav{gap:26px;font-size:14px;color:#2F6BFF;margin-left:10px}
 .hd .nav a{color:#2F6BFF;font-weight:500;letter-spacing:.02em;padding:6px 0;border-bottom:1px solid transparent}
 .hd .nav a:hover{color:#1B47C9;border-bottom-color:#1B47C9}
+
+/* nav: neutral colour, centred group */
+.hd-in{position:relative}
+.hd .nav{position:absolute;left:50%;transform:translateX(-50%);margin:0;gap:32px;font-size:13.5px;color:var(--tx-2)}
+.hd .nav a{color:var(--tx-2);font-weight:400;letter-spacing:0;padding:6px 0;border-bottom:1px solid transparent}
+.hd .nav a:hover{color:var(--blue);border-bottom-color:var(--blue)}
+@media (max-width:760px){
+  .hd .nav{position:static;transform:none;margin:0;gap:18px;font-size:12.5px}
+}
 </style>
 </head>
 <body>
