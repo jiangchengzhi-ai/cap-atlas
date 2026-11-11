@@ -4776,10 +4776,39 @@ SCENE_ART = {
     solPanel.hidden = true; solScrim.hidden = true;
     document.body.style.overflow = "";
   }
+  // 带来的变化：面向项目收益的简短说法（二期页面同样使用）
+  var VALUE_V2 = {
+    "bp-safety": [
+      { k: "交底可核验", v: "班前会讲没讲清，逐场能查。" },
+      { k: "方案先审一遍", v: "合规与隐患自动标出，附审核报告初稿。" },
+      { k: "隐患跟到底", v: "发现、整改、复查记在同一条记录里。" }
+    ],
+    "bp-governance": [
+      { k: "立项有依据", v: "四类成果可直接用于预算与立项论证。" },
+      { k: "少重复建设", v: "集团与二级单位的能力边界一次定清。" },
+      { k: "可考核", v: "重点场景转成量化指标与验收口径。" }
+    ],
+    "bp-research": [
+      { k: "立项不重复", v: "查重与情报分析前置，少做低水平项目。" },
+      { k: "过程早预警", v: "经费与进度异常提前提示。" },
+      { k: "成果能转化", v: "成果与企业需求自动匹配。" }
+    ],
+    "bp-highway": [
+      { k: "一线减负", v: "记录、填报、汇总由系统代劳。" },
+      { k: "养护有据", v: "方案直接关联历史案例与规范条文。" },
+      { k: "投入看得见", v: "养护投入与路况改善按路段对比。" }
+    ],
+    "bp-bid": [
+      { k: "先看值得投的", v: "标讯按匹配度排序，不再人工翻。" },
+      { k: "决策有依据", v: "SWOT、BANT 与风险提示一并给出。" },
+      { k: "资源更集中", v: "投标投入向匹配项目倾斜。" }
+    ]
+  };
+
   function openSolution(bp){
     if (!bp || !solPanel) return;
     var total = bp.picks.reduce(function(n, g){ return n + g.items.length; }, 0);
-    var path = bp.path || [], values = bp.value || [], limits = bp.limits || [];
+    var path = bp.path || [], values = VALUE_V2[bp.id] || bp.value || [], limits = bp.limits || [];
     var lastT = path.length ? path[path.length - 1].t : "";
     document.getElementById("solutionKicker").textContent = (bp.kicker || "场景") + " · 能力组合方案";
     document.getElementById("solutionTitle").textContent = bp.title;
