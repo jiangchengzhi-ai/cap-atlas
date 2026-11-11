@@ -4384,8 +4384,27 @@ window.ATLAS_CONTENT = {
       return '<button class="chip" type="button" data-cat="' + esc(c.name) + '"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + c.accent + ';margin-right:6px;vertical-align:1px"></span>' + esc(c.name) + '</button>';
     }).join("");
 
+  var SYNONYMS = {
+    "私有化": ["内网", "本地化", "私有", "部署"],
+    "内网": ["私有化", "本地化", "部署"],
+    "部署": ["私有化", "内网", "本地化"],
+    "知识库": ["知识", "知识中枢"],
+    "投标": ["招标", "标书", "商机"],
+    "商机": ["投标", "招标"],
+    "安全": ["隐患", "风险", "巡检"],
+    "巡检": ["隐患", "安全"],
+    "数字人": ["虚拟人", "形象", "语音"],
+    "模型": ["大模型", "训练", "推理"],
+    "办公": ["写作", "文档", "会议"],
+    "会议": ["纪要", "办公"]
+  };
+
+  function queryPhrase(q){
+    return String(q || "").toLowerCase().replace(/[\s\u3000，。？！、,.?! "'“”‘’（）()]+/g, " ").trim();
+  }
+
   function queryTerms(q){
-    var t = String(q || "").toLowerCase().replace(/[\s\u3000，。？！、,.?!"'“”‘’（）()]+/g, " ").trim();
+    var t = queryPhrase(q);
     if (!t) return [];
     var out = [];
     t.split(" ").forEach(function(part){
@@ -4393,6 +4412,7 @@ window.ATLAS_CONTENT = {
       out.push(part);
       if (part.length >= 3){ out.push(part.substr(0, 2)); out.push(part.substr(part.length - 2)); }
       if (part.length > 4){ for (var i = 0; i <= part.length - 2; i++) out.push(part.substr(i, 2)); }
+      if (SYNONYMS[part]) out = out.concat(SYNONYMS[part]);
     });
     return out.filter(function(v, i){ return out.indexOf(v) === i; });
   }
@@ -4401,7 +4421,10 @@ window.ATLAS_CONTENT = {
     if (!terms.length) return 0;
     var fields = [
       [p.short || "", 6], [p.name || "", 5], [p.tagline || "", 4],
-      [(p.tags||[]).join(" "), 3], [(p.problems||[]).join(" "), 3], [p.cat || "", 2], [(p.desc||[]).join(" "), 2]
+      [(p.tags||[]).join(" "), 3], [(p.problems||[]).join(" "), 3],
+      [(p.pricing||[]).join(" "), 3], [(p.features||[]).join(" "), 2],
+      [(p.users||[]).join(" "), 1], [(p.buyers||[]).join(" "), 1],
+      [p.cat || "", 2], [(p.desc||[]).join(" "), 2]
     ];
     var score = 0;
     terms.forEach(function(t){
@@ -4414,6 +4437,9 @@ window.ATLAS_CONTENT = {
     if (state.ids && state.ids.indexOf(p.id) === -1) return false;
     if (state.cat !== "all" && p.cat !== state.cat) return false;
     if (!state.q) return true;
+    var phrase = queryPhrase(state.q);
+    var hay = [p.short, p.name, p.tagline, p.cat, (p.tags||[]).join(" "), (p.problems||[]).join(" "), (p.pricing||[]).join(" "), (p.features||[]).join(" "), (p.desc||[]).join(" ")].join(" ").toLowerCase();
+    if (phrase && hay.indexOf(phrase) > -1) return true;
     return scoreProduct(p, queryTerms(state.q)) >= 3;
   }
 
