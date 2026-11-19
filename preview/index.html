@@ -826,6 +826,7 @@ h1{font-size:var(--fs-h1);line-height:var(--lh-h);color:var(--c-strong);font-wei
 
 /* plan cards: equal row height including the more card */
 .plan-grid{align-items:stretch}
+.plan-card.plan-composite{cursor:default}
 .plan-card{height:100%}
 .plan-card.plan-more{align-content:center;align-items:center}
 
@@ -943,6 +944,49 @@ h1 .hl{color:#2F6BFF}
 .empty-line{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin:0;font-size:13px;color:var(--c-2)}
 .empty-line button{border:0;background:none;padding:0;font:inherit;font-size:13px;color:#2F6BFF;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .empty-line button:hover{color:#1B47C9}
+/* ===== 能力图片（左）与入口（底部），沿用 V3 设计 ===== */
+.d-lines{list-style:none;margin:4px 0 14px;padding:0}
+.d-lines li{position:relative;padding-left:14px;margin:0 0 6px;font-size:12.5px;line-height:1.75;color:var(--tx-2)}
+.d-lines li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#9DB9E8}
+.d-lines b{font-weight:600;color:var(--ink)}
+.d-blocks{display:flex;flex-direction:column;gap:14px;margin:6px 0 18px}
+.d-block{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start}
+.d-block i{width:22px;height:22px;border-radius:7px;background:#EAF0FF;color:#2F6BFF;font-size:11px;font-weight:700;font-style:normal;display:flex;align-items:center;justify-content:center}
+.d-block b{display:block;font-size:13px;color:var(--ink);margin:0 0 3px}
+.d-block .d-tag{font-size:10px;color:#B07A00;background:#FFF6E5;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.d-block p{margin:0;font-size:12.5px;line-height:1.85;color:var(--tx-2)}
+.d-grid2{display:grid;grid-template-columns:34.8% minmax(0,1fr);gap:33px;align-items:stretch}
+.d-side{position:relative;margin:0;min-height:340px}
+.d-cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:12px;overflow:hidden;border:1px solid #E9EDF5;background:#F8F9FE}
+.d-cover img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;border-radius:0;box-shadow:none;cursor:zoom-in}
+.lb-mask{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(11,26,56,.82);padding:36px}
+.lb-mask.open{display:flex}
+.lb-img{max-width:92vw;max-height:82vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.4);background:#fff}
+.lb-bar{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-size:12.5px;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:999px}
+.lb-close{position:absolute;top:18px;right:20px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.lb-nav.prev{left:22px}
+.lb-nav.next{right:22px}
+@media (max-width:1100px){.d-grid2{grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:26px}}
+@media (max-width:900px){.d-grid2{grid-template-columns:1fr;gap:16px}.d-side{min-height:0;position:static}.d-cover{position:relative;inset:auto;height:auto;aspect-ratio:16/10}}
+
+
+.d-glyph{font-size:64px;font-weight:700;line-height:1;color:color-mix(in srgb, var(--c) 52%, #fff)}
+.d-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;height:100%;width:100%}
+.d-track::-webkit-scrollbar{display:none}
+.d-slide{flex:0 0 100%;scroll-snap-align:start;height:100%;display:flex;align-items:center;justify-content:center;padding:0}
+.d-carousel .d-nav{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:0;background:rgba(255,255,255,.86);color:#41536D;font-size:16px;line-height:1;cursor:pointer;opacity:0;transition:opacity .15s;z-index:2}
+.d-carousel:hover .d-nav,.d-carousel:focus-within .d-nav{opacity:1}
+.d-carousel .d-nav.prev{left:8px}
+.d-carousel .d-nav.next{right:8px}
+.d-count{position:absolute;right:8px;top:8px;z-index:2;font-size:10.5px;color:#fff;background:rgba(11,26,56,.45);padding:2px 6px;border-radius:999px}
+.d-dots{position:absolute;left:0;right:0;bottom:8px;z-index:2;display:flex;justify-content:center;gap:6px}
+.d-dot{width:7px;height:7px;padding:0;border-radius:50%;border:0;cursor:pointer;background:rgba(255,255,255,.62);box-shadow:0 0 0 1px rgba(11,26,56,.1)}
+.d-dot.on{background:#fff;width:16px;border-radius:4px}
+.d-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.entry-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 16px;border-radius:8px;background:#2F6BFF;color:#fff;font-size:12.5px;font-weight:600;text-decoration:none}
+.entry-btn:hover{background:#1B47C9}
+.entry-note{font-size:11.5px;color:var(--tx-3)}
 </style>
 </head>
 <body>
@@ -1257,9 +1301,7 @@ window.ATLAS = {
    "tagline": "面向大模型微调与增量训练的训练平台",
    "desc": [
     "多场景大/小模型能力底座，支持大模型增量预训练、监督微调、QLoRA、强化学习、模型量化、蒸馏等全类型训练任务。",
-    "整合交互式开发、可视化拖拉拽建模及丰富预置模板，大幅降低开发门槛。",
-    "支持baichuan",
-    "Llama",
+    "整合交互式开发、可视化拖拉拽建模及丰富预置模板，大幅降低开发门槛。支持baichuanLlama。",
     "Falcon、DeepSeek、交融大模型等主流模型。"
    ],
    "problems": [
@@ -1458,7 +1500,7 @@ window.ATLAS = {
    "maturity": 1,
    "tagline": "集团统一业务语义与知识底座",
    "desc": [
-    "将分散的数据与业务逻辑映射为统一的对象、规则与行动",
+    "将分散的数据与业务逻辑映射为统一的对象、规则与行动。",
     "为知识图谱、大模型、智能体提供可推理、可治理的底层语义底座。"
    ],
    "problems": [
@@ -1506,7 +1548,7 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "集团 AI 运营监控",
    "desc": [
-    "面向集团AI生态打造的集成式运营监控平台",
+    "面向集团AI生态打造的集成式运营监控平台。",
     "聚焦交融AI门户运行态势、训推与智能体平台资源调度、问之平台使用效能的多维直观展示，是集团统一、智能、高效的AI运营指挥中枢。"
    ],
    "problems": [
@@ -1553,8 +1595,8 @@ window.ATLAS = {
    "maturity": 3,
    "tagline": "集团 AI 能力开放与资源管理",
    "desc": [
-    "集团已有的智能体底座能力对外开放的统一入口",
-    "面向所有想把自己业务能力\"智能体化\"的人、业务条线、分子公司、技术团队、外部伙伴",
+    "集团已有的智能体底座能力对外开放的统一入口。",
+    "面向所有想把自己业务能力\"智能体化\"的人、业务条线、分子公司、技术团队、外部伙伴。",
     "涵盖五大开放生态、四大开源共创能力、交融底人工智能底座图谱。"
    ],
    "problems": [
@@ -1578,7 +1620,7 @@ window.ATLAS = {
     "全链路生产与保障",
     "发布分发一套渠道",
     "标准协议即插即用",
-    "安全合规自主可控。"
+    "安全合规自主可控"
    ],
    "pricing": [
     "平台订阅",
@@ -1602,7 +1644,7 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "集团 AI 综合服务门户",
    "desc": [
-    "面向中交集团AI生态打造的统一集成入口与综合服务中心",
+    "面向中交集团AI生态打造的统一集成入口与综合服务中心。",
     "聚焦交融全系AI系统资源统筹、多平台能力开放与调度、行业智能体与解决方案生态汇聚，是集团统一认证、资源纳管、生态协同的AI核心平台。"
    ],
    "problems": [
@@ -1753,9 +1795,8 @@ window.ATLAS = {
    "maturity": 4,
    "tagline": "自然语言数据查询与分析",
    "desc": [
-    "聚焦企业数据分析门槛高、操作复杂、建模成本高等痛点。",
-    "支持自然语言问数与上下文追问，自动生成SQL、图表和报告，20+数据源统一接入。",
-    "业务人员自助分析，无需编写代码。"
+    "交融问数是一款能够直接通过问答获取数据的 AI 数据智能体平台，支持 Excel 及 MySQL、Oracle 等 20 多种数据库接入，无需改变现有数据架构，无需编写代码，通过日常对话即可获取数据、图表和分析报告。结合企业术语、训练数据与专属偏好，。",
+    "让 AI 更懂业务。产品可融入企业网站及微信、飞书、钉钉等工作入口，帮助业务人员自主取数，减轻 IT 人员重复取数与制作报表的工作负担，让管理者随时掌握经营动态，将数据转化为决策依据。"
    ],
    "problems": [
     "数据分析门槛高",
@@ -1799,35 +1840,40 @@ window.ATLAS = {
   },
   {
    "id": "p15",
-   "name": "数字人创建能力",
-   "short": "数字人创建能力",
+   "name": "交融视界创建平台",
+   "short": "交融视界创建平台",
    "cat": "基础能力",
    "maturity": 5,
-   "tagline": "数字人形象、语音与内容生成",
+   "tagline": "视频生成+数字人的新型交互平台",
    "desc": [
-    "集成式整体数字人创建与应用平台。",
-    "深度融合形象生成+声纹克隆+智能体大脑交互流程，原生打通交融系列智能体生态。",
-    "支持图片、视频及VRM模型多类方式定制形象，支持拟人音色与语调克隆。"
+    "一站式全栈AI视频生成与数字人的创建与应用平台。",
+    "融合交融大语言模型的理解与规划能力，为工程建设领域场景提供从创意描述到视频输出的“一键成片”。",
+    "支持创建数字人：形象生成＋声纹克隆＋智能体大脑，原生打通交融智能体生态，口播视频一键生成。"
    ],
    "problems": [
+    "施工技术交底的传统制作方式环节多、门槛高、耗时长",
     "数字人构建门槛高",
     "形象声音定制难",
     "无法与AI智能体结合",
     "数据安全无保障"
    ],
    "buyers": [
-    "央国企集团",
-    "二级企业",
-    "各类中小民企",
+    "集团总部",
+    "二级单位",
     "项目部"
    ],
    "users": [
+    "工程建设领域施工",
     "市场宣传部门",
     "展厅展馆",
     "教育培训机构",
     "企业品牌团队"
    ],
    "features": [
+    "智能编排与分镜生成",
+    "连续生成，突破时长限制",
+    "规范可控，适配企业应用",
+    "多模态素材融合",
     "多模态形象定制",
     "声音克隆",
     "智能体大脑直连",
@@ -1837,17 +1883,17 @@ window.ATLAS = {
    ],
    "pricing": [
     "平台订阅",
+    "视频定制服务",
     "数字人定制服务"
    ],
    "tags": [
+    "视频生成",
     "数字人",
-    "虚拟人",
-    "形象克隆",
-    "声音克隆",
-    "口播",
-    "展厅",
-    "播报",
-    "交互"
+    "交融视界",
+    "一口播",
+    "私有化",
+    "形象",
+    "声纹"
    ]
   },
   {
@@ -2006,9 +2052,7 @@ window.ATLAS = {
    "tagline": "会议协作与决议跟踪平台",
    "desc": [
     "议题、记录、决议、任务分发、跟踪、复盘，全流程流程。",
-    "结论、进度、待办实时可见，跨部门在线协作。",
-    "AI贯穿会前、会中、会后与执行，全程智能协同。",
-    "软硬一体：设备采集、平台治理、私有化部署。",
+    "结论、进度、待办实时可见，跨部门在线协作。AI贯穿会前、会中、会后与执行，全程智能协同。软硬一体：设备采集、平台治理、私有化部署。",
     "打通OA与项目系统，任务直达、状态自动回写。"
    ],
    "problems": [
@@ -2219,8 +2263,8 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "商机与招投标信息推荐",
    "desc": [
-    "基于270w+市场公开招投标数据，融合企业画像和商机意向，构建覆盖商机发现、智能匹配、深度研判、持续跟踪的AI投标决策助手。",
-    "自动生成项目深度匹配分析、SWOT、BANT、风险提示报告。"
+    "“纵横-商机罗盘”是一款面向经营开发、市场营销与投标管理人员的 AI 商机发现与决策助手产品。依托交融大模型与 270w+ 市场公开招投标数据，结合企业资质、历史业绩、区域布局和商机意向，精准推荐高匹配项目，。",
+    "提前发掘审批、拟在建及分包合作机会。一键生成项目深度分析报告，研判竞争优势与潜在风险，提供跟进策略，并结合定制化市场情报，掌握政策、业主及行业动态，让经营团队更早发现商机、更快评估项目、更准制定策略，把有限资源投入到更值得跟进的商机。"
    ],
    "problems": [
     "商机发现不及时",
@@ -2247,8 +2291,8 @@ window.ATLAS = {
     "移动端信息流交互"
    ],
    "pricing": [
-    "平台订阅（20 万/年/10 账号，价格待定）",
-    "按用户数收费"
+    "平台订阅",
+    "按用户数计费"
    ],
    "tags": [
     "商机",
@@ -2321,25 +2365,22 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "长文与专业文献阅读辅助",
    "desc": [
-    "帮助用户快速理解长文主题概要，自动总结文章结构主题。",
-    "框选内容进行AI辅助导读，如解读深层含义、联网搜索相关事实数据、针对性自由提问等。",
-    "支持审查文章用词、结构、格式不当之处。"
+    "长文自动摘要，按文档类型抓重点，可语音收听。",
+    "选中段落提问，结合上下文、知识库与联网资料回答。结论附出处，标到章节段落；联网来源给链接，可逐条核对。",
+    "阅读审查（即将上线）：按规则库与行文规范自动查问题，替代逐条人工校对。"
    ],
    "problems": [
     "长文阅读耗时长",
     "专业文献理解难",
-    "事实查证不便",
-    "文章审查不规范"
+    "回答正确性难查证",
+    "长文审查繁琐易缺漏"
    ],
    "buyers": [
     "央国企集团",
     "二级企业"
    ],
    "users": [
-    "研究人员",
-    "工程师",
-    "管理人员",
-    "需要处理大量文档的专业人士"
+    "需要长期阅读和处理文档的办公人员"
    ],
    "features": [
     "自动总结文章结构",
@@ -2350,7 +2391,7 @@ window.ATLAS = {
     "支持多种文档格式"
    ],
    "pricing": [
-    "客户端订阅"
+    "按席位订阅"
    ],
    "tags": [
     "阅读",
@@ -2370,7 +2411,7 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "施工方案合规校验与风险识别",
    "desc": [
-    "面向工程建设打造的智能化方案审核应用",
+    "面向工程建设打造的智能化方案审核应用。",
     "依托工程知识库实现施工方案合规校验、风险智能预警、审核报告自动生成，快速识别错漏缺项与危大工程隐患，支撑工程安全管控。"
    ],
    "problems": [
@@ -2470,7 +2511,7 @@ window.ATLAS = {
    "maturity": 3,
    "tagline": "节能报告辅助生成",
    "desc": [
-    "面向节能咨询场景打造的智能应用，以交融超级智能体为底座，融合知识库与AI报告生成能力",
+    "面向节能咨询场景打造的智能应用，以交融超级智能体为底座，融合知识库与AI报告生成能力。",
     "打通知识管理、报告编制、节能评估智能研判、能耗对比分析全流程一体化作业。"
    ],
    "problems": [
@@ -2520,9 +2561,8 @@ window.ATLAS = {
    "maturity": 5,
    "tagline": "疏浚船舶作业辅助",
    "desc": [
-    "基于交融大模型，在疏浚船上完成疏浚AI智能体船端部署。",
-    "实现疏浚知识问答、设备图纸解析、自然语言问数查询、离线运行等功能，构建船舶专属辅助应用。",
-    "已在天麟号疏浚船部署。"
+    "疏浚助手是面向疏浚船舶生产作业、设备运维与安全管理的智能 AI 助手，依托交融大模型与疏浚专业知识库，船员通过文字或语音交互，即可查询专业知识、操作规程、工程图纸及设备资料，答案来源可追溯；对接船载 SCADA、PMS 系统，。",
+    "快速获取运行参数、生产数据和备件库存，自动生成趋势图表以及统计报表。支持船端本地私有化部署，断网仍可使用，核心数据不出船，让资料查找更便捷、运行状态更清晰，为疏浚船规范作业、高效运维和科学决策提供支撑。"
    ],
    "problems": [
     "船舶知识管理难",
@@ -3068,8 +3108,8 @@ window.ATLAS = {
    "maturity": 3,
    "tagline": "一站式行业情报与资讯服务平台",
    "desc": [
-    "中交头条是面向企业打造的一站式行业情报与资讯服务平台，聚合 500+ 行业权威公众号及公开网站数据源。",
-    "依托 AI 智能提炼、精准推送与多终端适配技术，帮助企业及时掌握行业动态、政策风向与技术前沿，为经营决策提供专业信息支撑。"
+    "中交情报产品是一款面向企业的一站式行业情报与资讯服务基础产品：聚合 500+ 权威数据源，依托 AI 智能提炼、精准推送、热榜研判与多端适配，帮助企业及时掌握行业动态、政策风向与技术前沿，并可面向不同场景快速组装案例化情报应用。",
+    "智能精准推送：依托智能推荐与栏目订阅机制，按职级、岗位、业务领域差异化分发，减少信息冗余，提升信息触达效率。中交热榜机制：基于关键词规则权重与用户行为权重双维聚合，从战略对齐度、商业与经营价值、技术创新突破、时效与紧迫性四大维度自动研判内容热度，兼顾内部资讯阅读、工作信息查阅与知识沉淀。AI 核心提炼：每条资讯自动生成摘要提炼，帮助员工快速抓取要点。"
    ],
    "problems": [
     "信息源分散",
@@ -3086,7 +3126,11 @@ window.ATLAS = {
     "市场与战略部门",
     "业务骨干"
    ],
-   "features": [],
+   "features": [
+    "智能精准推送",
+    "中交热榜机制",
+    "AI 核心提炼"
+   ],
    "pricing": [
     "平台订阅"
    ],
@@ -3098,7 +3142,6 @@ window.ATLAS = {
     "推送"
    ]
   }
-
  ]
 };
 </script>
@@ -4428,6 +4471,107 @@ window.ATLAS_CONTENT = {
   }
  ]
 };
+
+/* 综合能力：由多项能力组合形成，与场景卡同样式展示 */
+window.ATLAS_CONTENT.composites = [
+  {
+    "id": "cp-dataset",
+    "kicker": "综合能力",
+    "title": "高质量数据集",
+    "summary": "从数据治理到知识服务的底座组合。",
+    "chips": [
+      { "id": "p01" },
+      { "id": "p06" },
+      { "id": "p13" }
+    ],
+    "groups": [
+      {
+        "name": "数据底座",
+        "items": [
+          { "id": "p01" },
+          { "id": "p06" }
+        ]
+      },
+      {
+        "name": "知识服务",
+        "items": [
+          { "id": "p13" }
+        ]
+      }
+    ],
+    "path": [
+      { "name": "数据盘点与入库", "t": "第 1—3 周", "out": "梳理规范、方案与文档，确认可入库范围与密级。" },
+      { "name": "数据治理", "t": "第 4—7 周", "out": "完成采集、标注、合成与质检，形成可用数据集。" },
+      { "name": "语义统一", "t": "第 8—10 周", "out": "梳理业务术语与本体，统一集团语义口径。" },
+      { "name": "知识服务上线", "t": "第 11 周起", "out": "接入知识中枢问答，试点后逐步推广。" }
+    ],
+    "value": [
+      { "k": "数据可用", "v": "采集、标注、合成与质检形成标准流程。" },
+      { "k": "语义一致", "v": "本体中心统一业务语义，减少口径不一致。" },
+      { "k": "知识可问", "v": "知识中枢把文档组织成可检索、可回答的知识服务。" }
+    ],
+    "limits": [
+      "本体中心目前处于概念预研，需先完成语义标准梳理。",
+      "需业务方提供语料与专家校验，效果取决于语料质量。"
+    ],
+    "pricing": "项目定制"
+  },
+  {
+    "id": "cp-ai-platform",
+    "kicker": "综合能力",
+    "title": "企业 AI 平台",
+    "summary": "覆盖问答、智能体、知识与办公文档的企业 AI 平台。",
+    "chips": [
+      { "name": "通用问答", "app": true, "accent": "#8FA3BF" },
+      { "name": "智能体广场", "app": true, "accent": "#8FA3BF" },
+      { "id": "p13" },
+      { "name": "公文写作", "app": true, "accent": "#8FA3BF" },
+      { "id": "p27" },
+      { "id": "p43" }
+    ],
+    "groups": [
+      {
+        "name": "核心应用",
+        "items": [
+          { "name": "通用问答", "app": true, "accent": "#8FA3BF" },
+          { "name": "智能体广场", "app": true, "accent": "#8FA3BF" },
+          { "id": "p13" }
+        ]
+      },
+      {
+        "name": "文档与阅读",
+        "items": [
+          { "name": "公文写作", "app": true, "accent": "#8FA3BF" },
+          { "id": "p27" }
+        ]
+      },
+      {
+        "name": "资讯",
+        "items": [
+          { "id": "p43" }
+        ]
+      }
+    ],
+    "path": [
+      { "name": "平台开通", "t": "第 1—2 周", "out": "开通问之平台账号、权限与组织映射。" },
+      { "name": "应用接入", "t": "第 3—5 周", "out": "按需启用通用问答、智能体广场、知识中枢等应用。" },
+      { "name": "知识接入", "t": "第 6—8 周", "out": "本单位制度与文档入库，配置问答与阅读范围。" },
+      { "name": "全员推广", "t": "第 9 周起", "out": "按部门推广使用，收集反馈持续补充知识。" }
+    ],
+    "value": [
+      { "k": "一个入口", "v": "问答、智能体、知识与文档处理在同一个平台完成。" },
+      { "k": "办公提效", "v": "文档写作、长文阅读与资讯获取由平台辅助。" },
+      { "k": "知识沉淀", "v": "本单位知识入库后可被反复检索与问答。" }
+    ],
+    "limits": [
+      "可用范围以平台已上线应用为准。",
+      "涉及内部制度与业务的问答，需接入本单位知识库后使用。"
+    ],
+    "pricing": "项目定制"
+  }
+];
+</script>
+<script>var COVERS = {"p01": ["./assets/img/covers/p01-1.jpg"], "p02": ["./assets/img/covers/p02-1.jpg", "./assets/img/covers/p02-2.jpg", "./assets/img/covers/p02-3.jpg"], "p03": ["./assets/img/covers/p03-1.jpg", "./assets/img/covers/p03-2.jpg", "./assets/img/covers/p03-3.jpg"], "p04": ["./assets/img/covers/p04-1.jpg", "./assets/img/covers/p04-2.jpg", "./assets/img/covers/p04-3.jpg"], "p05": ["./assets/img/covers/p05-1.jpg", "./assets/img/covers/p05-2.jpg"], "p09": ["./assets/img/covers/p09-1.jpg"], "p10": ["./assets/img/covers/p10-1.jpg", "./assets/img/covers/p10-2.jpg", "./assets/img/covers/p10-3.jpg"], "p11": ["./assets/img/covers/p11-1.jpg", "./assets/img/covers/p11-2.jpg"], "p15": ["./assets/img/covers/p15-1.jpg"], "p13": ["./assets/img/covers/p13-1.jpg", "./assets/img/covers/p13-2.jpg"], "p14": ["./assets/img/covers/p14-1.jpg", "./assets/img/covers/p14-2.jpg", "./assets/img/covers/p14-3.jpg"], "p16": ["./assets/img/covers/p16-1.jpg", "./assets/img/covers/p16-2.jpg"], "p17": ["./assets/img/covers/p17-1.jpg", "./assets/img/covers/p17-2.jpg", "./assets/img/covers/p17-3.jpg"], "p12": ["./assets/img/covers/p12-1.jpg", "./assets/img/covers/p12-2.jpg", "./assets/img/covers/p12-3.jpg"], "p18": ["./assets/img/covers/p18-1.jpg", "./assets/img/covers/p18-2.jpg"], "p19": ["./assets/img/covers/p19-1.jpg", "./assets/img/covers/p19-2.jpg"], "p20": ["./assets/img/covers/p20-1.jpg"], "p21": ["./assets/img/covers/p21-1.jpg"], "p24": ["./assets/img/covers/p24-1.jpg", "./assets/img/covers/p24-2.jpg", "./assets/img/covers/p24-3.jpg"], "p31": ["./assets/img/covers/p31-1.jpg", "./assets/img/covers/p31-2.jpg", "./assets/img/covers/p31-3.jpg"], "p25": ["./assets/img/covers/p25-1.jpg", "./assets/img/covers/p25-2.jpg", "./assets/img/covers/p25-3.jpg"], "p27": ["./assets/img/covers/p27-1.jpg", "./assets/img/covers/p27-2.jpg", "./assets/img/covers/p27-3.jpg"], "p32": ["./assets/img/covers/p32-1.jpg", "./assets/img/covers/p32-2.jpg"], "p29": ["./assets/img/covers/p29-1.jpg"], "p33": ["./assets/img/covers/p33-1.jpg", "./assets/img/covers/p33-2.jpg", "./assets/img/covers/p33-3.jpg"], "p34": ["./assets/img/covers/p34-1.jpg", "./assets/img/covers/p34-2.jpg", "./assets/img/covers/p34-3.jpg"], "p35": ["./assets/img/covers/p35-1.jpg"], "p39": ["./assets/img/covers/p39-1.jpg"], "p40": ["./assets/img/covers/p40-1.jpg"], "p41": ["./assets/img/covers/p41-1.jpg"], "p42": ["./assets/img/covers/p42-1.jpg"], "p43": ["./assets/img/covers/p43-1.jpg"]};
 </script>
 <script>
 (function(){
@@ -4517,12 +4661,142 @@ window.ATLAS_CONTENT = {
   // 主推能力：排到所属类型最前，并打星标
   var FEATURED = ["p11","p13","p15","p16","p17","p18","p43","p01","p03","p04","p05","p22","p24","p31","p34","p39","p40","p41","p42","p35","p36","p37"];
 
+
+  // 能力图片与入口（V3 设计移植）
+  var ENTRY = {"p02": {"label": "打开训练平台", "url": "https://lanyi-trainer.ccccltd.cn/"}, "p03": {"label": "打开模型广场", "url": "https://c4ai.ccccltd.cn/maasAdmin/"}, "p04": {"label": "打开智能体中心", "url": "https://jiaorong.ccccltd.cn/agent.html"}, "p11": {"label": "打开 AI 门户", "url": "https://jiaorong.ccccltd.cn/"}, "p15": {"label": "打开数字人平台", "url": "https://c4ai.ccccltd.cn/digital_human/home"}, "p17": {"label": "打开 PageAgent", "url": "https://jiaorong.ccccltd.cn/browser-assistant"}, "p24": {"label": "打开商机罗盘", "url": "https://www.kdocs.cn/l/cb9F9BlWhwMK"}, "p35": {"label": "打开 Token 大市场", "url": "https://c4ai.ccccltd.cn/maasAdmin/"}};
+  function coverHtml(p, color){
+    var imgs = (window.COVERS || {})[p.id] || [];
+    if (!imgs.length){
+      return '<div class="d-cover" style="--c:' + esc(color) + '"><span class="d-glyph" aria-hidden="true">' + esc((p.short || "·").slice(0, 1)) + '</span></div>';
+    }
+    if (imgs.length === 1){
+      return '<div class="d-cover" data-title="' + esc(p.short) + '" style="--c:' + esc(color) + '"><img src="' + esc(imgs[0]) + '" alt="" loading="lazy"></div>';
+    }
+    var slides = imgs.map(function(src, i){
+      return '<div class="d-slide"><img src="' + esc(src) + '" alt="' + esc(p.short) + ' 示意图 ' + (i + 1) + '"></div>';
+    }).join("");
+    var dots = imgs.map(function(_, i){
+      return '<button type="button" class="d-dot' + (i === 0 ? " on" : "") + '" data-i="' + i + '" aria-label="第 ' + (i + 1) + ' 张"></button>';
+    }).join("");
+    return '<div class="d-cover d-carousel" data-title="' + esc(p.short) + '" style="--c:' + esc(color) + '">' +
+      '<div class="d-track" data-count="' + imgs.length + '">' + slides + '</div>' +
+      '<button type="button" class="d-nav prev" aria-label="上一张">‹</button>' +
+      '<button type="button" class="d-nav next" aria-label="下一张">›</button>' +
+      '<span class="d-count">1/' + imgs.length + '</span>' +
+      '<div class="d-dots">' + dots + '</div>' +
+    '</div>';
+  }
+
+  // 图片点击预览
+  function openLightbox(imgs, idx, title){
+    var mask = document.getElementById("lbMask");
+    if (!mask){
+      mask = document.createElement("div");
+      mask.className = "lb-mask";
+      mask.id = "lbMask";
+      mask.innerHTML = '<img class="lb-img" alt=""><button class="lb-close" type="button" aria-label="关闭">×</button>' +
+        '<button class="lb-nav prev" type="button" aria-label="上一张">‹</button>' +
+        '<button class="lb-nav next" type="button" aria-label="下一张">›</button>' +
+        '<span class="lb-bar"></span>';
+      document.body.appendChild(mask);
+      mask.addEventListener("click", function(e){ if (e.target === mask) mask.classList.remove("open"); });
+      document.addEventListener("keydown", function(e){
+        if (!mask.classList.contains("open")) return;
+        if (e.key === "Escape") mask.classList.remove("open");
+        if (e.key === "ArrowLeft") mask.querySelector(".lb-nav.prev").click();
+        if (e.key === "ArrowRight") mask.querySelector(".lb-nav.next").click();
+      });
+      mask.querySelector(".lb-close").addEventListener("click", function(){ mask.classList.remove("open"); });
+    }
+    var img = mask.querySelector(".lb-img");
+    var bar = mask.querySelector(".lb-bar");
+    var prev = mask.querySelector(".lb-nav.prev");
+    var next = mask.querySelector(".lb-nav.next");
+    var total = imgs.length, cur = idx;
+    function paint(){
+      img.src = imgs[cur];
+      bar.textContent = (title ? title + " · " : "") + (cur + 1) + "/" + total;
+      prev.style.display = total > 1 ? "" : "none";
+      next.style.display = total > 1 ? "" : "none";
+    }
+    prev.onclick = function(e){ e.stopPropagation(); cur = (cur - 1 + total) % total; paint(); };
+    next.onclick = function(e){ e.stopPropagation(); cur = (cur + 1) % total; paint(); };
+    paint();
+    mask.classList.add("open");
+  }
+  function bindCoverPreview(scope){
+    var pid = scope.dataset.pid;
+    scope.querySelectorAll(".d-cover").forEach(function(cover){
+      if (cover.dataset.lb) return;
+      cover.dataset.lb = "1";
+      cover.addEventListener("click", function(e){
+        e.preventDefault(); e.stopPropagation();
+        var imgs = (window.COVERS || {})[pid] || [];
+        if (!imgs.length) return;
+        var slides = Array.prototype.slice.call(cover.querySelectorAll(".d-slide"));
+        var idx = 0;
+        if (slides.length){
+          var track = cover.querySelector(".d-track");
+          var w = Math.max(1, track.clientWidth);
+          idx = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / w)));
+        } else {
+          var im = cover.querySelector("img");
+          imgs = im ? [im.src] : imgs;
+        }
+        openLightbox(imgs, idx, cover.dataset.title || "");
+      });
+    });
+  }
+
+  function bindCarousels(scope){
+    scope.querySelectorAll(".d-carousel").forEach(function(car){
+      if (car.dataset.bound) return;
+      car.dataset.bound = "1";
+      var track = car.querySelector(".d-track");
+      if (!track) return;
+      var n = parseInt(track.dataset.count, 10) || 1;
+      var dots = Array.prototype.slice.call(car.querySelectorAll(".d-dot"));
+      var cnt = car.querySelector(".d-count");
+      function cur(){ return Math.max(0, Math.min(n - 1, Math.round(track.scrollLeft / Math.max(1, track.clientWidth)))); }
+      function sync(){
+        var i = cur();
+        dots.forEach(function(d, k){ d.classList.toggle("on", k === i); });
+        if (cnt) cnt.textContent = (i + 1) + "/" + n;
+      }
+      track.addEventListener("scroll", function(){ requestAnimationFrame(sync); }, { passive: true });
+      var timer = null, paused = false;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function goTo(i){ i = Math.max(0, Math.min(n - 1, i)); track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" }); }
+      function next(){ var i = cur() + 1; goTo(i >= n ? 0 : i); }
+      function start(){ if (reduce || n < 2) return; stop(); timer = setInterval(function(){ if (!paused) next(); }, 4000); }
+      function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+      car.addEventListener("mouseenter", function(){ paused = true; });
+      car.addEventListener("mouseleave", function(){ paused = false; });
+      car.addEventListener("focusin", function(){ paused = true; });
+      car.addEventListener("focusout", function(){ paused = false; });
+      document.addEventListener("visibilitychange", function(){ if (document.hidden) stop(); else start(); });
+      start();
+      car.querySelectorAll(".d-nav").forEach(function(b){
+        b.addEventListener("click", function(e){
+          e.stopPropagation(); e.preventDefault();
+          goTo(cur() + (b.classList.contains("next") ? 1 : -1));
+        });
+      });
+      dots.forEach(function(d){
+        d.addEventListener("click", function(e){
+          e.stopPropagation(); e.preventDefault();
+          goTo(parseInt(d.dataset.i, 10));
+        });
+      });
+    });
+  }
+
   function row(p){
     var c = catByName[p.cat] || {};
     var color = c.accent || "#2F6BFF";
     var dots = "";
     for (var d = 1; d <= 5; d++) dots += '<i class="' + (d <= p.maturity ? "on" : "") + '"></i>';
-    return '<div class="row">' +
+    return '<div class="row" data-pid="' + esc(p.id) + '">' +
       '<button class="row-btn" type="button" aria-expanded="false">' +
 
         '<span class="r-main">' +
@@ -4533,12 +4807,19 @@ window.ATLAS_CONTENT = {
         '<span class="r-arrow">›</span>' +
       '</button>' +
       '<div class="row-detail">' +
+        '<div class="d-grid2">' +
+        '<aside class="d-side">' + coverHtml(p, color) + '</aside>' +
         '<div class="d-simple">' +
           '<p class="d-label">能力说明</p>' +
-          (p.desc||[]).map(function(d){ return "<p>" + esc(d) + "</p>"; }).join("") +
+          '<ul class="d-lines">' + (p.desc||[]).map(function(d){ return '<li>' + esc(d) + '</li>'; }).join("") + '</ul>' +
           (p.problems && p.problems.length ? '<p class="d-label">解决的问题</p><div class="d-tags">' + p.problems.map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' : "") +
           '<p class="d-label">适用对象</p><div class="d-tags">' + (p.users||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+          '<p class="d-label">关键特性</p><div class="d-tags">' + (p.features||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
           '<p class="d-label">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
+          (ENTRY[p.id]
+            ? '<div class="d-entry"><a class="entry-btn" href="' + esc(ENTRY[p.id].url) + '" target="_blank" rel="noopener">' + esc(ENTRY[p.id].label) + ' <span aria-hidden="true">↗</span></a><span class="entry-note">官网 / 试用入口</span></div>'
+            : '') +
+        '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -4611,6 +4892,7 @@ window.ATLAS_CONTENT = {
         var rowEl = btn.parentNode;
         var open = rowEl.classList.toggle("open");
         btn.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open) { if (typeof bindCarousels === "function") bindCarousels(rowEl); if (typeof bindCoverPreview === "function") bindCoverPreview(rowEl); }
       });
     });
   }
@@ -4758,6 +5040,43 @@ SCENE_ART = {
     "bp-bid": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 54h48"/><path d="M16 46V32M28 46V22M40 46V38M52 46V16"/><path d="M12 18l10 6 10-8 12 4"/></svg>'
   };
 
+
+  function compositeCards(offset){
+    var list = (C.composites || []);
+    return list.map(function(cp, i){
+      var allChips = (cp.chips || []);
+      var chips = allChips.slice(0, 3).map(function(it){
+        var p = it.id ? byId[it.id] : null;
+        var cat = p ? catByName[p.cat] : null;
+        var name = it.name || (p ? p.short : "");
+        var accent = it.accent || (cat ? cat.accent : "#9DB9E8");
+        return '<span class="pc-chip"><i style="background:' + accent + '"></i>' + esc(name) + '</span>';
+      }).join("");
+      var restChips = Math.max(0, allChips.length - 3);
+      if (restChips) chips += '<span class="pc-chip pc-chip-more">+' + restChips + '</span>';
+      var dots = "";
+      for (var d = 0; d < (cp.path || []).length; d++) dots += "<i></i>";
+      return '<article class="plan-card plan-composite" role="button" tabindex="0" aria-expanded="false" data-cp="' + esc(cp.id) + '">' +
+        '<span class="pc-top"><span class="pc-idx">' + ("0" + (offset + i + 1)).slice(-2) + '</span>' +
+          '<span class="pc-kicker">' + esc(cp.kicker) + '</span></span>' +
+        '<span class="pc-body">' +
+          '<span class="pc-title">' + esc(cp.title) + '</span>' +
+          '<span class="pc-sum">' + esc(cp.summary) + '</span>' +
+          '<span class="pc-chain">' + chips + '</span>' +
+        '</span>' +
+        '<span class="pc-media" aria-hidden="true">' + (COMPOSITE_ART[cp.id] || "") + '</span>' +
+        '<span class="pc-foot"><span>' + (cp.chips || []).length + ' 项能力</span>' +
+          '<span class="pc-path"><span class="pc-dots" aria-hidden="true">' + dots + '</span>' + (cp.path || []).length + ' 阶段实施</span></span>' +
+      '</article>';
+    }).join("");
+  }
+
+
+  var COMPOSITE_ART = {
+    "cp-dataset": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="32" cy="16" rx="16" ry="6"/><path d="M16 16v14c0 3.3 7.2 6 16 6s16-2.7 16-6V16"/><path d="M16 30v14c0 3.3 7.2 6 16 6s16-2.7 16-6V30"/></svg>',
+    "cp-ai-platform": '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="12" width="44" height="40" rx="4"/><path d="M10 24h44"/><rect x="18" y="32" width="10" height="10" rx="2"/><rect x="36" y="32" width="10" height="10" rx="2"/></svg>'
+  };
+
   // 落地项目（复用 v1 方案卡）
   (function(){
     var grid = document.getElementById("projGrid");
@@ -4789,11 +5108,19 @@ SCENE_ART = {
           '<span class="pc-path"><span class="pc-dots" aria-hidden="true">' + dots + '</span>' + (bp.path || []).length + ' 阶段实施</span></span>' +
       '</article>';
     }).join("") +
+      compositeCards(list.length) +
       '<article class="plan-card plan-more">' +
         '<span class="pc-body"><span class="pc-title">更多项目持续推进</span>' +
         '<span class="pc-sum">更多项目正在上线，后续会补充到这里。</span></span>' +
         '<span class="pc-media pc-media-more" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>' +
       '</article>';
+    grid.querySelectorAll('[data-cp]').forEach(function(card){
+      function open(){ openComposite((C.composites || []).filter(function(x){ return x.id === card.dataset.cp; })[0]); }
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); }
+      });
+    });
     grid.querySelectorAll('.plan-card[role="button"]').forEach(function(card, i){
       function open(){ openSolution(list[i]); }
       card.addEventListener("click", open);
@@ -4859,6 +5186,59 @@ SCENE_ART = {
       { k: "资源更集中", v: "投标投入向匹配项目倾斜。" }
     ]
   };
+
+
+  function openComposite(cp){
+    if (!cp || !solPanel) return;
+    function pickHtml(it){
+      if (it.app) {
+        return '<div class="sol-pick"><i style="background:' + (it.accent || "#5B7CFA") + '"></i><div>' +
+          '<p class="sol-pick-name">' + esc(it.name) + '<em>平台内应用</em></p></div></div>';
+      }
+      var p = it.id ? byId[it.id] : null;
+      if (!p) return "";
+      return '<div class="sol-pick"><i style="background:' + (catByName[p.cat] ? catByName[p.cat].accent : "#9DB9E8") + '"></i><div>' +
+        '<p class="sol-pick-name">' + esc(p.short) + '<em>' + esc(p.cat) + ' · ' + esc(MAT[p.maturity] || "") + '</em></p>' +
+        '<p class="sol-pick-why">' + esc(p.tagline || "") + '</p></div></div>';
+    }
+    var items = (cp.groups || []).map(function(g){
+      return '<div class="sol-group"><h4>' + esc(g.name) + '</h4>' + (g.items || []).map(pickHtml).join("") + '</div>';
+    }).join("");
+    if (!items) {
+      items = '<div class="sol-group">' + (cp.chips || []).map(pickHtml).join("") + '</div>';
+    }
+    var path = cp.path || [];
+    var lastT = path.length ? path[path.length - 1].t : "";
+    var facts = [
+      { v: (cp.chips || []).length, l: "项能力" },
+      { v: path.length, l: "阶段实施" },
+      { v: lastT.replace(/^第\s*/, "").replace(/\s*起$/, "") || "—", l: "实施周期" },
+      { v: (cp.value || []).length, l: "项预期成效" }
+    ].map(function(f){ return '<div><b>' + f.v + '</b><span>' + f.l + '</span></div>'; }).join("");
+    document.getElementById("solutionKicker").textContent = "综合能力 · 能力组合";
+    document.getElementById("solutionTitle").textContent = cp.title;
+    document.getElementById("solutionBody").innerHTML =
+      '<p class="sol-lead">' + esc(cp.summary || "") + '</p>' +
+      '<div class="sol-facts">' + facts + '</div>' +
+      '<div class="sol-top">' +
+        '<section class="sol-sec"><h4>组成能力</h4><div class="sol-group">' + items + '</div></section>' +
+        '<section class="sol-sec"><h4>实施路径</h4><ol class="sol-path">' +
+          path.map(function(st, i){ return '<li><b>' + (i + 1) + '</b><div><span class="sol-path-name">' + esc(st.name) + '</span><em>' + esc(st.t) + '</em><p>' + esc(st.out) + '</p></div></li>'; }).join("") +
+        '</ol></section>' +
+      '</div>' +
+      '<div class="sol-bottom3">' +
+        '<section class="sol-sec"><h4>带来的变化</h4><ul class="sol-vals">' +
+          (cp.value || []).map(function(v){ return '<li><b>' + esc(v.k) + '</b><span>' + esc(v.v) + '</span></li>'; }).join("") +
+        '</ul></section>' +
+        '<section class="sol-sec"><h4>适用边界</h4><ul class="sol-limits">' +
+          (cp.limits || []).map(function(l){ return '<li>' + esc(l) + '</li>'; }).join("") +
+        '</ul></section>' +
+        '<section class="sol-sec"><h4>定价策略</h4><p class="sol-price">' + esc(cp.pricing || "") + '</p></section>' +
+      '</div>';
+    solPanel.hidden = false; solScrim.hidden = false;
+    document.body.style.overflow = "hidden";
+    solPanel.scrollTop = 0;
+  }
 
   function openSolution(bp){
     if (!bp || !solPanel) return;
