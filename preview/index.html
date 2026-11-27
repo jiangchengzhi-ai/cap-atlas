@@ -4815,7 +4815,7 @@ window.ATLAS_CONTENT.composites = [
           '<p class="d-label">关键特性</p><div class="d-tags">' + (p.features||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
           '<p class="d-label">计费方式</p><div class="d-tags">' + (p.pricing||[]).map(function(x){ return '<span class="tag">' + esc(x) + '</span>'; }).join("") + '</div>' +
           (ENTRY[p.id]
-            ? '<div class="d-entry"><a class="entry-btn" href="' + esc(ENTRY[p.id].url) + '" target="_blank" rel="noopener">' + esc(ENTRY[p.id].label) + ' <span aria-hidden="true">↗</span></a></div>'
+            ? '<div class="d-entry"><a class="entry-btn" href="' + esc(ENTRY[p.id].url) + '" target="_blank" rel="noopener">' + esc(ENTRY[p.id].label) + '</a></div>'
             : '') +
         '</div>' +
         '</div>' +
